@@ -73,7 +73,7 @@ export class RegisterComponent {
   }
 
   checkScreenWidth() {
-    this.isMobile = window.innerHeight <= 715;
+    this.isMobile = window.innerHeight <= 730;
   }
 
 }
