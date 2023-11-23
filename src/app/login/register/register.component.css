@@ -1,0 +1,62 @@
+img{
+    width: auto;
+    height: 50vh;
+    align-items: center;
+    margin-top: 15%;
+  }
+  
+  .register-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3%;
+  }
+  
+  .register-container{
+    flex-direction: column;
+    padding-top: 10px;
+  }
+  
+  h4, h5.text-center {
+    color: #3F51B5; /* Use the appropriate color from the Pink palette */
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif; /* Use the appropriate font family */
+    font-weight: 500; /* Use the appropriate font weight */
+    line-height: 1.2; /* Use the appropriate line height */
+    letter-spacing: 0.02em; /* Use the appropriate letter spacing */
+    margin-top: 0;
+  }
+  
+  p{
+    color: #3F51B5;
+  }
+  
+  a h6{
+    font-size: 0.8rem;
+  }
+  
+  .link{
+    color: #3F51B5; /* Use the appropriate color from the Pink palette */
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif; /* Use the appropriate font family */
+    font-weight: 500; /* Use the appropriate font weight */
+    line-height: 1.2; /* Use the appropriate line height */
+    letter-spacing: 0.02em; /* Use the appropriate letter spacing */
+    margin-top: 0;
+    text-decoration: none;
+    text-align: left;
+  }
+  
+  .from-field{
+    width: 100%;
+  }
+  
+  @media (max-width: 767px) {
+    img {
+      display: none;
+    }
+    p, h4{
+      display: none;
+    }
+  }
+.title{
+    font-size: 28px;
+}  
