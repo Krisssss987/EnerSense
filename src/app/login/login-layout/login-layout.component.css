@@ -3,4 +3,10 @@
     background-size: cover;
     background-position: center;
     height: 100%; 
-  }
+}
+
+@media (max-width:800px) {
+    .image {
+        background-image: url('../../../assets/img/menuBG2.jpeg');
+    }
+}

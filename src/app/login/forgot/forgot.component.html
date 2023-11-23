@@ -1,1 +1,33 @@
-<p>forgot works!</p>
+<div class="row">
+    <div class="col-lg-7 col-md-6">
+      <img mat-card-image style="height: 750px; margin-top: 30px;" src="../../../assets/img/fg.png" alt="Login">
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+        <mat-card class="login-box">
+          <mat-card-content>
+            <div class="form-container">
+              <div class="row">
+              </div>
+              <h5 class="text-center">Forgot Password</h5>
+              <mat-form-field appearance="outline">
+                <mat-label>Username and Email</mat-label>
+                <input matInput placeholder="pat@example.com" [formControl]="email" required>
+                <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+              </mat-form-field>
+    
+              <button mat-raised-button color="primary" [disabled]="loading">{{loadingMessage}}</button>
+              <div class="row">
+                <div class="col">
+                  <div class="d-flex justify-content-center">
+                    <a class="link" routerLink="/login/login"><h6>Remember password? Sign In</h6></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+  
+  
+  
