@@ -1,1 +1,52 @@
-<p>login works!</p>
+<div class="row">
+    <div class="col-lg-7 col-md-6">
+      <img mat-card-image style="height: 650px; padding-top: 30px;" src="../../../assets/img/login.gif" alt="Login">
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-2">
+      <mat-card class="login-box">
+        <mat-card-content>
+          <div class="form-container">
+            <div class="row">
+            </div>
+            <h5 class="text-center">Login your Account</h5>
+            <mat-form-field appearance="outline">
+              <mat-label>Username and Email</mat-label>
+              <input matInput placeholder="pat@example.com" [formControl]="email" required>
+              <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+          
+            <mat-form-field appearance="outline">
+              <mat-label>Enter your password</mat-label>
+              <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password">
+              <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="loading">
+              {{ loadingMessage }}
+            </button>
+  
+            <div class="row">
+              <div class="col">
+                <div class="d-flex justify-content-between">
+                  <a class="link" routerLink="/login/register"><h6>New user? Sign up</h6></a>
+                  <a class="link" routerLink="/login/forgot"><h6>Forgot Password</h6></a>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="errorMessage === 'User is not verified. Please verify your account.'">
+              <div class="col">
+                <div class="text-center">
+                  <a class="link" routerLink="/login/resend-verify"><h6>Verify User</h6></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  
+  
+  

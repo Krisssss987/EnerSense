@@ -1,0 +1,49 @@
+img{
+	width: auto;
+	height: 80vh;
+  margin-top: 13vh;
+}
+
+.login-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25vh;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+h5.text-center {
+  color: #3F51B5; /* Use the appropriate color from the Pink palette */
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif; /* Use the appropriate font family */
+  font-weight: 500; /* Use the appropriate font weight */
+  line-height: 1.2; /* Use the appropriate line height */
+  letter-spacing: 0.02em; /* Use the appropriate letter spacing */
+  margin-top: 0;
+}
+
+a h6{
+  font-size: 0.8rem;
+}
+
+.link{
+  color: #3F51B5; /* Use the appropriate color from the Pink palette */
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif; /* Use the appropriate font family */
+  font-weight: 500; /* Use the appropriate font weight */
+  line-height: 1.2; /* Use the appropriate line height */
+  letter-spacing: 0.02em; /* Use the appropriate letter spacing */
+  margin-top: 0;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  img {
+    display: none;
+  }
+}

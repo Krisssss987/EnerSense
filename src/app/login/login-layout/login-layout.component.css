@@ -1,0 +1,6 @@
+.image {
+    background-image: url('../../../assets/img/menuBG.jpeg');
+    background-size: cover;
+    background-position: center;
+    height: 100%; 
+  }
