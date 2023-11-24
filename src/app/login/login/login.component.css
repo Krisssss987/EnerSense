@@ -20,7 +20,7 @@ img{
 }
 
 h5.text-center {
-  color: #3F51B5; /* Use the appropriate color from the Pink palette */
+  color: #673ab7; /* Use the appropriate color from the Pink palette */
   font-family: 'Roboto', 'Helvetica Neue', sans-serif; /* Use the appropriate font family */
   font-weight: 500; /* Use the appropriate font weight */
   line-height: 1.2; /* Use the appropriate line height */
@@ -33,7 +33,7 @@ a h6{
 }
 
 .link{
-  color: #3F51B5; /* Use the appropriate color from the Pink palette */
+  color: #673ab7; /* Use the appropriate color from the Pink palette */
   font-family: 'Roboto', 'Helvetica Neue', sans-serif; /* Use the appropriate font family */
   font-weight: 500; /* Use the appropriate font weight */
   line-height: 1.2; /* Use the appropriate line height */

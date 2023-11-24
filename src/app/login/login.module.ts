@@ -22,6 +22,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientModule } from '@angular/common/http';
 
 import{ AuthService } from '../login/auth/auth.service';
+import { ResendVerifyComponent } from './login/resend-verify/resend-verify.component';
+import { VerifyComponent } from './forgot/verify/verify.component';
+import { MailComponent } from './forgot/mail/mail.component';
 
 
 @NgModule({
@@ -31,7 +34,10 @@ import{ AuthService } from '../login/auth/auth.service';
     RegisterComponent,
     ResetComponent,
     ForgotComponent,
-    RegVerifyComponent
+    RegVerifyComponent,
+    ResendVerifyComponent,
+    VerifyComponent,
+    MailComponent
   ],
   imports: [
     CommonModule,
