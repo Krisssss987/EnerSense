@@ -15,7 +15,7 @@
                 <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
               </mat-form-field>
     
-              <button mat-raised-button color="primary" [disabled]="loading">{{loadingMessage}}</button>
+              <button mat-raised-button color="primary" (click)="submit()" [disabled]="loading">{{loadingMessage}}</button>
               <div class="row">
                 <div class="col">
                   <div class="d-flex justify-content-center">

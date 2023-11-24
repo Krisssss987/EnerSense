@@ -11,23 +11,23 @@
                 <!-- Add new form fields for password reset -->
                 <mat-form-field appearance="outline">
                   <mat-label>New Password</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text'" placeholder="Enter new password" [formControl]="newPassword" required>
-                  <mat-error *ngIf="newPassword.invalid">{{getNewPasswordErrorMessage()}}</mat-error>
-                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Enter new password" [formControl]="password" required>
+                  <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+                  <button mat-icon-button matSuffix (click)="hidePassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
                 </mat-form-field>
               
                 <mat-form-field appearance="outline">
                   <mat-label>Confirm Password</mat-label>
-                  <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Confirm new password" [formControl]="confirmPassword" required>
-                  <mat-error *ngIf="confirmPassword.invalid">{{getConfirmPasswordErrorMessage()}}</mat-error>
-                  <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
-                    <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="Confirm new password" [formControl]="confirmpassword" required>
+                  <mat-error *ngIf="confirmpassword.invalid">{{getConfirmPasswordErrorMessage()}}</mat-error>
+                  <button mat-icon-button matSuffix (click)="hidePassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+                    <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </button>
                 </mat-form-field>
               
-                <button mat-raised-button color="primary" [disabled]="loading" (click)="resetPassword()">Reset Password</button>
+                <button mat-raised-button color="primary" (click)="submit()">Reset Password</button>
               
                 <div class="row">
                   <div class="col">

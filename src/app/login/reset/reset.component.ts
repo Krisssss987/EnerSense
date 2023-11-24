@@ -1,55 +1,83 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset',
   templateUrl: './reset.component.html',
   styleUrls: ['./reset.component.css']
 })
-export class ResetComponent {
+export class ResetComponent  implements OnInit{
+  token!: string;
+  hidePassword = true;
+  hideConfirmPassword = true;
+  password = new FormControl('', [Validators.required, Validators.minLength(8)]);
+  confirmpassword = new FormControl('', [Validators.required, Validators.minLength(8)]);
+
   constructor(
     private authService: AuthService,
-    private snackBar: MatSnackBar,
     private router: Router,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {}
-  hide = true;
-  hide2 = true;
-  email = new FormControl('', [Validators.required, Validators.email]);
-  newPassword = new FormControl('', [Validators.required, Validators.minLength(8)]); // Adjust the validation as needed
-  confirmPassword = new FormControl('', [Validators.required, Validators.minLength(8)]);
 
-  errorMessage = '';
-  loading:boolean = false;
-  loadingMessage: string  = "Submit";
-
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'Email is required';
-    }
-
-    return this.email.hasError('email') ? 'Not a valid email' : '';
-  }
-  getNewPasswordErrorMessage() {
-    // Add your new password validation error messages
-    if (this.newPassword.hasError('required')) {
-      return 'New Password is required';
-    }
-    return this.newPassword.hasError('minlength') ? 'Password must be at least 8 characters' : '';
+ ngOnInit() {
+  this.token = this.route.snapshot.queryParams['token']; // Access token from query parameters
   }
 
+  getPasswordErrorMessage() {
+    if (this.password.hasError('required')) {
+      return 'Password is required';
+    }
+    return this.password.hasError('minlength')
+      ? 'Password should be at least 8 characters long'
+      : '';
+  }
   getConfirmPasswordErrorMessage() {
-    // Add your confirm password validation error messages
-    if (this.confirmPassword.hasError('required')) {
-      return 'Confirm Password is required';
+    if (this.confirmpassword.hasError('required')) {
+      return 'Confim Password is required';
     }
-    return this.confirmPassword.hasError('minlength') ? 'Password must be at least 8 characters' : '';
+    return this.confirmpassword.hasError('minlength')
+      ? 'Confim Password should be at least 8 characters long'
+      : '';
   }
-  resetPassword() {
-    // Implement the logic to handle password reset here
-    // You can use this.email.value, this.newPassword.value, and this.confirmPassword.value
-    // to get the values from the form controls
+
+  submit(){
+    if (this.token) {
+      const resetData = { 
+        token: this.token ,
+        password: this.password.value
+      };
+      this.authService.resetPassword(resetData)
+        .subscribe(
+          () => {
+            this.snackBar.open('Password Update Successfully!', 'Dismiss', {
+                duration: 2000
+              });
+            this.redirectToLoginPage();
+          },
+          error => {
+            this.snackBar.open(
+              error.error.message || 'Failed to update password!',
+              'Dismiss',
+              { duration: 2000 }
+            );
+            this.redirectToLoginPage();
+          }
+        );
+    } else {
+      this.snackBar.open('Token not found', 'Dismiss', {
+        duration: 2000
+      });
+      this.redirectToLoginPage();
+    }
+  }
+    
+  redirectToLoginPage() {
+    setTimeout(() => {
+      this.router.navigate(['/login/login']);
+    }, 2000); // 4-second delay (4000 milliseconds)
   }
 }

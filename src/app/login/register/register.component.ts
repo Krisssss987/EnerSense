@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -87,11 +87,39 @@ export class RegisterComponent {
         designation: this.designation.value,
         password: this.password.value,
       };
-      console.log(registerData);
-    
-    
+
+      this.authService.register(registerData).subscribe(
+        () => {
+          const personalEmail = registerData.personalEmail;
+          this.redirectToRegVerify(personalEmail);
+          this.snackBar.open('Registration successful!', 'Dismiss', {
+            duration: 2000
+           });
+        },
+        (error) => {
+          this.snackBar.open(
+            error.error.message || 'Registration failed. Please try again.',
+            'Dismiss',
+            { duration: 2000 }
+          );
+          this.errorMessage = error.error.message || '';
+          this.loading = false;
+          this.loadingMessage = "Sign Up";
+        }
+      );
     }
   }
 
- 
+  redirectToRegVerify(personalEmail: string | null) {
+    if (personalEmail) {
+      const queryParams = {
+      };
+      const navigationExtras: NavigationExtras = {
+        queryParams: queryParams
+      };
+      this.router.navigate(['/login/regVerify'], navigationExtras);
+    } else {
+      console.error('Personal email is null');
+    }
+  } 
 }
