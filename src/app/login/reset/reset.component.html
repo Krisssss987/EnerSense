@@ -1,1 +1,47 @@
-<p>reset works!</p>
+<div class="row">
+    <div class="col-lg-7 col-md-6">
+      <img mat-card-image style="height: 750px; margin-top: 30px;" src="../../../assets/img/fg.png" alt="Login">
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+        <mat-card class="reset-box">
+          <mat-card-content>
+            <div class="form-container">
+                <div class="row"></div>
+                <h5 class="text-center">Reset Password</h5>
+                <!-- Add new form fields for password reset -->
+                <mat-form-field appearance="outline">
+                  <mat-label>New Password</mat-label>
+                  <input matInput [type]="hide ? 'password' : 'text'" placeholder="Enter new password" [formControl]="newPassword" required>
+                  <mat-error *ngIf="newPassword.invalid">{{getNewPasswordErrorMessage()}}</mat-error>
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+                </mat-form-field>
+              
+                <mat-form-field appearance="outline">
+                  <mat-label>Confirm Password</mat-label>
+                  <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Confirm new password" [formControl]="confirmPassword" required>
+                  <mat-error *ngIf="confirmPassword.invalid">{{getConfirmPasswordErrorMessage()}}</mat-error>
+                  <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+                    <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
+              
+                <button mat-raised-button color="primary" [disabled]="loading" (click)="resetPassword()">Reset Password</button>
+              
+                <div class="row">
+                  <div class="col">
+                    <div class="d-flex justify-content-center">
+                      <a class="link" routerLink="/login/login"><h6>Remember password? Sign In</h6></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+          </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+  
+  
+  
