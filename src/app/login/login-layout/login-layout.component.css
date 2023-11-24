@@ -8,5 +8,7 @@
 @media (max-width:800px) {
     .image {
         background-image: url('../../../assets/img/menuBG2.jpeg');
+        height: auto;
+        min-height: 100%;
     }
 }
