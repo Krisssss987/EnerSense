@@ -16,7 +16,6 @@ export class RegisterComponent {
   firstName = new FormControl('', [Validators.required]);
   lastName = new FormControl('', [Validators.required]);
   contact = new FormControl('', [Validators.required]);
-  location = new FormControl('', [Validators.required]);
   designation = new FormControl('', [Validators.required]);
   companyName = new FormControl('', [Validators.required]);
   companyEmail = new FormControl('', [Validators.required, Validators.email]);
@@ -71,16 +70,15 @@ export class RegisterComponent {
 
   submit(){
     if (this.companyName.valid && this.companyEmail.valid && this.contact.valid 
-      && this.location.valid && this.firstName.valid && this.lastName.valid 
+      && this.firstName.valid && this.lastName.valid 
       && this.personalEmail.valid && this.designation.valid && this.password.valid && this.confirmPassword.valid) {
       this.loading = true;
       this.loadingMessage = "Signing Up...";
       
       const registerData = {
-        companyName: this.companyName.value, 
+        companyId: this.companyName.value, 
         companyEmail: this.companyEmail.value,
         contact: this.contact.value,
-        location: this.location.value,
         firstName: this.firstName.value,
         lastName: this.lastName.value,
         personalEmail: this.personalEmail.value,
@@ -113,6 +111,7 @@ export class RegisterComponent {
   redirectToRegVerify(personalEmail: string | null) {
     if (personalEmail) {
       const queryParams = {
+        personalEmail: personalEmail
       };
       const navigationExtras: NavigationExtras = {
         queryParams: queryParams

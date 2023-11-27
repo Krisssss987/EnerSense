@@ -1,1 +1,15 @@
-<p>reg-verify works!</p>
+<div class="mail">
+  <div class="container">
+    <div class="row">
+      <mat-card class="mail-card">
+        <mat-card-content>
+          <img src="../../../../../assets/img/mail.gif" class="mail-img" alt="Animation GIF">
+          <h2>Thanks for Choosing us!</h2>
+          <p>An email has been sent to <strong>{{ personalEmail }}</strong>. Please check your email and click the verification link to complete your account registration.</p>
+          <p *ngIf="showResendLink">Didn't Receive Mail?</p>
+          <button mat-raised-button *ngIf="showResendLink" (click)="resendVerificationEmail()" [disabled]="counter > 0">Resend</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -31,6 +31,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { SummaryComponent } from './overview/summary/summary.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HeaderComponent } from './dashboard-layout/header/header.component';
+import { FooterComponent } from './dashboard-layout/footer/footer.component';
+import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
 
 
 @NgModule({
@@ -40,7 +43,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     OverviewComponent,
     FeederComponent,
     AnalyticsComponent,
-    SummaryComponent
+    SummaryComponent,
+    HeaderComponent,
+    FooterComponent,
+    SidebarComponent
   ],
   imports: [
     CommonModule,

@@ -7,6 +7,7 @@ import { ResetComponent } from './reset/reset.component';
 import { MailComponent } from './forgot/mail/mail.component';
 import { RegVerifyComponent } from './register/reg-verify/reg-verify.component';
 import { VerifyComponent } from './forgot/verify/verify.component';
+import { ResendVerifyComponent } from './login/resend-verify/resend-verify.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -16,7 +17,7 @@ const routes: Routes = [
   { path: 'mail', component: MailComponent},
   { path: 'regVerify', component: RegVerifyComponent},
   { path: 'verify-user', component: VerifyComponent },
-  { path: 'resend-verify', component: ResetComponent},
+  { path: 'resend-verify', component: ResendVerifyComponent},
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
