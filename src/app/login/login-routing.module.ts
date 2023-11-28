@@ -8,16 +8,18 @@ import { MailComponent } from './forgot/mail/mail.component';
 import { RegVerifyComponent } from './register/reg-verify/reg-verify.component';
 import { VerifyComponent } from './forgot/verify/verify.component';
 import { ResendVerifyComponent } from './login/resend-verify/resend-verify.component';
+import { EmailGuard } from './auth/email.guard';
+import { VerificationGuard } from './auth/verification.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot', component: ForgotComponent },
-  { path: 'reset', component: ResetComponent},
+  { path: 'reset',canActivate:[EmailGuard], component: ResetComponent},
   { path: 'mail', component: MailComponent},
   { path: 'regVerify', component: RegVerifyComponent},
   { path: 'verify-user', component: VerifyComponent },
-  { path: 'resend-verify', component: ResendVerifyComponent},
+  { path: 'resend-verify',canActivate:[VerificationGuard], component: ResendVerifyComponent},
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 

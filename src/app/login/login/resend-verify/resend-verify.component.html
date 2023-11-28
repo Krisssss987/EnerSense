@@ -12,10 +12,10 @@
           <mat-form-field>
             <mat-label>Username and Email</mat-label>
             <input matInput placeholder="pat@example.com" [formControl]="email" required>
-            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+            <mat-error *ngIf="email.invalid">Personal mail is required.</mat-error>
           </mat-form-field>
 
-          <button mat-raised-button color="primary">Submit</button>
+          <button mat-raised-button color="primary" (click)="submit()">Submit</button>
           <div class="row">
             <div class="col">
               <div class="d-flex justify-content-center">
