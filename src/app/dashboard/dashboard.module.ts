@@ -23,7 +23,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatMenuModule} from '@angular/material/menu';
-import { MatListModule } from '@angular/material/list';
+import { MatListModule, MatNavList } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
@@ -34,6 +34,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HeaderComponent } from './dashboard-layout/header/header.component';
 import { FooterComponent } from './dashboard-layout/footer/footer.component';
 import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
+import { ContainerComponent } from './dashboard-layout/container/container.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
     SummaryComponent,
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    ContainerComponent,
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,10 @@ import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
     MatButtonModule,
     MatButtonToggleModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule
   ]
 })
 export class DashboardModule { }

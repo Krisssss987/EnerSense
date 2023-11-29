@@ -1,1 +1,8 @@
-<router-outlet></router-outlet>
+<app-header></app-header>
+<app-sidebar (onToggleSideNav)="onToggleSideNav($event)"></app-sidebar>
+<app-container
+[collapsed]="isSideNavCollapsed"
+[screenWidth]="screenWidth"
+></app-container>
+<app-footer overflow="hidden"></app-footer>
+

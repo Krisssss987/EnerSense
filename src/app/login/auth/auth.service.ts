@@ -105,6 +105,7 @@ export class AuthService {
     this.isLoggedIn(); // Set the logged-in status to false
     this.setUserType(''); // Clear the user type
     this.router.navigate(['/login/login']); // Additional cleanup or redirect logic can be added here
+    window.location.reload();
   }
 
   getUserDetails(): void {
