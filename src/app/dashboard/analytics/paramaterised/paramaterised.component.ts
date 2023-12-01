@@ -24,9 +24,14 @@ export class ParamaterisedComponent implements OnInit, AfterViewInit {
     { value: '15 min', label: '15 min' },
     { value: '30 min', label: '30 min' },
     { value: '1 hour', label: '1 hour' },
-
   ]
-
+  intervaldays = [
+    { value: 'Yesterday', label: 'Yesterday' },
+    { value: 'This Month', label: 'This Month' },
+    { value: 'Last Month', label: 'Last Month' },
+    { value: 'Date', label: 'Date' },
+    { value: 'Date&Time', label:'Date&Time' },
+  ]
   shifts =[
     { value: 'Shift A', label: 'Shift A' },
     { value: 'Shift B', label: 'Shift B' },

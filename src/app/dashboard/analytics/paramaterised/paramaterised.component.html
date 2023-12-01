@@ -1,8 +1,8 @@
 
     <div class="container-fluid">
-      <div class="row">
+      <div class="row col-lg-12 col-md">
         
-        <div class="col-lg-3 col-md-3 col-sm-12 px-2">
+        <div class="col-lg-4 col-md-4 col-sm-12 px-2">
         <div class="row d-flex justify-content-center">Feeder</div>
         <div class="row">
          <mat-form-field>
@@ -16,7 +16,7 @@
         </div>
         </div>
   
-        <div class="col-lg-3 col-md-3 col-sm-12 px-2">
+        <div class="col-lg-4 col-md-4 col-sm-12 px-2">
          <div class="row d-flex justify-content-center">Parameters</div>
          <div class="row">
           <mat-form-field>
@@ -29,7 +29,7 @@
              </mat-form-field>
          </div>
          </div> 
-         <div class="col-lg-3 col-md-3 col-sm-12 px-2">
+         <div class="col-lg-4 col-md-4 col-sm-12 px-2">
            <div class="row d-flex justify-content-center">intervals</div>
            <div class="row">
             <mat-form-field>
@@ -43,7 +43,7 @@
            </div>
            </div> 
   
-           <div class="col-lg-3 col-md-3 col-sm-12 px-2">
+           <div class="col-lg-6 col-md-6 col-sm-12 px-2">
              <mat-button-toggle-group name="favoriteColor" aria-label="Favorite Color" class="d-flex justify-content-center">
                <mat-button-toggle value="red">Yesterday</mat-button-toggle>
                <mat-button-toggle value="green">This month</mat-button-toggle>
@@ -51,8 +51,9 @@
                <mat-button-toggle value="green">Date</mat-button-toggle>
                <mat-button-toggle value="blue">Date&Time</mat-button-toggle>
              </mat-button-toggle-group>
+          </div>
   
-             <div class="row">
+             <div class="col-lg-6 col-md-6 col-sm-12 px-2">
                <mat-form-field>
                  <mat-label>Enter a date range</mat-label>
                  <mat-date-range-input [rangePicker]="picker">
@@ -63,8 +64,9 @@
                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                  <mat-date-range-picker #picker></mat-date-range-picker>
                </mat-form-field>
-             </div>
+            
              </div> 
+
              <div class="row d-flex justify-content-center">
                 <button mat-raised-button color="primary" style="width: 150px;">Generate</button>
               </div>

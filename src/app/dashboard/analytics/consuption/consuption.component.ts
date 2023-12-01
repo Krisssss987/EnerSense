@@ -9,20 +9,20 @@ HighchartsMore(Highcharts);
   styleUrls: ['./consuption.component.css']
 })
 export class ConsuptionComponent implements OnInit, AfterViewInit {
-  options = [
+
+
+  feeders =[
     { value: '6 Th Boiler', label: 'O6 Th Boiler' },
     { value: 'air compressor', label: 'air compressor' },
     { value: 'Borewell no 4', label: 'Borewell No 4' }
-  ];
+  ]
 
   intervals = [
-    { value: 'default', label: 'Default' },
-    { value: '1 min', label: '1 min' },
-    { value: '5 min', label: '5 min' },
-    { value: '15 min', label: '15 min' },
-    { value: '30 min', label: '30 min' },
-    { value: '1 hour', label: '1 hour' },
-
+    { value: 'Yesterday', label: 'Yesterday' },
+    { value: 'This Month', label: 'This Month' },
+    { value: 'Last Month', label: 'Last Month' },
+    { value: 'Date', label: 'Date' },
+    { value: 'Date&Time', label:'Date&Time' },
   ]
 
   shifts =[
@@ -44,10 +44,11 @@ export class ConsuptionComponent implements OnInit, AfterViewInit {
   consumption(container: HTMLElement) {
     Highcharts.chart(container, {
       chart: {
-        type: 'column'
+        type: 'column',
+        plotBorderWidth: 1, // Set the plot border width to 1 to add a small thin border
       },
       title: {
-        text: 'Consumption Chart'
+        text: ''
       },
       xAxis: {
         categories: ['Meter 1', 'Meter 2', 'Meter 3', 'Meter 4', 'Meter 5']
@@ -58,6 +59,44 @@ export class ConsuptionComponent implements OnInit, AfterViewInit {
         },
         min: 0,
         max: 100,
+        gridLineWidth: 0,
+        plotLines: [
+          {
+            value: 0,
+            color: 'transparent',
+            width: 0,
+          },
+          {
+            value: 25,
+            color: 'transparent',
+            width: 0,
+          },
+          {
+            value: 50,
+            color: 'transparent',
+            width: 0,
+          },
+          {
+            value: 75,
+            color: 'transparent',
+            width: 0,
+          },
+          {
+            value: 100,
+            color: 'transparent',
+            width: 0,
+          },
+        ]
+      },
+      plotOptions: {
+        column: {
+          borderWidth: 0,
+          lineWidth: 0,
+        }
+      },
+      legend: {
+        symbolRadius: 0,
+        verticalAlign: 'top',
       },
       series: [{
         name: 'A shift',

@@ -7,6 +7,14 @@
 mat-button-toggle-group{
     width:100%
 }
+mat-card{
+    border-radius: 10px;
+    border-width: 5px;
+    border-color: #673ab7;
+}
+mat-form-field{
+    width: 100%;
+}
 
 @media (max-width:450px){
     #Chart1{

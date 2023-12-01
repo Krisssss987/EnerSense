@@ -1,8 +1,8 @@
 
-    <div class="row d-flex justify-content-between">
-      <div class="col-12 col-lg-4 col-md-4 col-sm-12">
+    <div class="row col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between">
+      <div class="col-lg-3 col-md-3 col-sm-12">
         <div class="row mt-2">
-          <mat-radio-group aria-label="Select an option" color="primary" class="d-flex justify-content-between">
+          <mat-radio-group aria-label="Select an option" color="primary" class="d-flex justify-content-around">
             <mat-radio-button value="feeder">feeder</mat-radio-button>
             <mat-radio-button value="group">Group</mat-radio-button>
             <mat-radio-button value="group">Vgroup</mat-radio-button>
@@ -10,19 +10,19 @@
         </div>
         <div class="row">
           <mat-form-field>
-            <mat-label>Select an option</mat-label>
+            <mat-label>Select an Feeder</mat-label>
             <mat-select multiple>
-              <mat-option *ngFor="let option of options" [value]="option.value">
-                {{ option.label }}
+              <mat-option *ngFor="let feeder of feeders" [value]="feeder.value">
+                {{ feeder.label }}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </div>
   
-      <div class="col-12 col-lg-3 col-md-3 col-sm-12">
+      <div class="col-lg-3 col-md-3 col-sm-12">
         <div class="row mt-2">
-          <mat-radio-group aria-label="Select an option" color="primary">
+          <mat-radio-group aria-label="Select Shift" color="primary" class="d-flex justify-content-center">
             <mat-radio-button value="shift">shift</mat-radio-button>
           </mat-radio-group>
         </div>
@@ -38,39 +38,46 @@
           </mat-form-field>
         </div>
       </div>
-  
-      <div class="col-12 col-lg-5 col-md-5 col-sm-12">
-        <div class="row  col-lg-10 col-md-10 col-sm-10 mx-auto">
-            <mat-button-toggle-group name="favoriteColor" aria-label="Favorite Color" class="d-flex justify-content-center">
-                <mat-button-toggle value="red">Yesterday</mat-button-toggle>
-                <mat-button-toggle value="green">This month</mat-button-toggle>
-                <mat-button-toggle value="blue">Last month</mat-button-toggle>
-                <mat-button-toggle value="green">Date</mat-button-toggle>
-                <mat-button-toggle value="blue">Date&Time</mat-button-toggle>
-              </mat-button-toggle-group>
-        </div>
-       
-  
-        <div class="row">
-          <mat-form-field>
-            <mat-label>Enter a date range</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
-              <input matStartDate placeholder="Start date">
-              <input matEndDate placeholder="End date">
-            </mat-date-range-input>
-            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
+
+      <div class="col-lg-3 col-md-3 col-sm-12 ">
+     <div class="row d-flex justify-content-center mt-4">Intervals</div>
+        <mat-form-field>
+            <mat-label>Select Interval</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let interval of intervals" [value]="interval.value">
+                {{ interval.label }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
-      </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-12">
+            <div class="row d-flex justify-content-center mt-4">Select Date & Time</div>
+            <mat-form-field>
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate placeholder="Start date">
+                  <input matEndDate placeholder="End date">
+                </mat-date-range-input>
+                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+        </div>
+  </div>
+     
   
       <div class="row d-flex justify-content-center">
         <button mat-raised-button color="primary" style="width: 150px;">Generate</button>
       </div>
-    </div>
+   
   
     <div class="row mt-5">
-        <div #chart1></div>
+        <mat-card>
+            <mat-card-content>
+                <div #chart1></div>
+            </mat-card-content>
+        </mat-card>
+        
     </div>
   
