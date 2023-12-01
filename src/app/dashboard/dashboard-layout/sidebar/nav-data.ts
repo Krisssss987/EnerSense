@@ -19,4 +19,9 @@ export const navbarData = [
         icon: 'people',
         label: 'Tools'
     },
+    {
+        routeLink: 'report',
+        icon: 'people',
+        label: 'Report'
+    },
 ];
