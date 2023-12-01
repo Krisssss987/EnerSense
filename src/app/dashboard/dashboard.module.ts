@@ -35,6 +35,21 @@ import { HeaderComponent } from './dashboard-layout/header/header.component';
 import { FooterComponent } from './dashboard-layout/footer/footer.component';
 import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
 import { ContainerComponent } from './dashboard-layout/container/container.component';
+import {MatTabsModule} from '@angular/material/tabs';
+
+
+import { MatSliderModule } from '@angular/material/slider';
+import { HarmonicComponent } from './analytics/harmonic/harmonic.component';
+import { QuickAnalysisComponent } from './analytics/quick-analysis/quick-analysis.component';
+import { ConsuptionComponent } from './analytics/consuption/consuption.component';
+import { ParamaterisedComponent } from './analytics/paramaterised/paramaterised.component';
+import {MatChipsModule} from '@angular/material/chips';
+
+
+
+
+
+
 
 
 @NgModule({
@@ -49,6 +64,11 @@ import { ContainerComponent } from './dashboard-layout/container/container.compo
     FooterComponent,
     SidebarComponent,
     ContainerComponent,
+    HarmonicComponent,
+    QuickAnalysisComponent,
+    ConsuptionComponent,
+    ParamaterisedComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -60,7 +80,22 @@ import { ContainerComponent } from './dashboard-layout/container/container.compo
     MatSnackBarModule,
     MatToolbarModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatTabsModule,
+    MatRadioModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatDatepickerModule, 
+    MatNativeDateModule,
+    MatCardModule,
+    MatSliderModule,
+    MatChipsModule
+     
   ]
 })
 export class DashboardModule { }

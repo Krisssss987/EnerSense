@@ -1,0 +1,13 @@
+/* styles.scss or your component's style file */
+
+/* Reduce the size of the button toggle group */
+.mat-button-toggle-group {
+    font-size: 12px;  
+    width: 100%;
+  }
+
+@media (max-width:300px) {
+    .mat-button-toggle-group {
+        font-size: 6px;
+    }
+}

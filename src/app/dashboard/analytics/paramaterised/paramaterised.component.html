@@ -1,0 +1,80 @@
+
+    <div class="container-fluid">
+      <div class="row">
+        
+        <div class="col-lg-3 col-md-3 col-sm-12 px-2">
+        <div class="row d-flex justify-content-center">Feeder</div>
+        <div class="row">
+         <mat-form-field>
+           <mat-label>Select an option</mat-label>
+           <mat-select multiple>
+             <mat-option *ngFor="let option of options" [value]="option.value">
+               {{ option.label }}
+             </mat-option>
+            </mat-select>
+            </mat-form-field>
+        </div>
+        </div>
+  
+        <div class="col-lg-3 col-md-3 col-sm-12 px-2">
+         <div class="row d-flex justify-content-center">Parameters</div>
+         <div class="row">
+          <mat-form-field>
+            <mat-label>Select an option</mat-label>
+            <mat-select multiple>
+              <mat-option *ngFor="let option of options" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+             </mat-select>
+             </mat-form-field>
+         </div>
+         </div> 
+         <div class="col-lg-3 col-md-3 col-sm-12 px-2">
+           <div class="row d-flex justify-content-center">intervals</div>
+           <div class="row">
+            <mat-form-field>
+              <mat-label>Select an option</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let interval of intervals" [value]="interval.value">
+                  {{ interval.label }}
+                </mat-option>
+               </mat-select>
+               </mat-form-field>
+           </div>
+           </div> 
+  
+           <div class="col-lg-3 col-md-3 col-sm-12 px-2">
+             <mat-button-toggle-group name="favoriteColor" aria-label="Favorite Color" class="d-flex justify-content-center">
+               <mat-button-toggle value="red">Yesterday</mat-button-toggle>
+               <mat-button-toggle value="green">This month</mat-button-toggle>
+               <mat-button-toggle value="blue">Last month</mat-button-toggle>
+               <mat-button-toggle value="green">Date</mat-button-toggle>
+               <mat-button-toggle value="blue">Date&Time</mat-button-toggle>
+             </mat-button-toggle-group>
+  
+             <div class="row">
+               <mat-form-field>
+                 <mat-label>Enter a date range</mat-label>
+                 <mat-date-range-input [rangePicker]="picker">
+                   <input matStartDate placeholder="Start date">
+                   <input matEndDate placeholder="End date">
+                 </mat-date-range-input>
+                 <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                 <mat-date-range-picker #picker></mat-date-range-picker>
+               </mat-form-field>
+             </div>
+             </div> 
+             <div class="row d-flex justify-content-center">
+                <button mat-raised-button color="primary" style="width: 150px;">Generate</button>
+              </div>
+
+
+              <div class="row mt-5">
+                <div #chart2></div>
+              </div>
+
+   
+      </div>
+   </div>
+  
