@@ -28,6 +28,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { SummaryComponent } from './overview/summary/summary.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -35,6 +36,7 @@ import { HeaderComponent } from './dashboard-layout/header/header.component';
 import { FooterComponent } from './dashboard-layout/footer/footer.component';
 import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
 import { ContainerComponent } from './dashboard-layout/container/container.component';
+
 
 
 @NgModule({
@@ -60,7 +62,12 @@ import { ContainerComponent } from './dashboard-layout/container/container.compo
     MatSnackBarModule,
     MatToolbarModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatInputModule,
+    MatSelectModule,
   ]
 })
 export class DashboardModule { }
