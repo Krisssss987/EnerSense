@@ -36,6 +36,7 @@ import { HeaderComponent } from './dashboard-layout/header/header.component';
 import { FooterComponent } from './dashboard-layout/footer/footer.component';
 import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
 import { ContainerComponent } from './dashboard-layout/container/container.component';
+import { ReportComponent } from './report/report.component';
 
 
 
@@ -51,6 +52,7 @@ import { ContainerComponent } from './dashboard-layout/container/container.compo
     FooterComponent,
     SidebarComponent,
     ContainerComponent,
+    ReportComponent,
   ],
   imports: [
     CommonModule,
