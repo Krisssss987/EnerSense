@@ -1,0 +1,9 @@
+.main{
+    height: 95%;
+    margin: 2% 2% 0% 2%;
+}
+@media(max-width:425px){
+    .main{
+        height: 110%;
+    }
+}

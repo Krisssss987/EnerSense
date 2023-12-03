@@ -1,0 +1,43 @@
+
+table {
+    width: 100%;
+  }
+  .content{
+    padding: 1rem;
+    padding-top: 1rem;
+  }
+  
+  h5 {
+    display: flex;
+    align-items: center;
+  }
+
+  mat-icon {
+    margin-right: 5px; 
+  }
+  .header-colour {
+    background-color:#3AA440;
+    color: white; 
+  }
+ .data-colour{
+  background-color: #4C4C4C;
+  color: white;
+ }
+
+.custom-button {
+  border: 2px solid black;
+  width: 318px;
+  border-radius: 23px; 
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 30px;
+  mat-icon {
+    margin-right: 5px;
+  }
+}
+@media(max-width:425px){
+  .custom-button{
+    width: 250px;
+  }
+}

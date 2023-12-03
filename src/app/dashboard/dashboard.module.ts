@@ -31,6 +31,18 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { SummaryComponent } from './overview/summary/summary.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { UserProfileComponent } from './tools/user-profile/user-profile.component';
+import { FeederConfigurationComponent } from './tools/feeder-configuration/feeder-configuration.component';
+import { AlertsComponent } from './tools/alerts/alerts.component';
+import { DayShiftComponent } from './tools/day-shift/day-shift.component';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { EditFeederComponent } from './tools/feeder-configuration/edit-feeder/edit-feeder.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EditUserComponent } from './tools/user-profile/edit-user/edit-user.component';
+import { EditAlertsComponent } from './tools/alerts/edit-alerts/edit-alerts.component';
+
+
 
 
 @NgModule({
@@ -40,7 +52,15 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     OverviewComponent,
     FeederComponent,
     AnalyticsComponent,
-    SummaryComponent
+    SummaryComponent,
+    UserProfileComponent,
+    FeederConfigurationComponent,
+    AlertsComponent,
+    DayShiftComponent,
+    EditFeederComponent,
+    EditUserComponent,
+    EditAlertsComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -49,7 +69,17 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatButtonToggleModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTabsModule,
+    MatCardModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule,
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule ,
+    MatSelectModule
+   
   ]
 })
 export class DashboardModule { }
