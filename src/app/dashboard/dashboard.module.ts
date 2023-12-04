@@ -32,7 +32,6 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { SummaryComponent } from './overview/summary/summary.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-<<<<<<< HEAD
 import { MatTabsModule } from '@angular/material/tabs';
 import { UserProfileComponent } from './tools/user-profile/user-profile.component';
 import { FeederConfigurationComponent } from './tools/feeder-configuration/feeder-configuration.component';
@@ -43,14 +42,11 @@ import { EditFeederComponent } from './tools/feeder-configuration/edit-feeder/ed
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { EditUserComponent } from './tools/user-profile/edit-user/edit-user.component';
 import { EditAlertsComponent } from './tools/alerts/edit-alerts/edit-alerts.component';
-
-=======
 import { HeaderComponent } from './dashboard-layout/header/header.component';
 import { FooterComponent } from './dashboard-layout/footer/footer.component';
 import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
 import { ContainerComponent } from './dashboard-layout/container/container.component';
 import { ReportComponent } from './report/report.component';
->>>>>>> e8270538940894d4197630b397c022f2b3a478ac
 
 
 
@@ -62,7 +58,6 @@ import { ReportComponent } from './report/report.component';
     FeederComponent,
     AnalyticsComponent,
     SummaryComponent,
-<<<<<<< HEAD
     UserProfileComponent,
     FeederConfigurationComponent,
     AlertsComponent,
@@ -70,14 +65,11 @@ import { ReportComponent } from './report/report.component';
     EditFeederComponent,
     EditUserComponent,
     EditAlertsComponent,
-    
-=======
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
     ContainerComponent,
     ReportComponent,
->>>>>>> e8270538940894d4197630b397c022f2b3a478ac
   ],
   imports: [
     CommonModule,
@@ -87,7 +79,6 @@ import { ReportComponent } from './report/report.component';
     MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
-<<<<<<< HEAD
     MatTabsModule,
     MatCardModule,
     MatTableModule,
@@ -96,9 +87,7 @@ import { ReportComponent } from './report/report.component';
     FormsModule,
     MatInputModule,
     MatFormFieldModule ,
-    MatSelectModule
-   
-=======
+    MatSelectModule,
     MatToolbarModule,
     MatIconModule,
     MatListModule,
@@ -107,7 +96,6 @@ import { ReportComponent } from './report/report.component';
     MatCardModule,
     MatInputModule,
     MatSelectModule,
->>>>>>> e8270538940894d4197630b397c022f2b3a478ac
   ]
 })
 export class DashboardModule { }
