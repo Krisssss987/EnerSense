@@ -23,14 +23,16 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatMenuModule} from '@angular/material/menu';
-import { MatListModule } from '@angular/material/list';
+import { MatListModule, MatNavList } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { SummaryComponent } from './overview/summary/summary.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+<<<<<<< HEAD
 import { MatTabsModule } from '@angular/material/tabs';
 import { UserProfileComponent } from './tools/user-profile/user-profile.component';
 import { FeederConfigurationComponent } from './tools/feeder-configuration/feeder-configuration.component';
@@ -42,6 +44,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { EditUserComponent } from './tools/user-profile/edit-user/edit-user.component';
 import { EditAlertsComponent } from './tools/alerts/edit-alerts/edit-alerts.component';
 
+=======
+import { HeaderComponent } from './dashboard-layout/header/header.component';
+import { FooterComponent } from './dashboard-layout/footer/footer.component';
+import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
+import { ContainerComponent } from './dashboard-layout/container/container.component';
+import { ReportComponent } from './report/report.component';
+>>>>>>> e8270538940894d4197630b397c022f2b3a478ac
 
 
 
@@ -53,6 +62,7 @@ import { EditAlertsComponent } from './tools/alerts/edit-alerts/edit-alerts.comp
     FeederComponent,
     AnalyticsComponent,
     SummaryComponent,
+<<<<<<< HEAD
     UserProfileComponent,
     FeederConfigurationComponent,
     AlertsComponent,
@@ -61,6 +71,13 @@ import { EditAlertsComponent } from './tools/alerts/edit-alerts/edit-alerts.comp
     EditUserComponent,
     EditAlertsComponent,
     
+=======
+    HeaderComponent,
+    FooterComponent,
+    SidebarComponent,
+    ContainerComponent,
+    ReportComponent,
+>>>>>>> e8270538940894d4197630b397c022f2b3a478ac
   ],
   imports: [
     CommonModule,
@@ -70,6 +87,7 @@ import { EditAlertsComponent } from './tools/alerts/edit-alerts/edit-alerts.comp
     MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
+<<<<<<< HEAD
     MatTabsModule,
     MatCardModule,
     MatTableModule,
@@ -80,6 +98,16 @@ import { EditAlertsComponent } from './tools/alerts/edit-alerts/edit-alerts.comp
     MatFormFieldModule ,
     MatSelectModule
    
+=======
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatInputModule,
+    MatSelectModule,
+>>>>>>> e8270538940894d4197630b397c022f2b3a478ac
   ]
 })
 export class DashboardModule { }

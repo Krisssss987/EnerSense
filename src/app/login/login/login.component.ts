@@ -74,6 +74,7 @@ export class LoginComponent {
             { duration: 2000 }
           );
           this.errorMessage = error.error.message || '';
+          this.authService.setErrorMessage(this.errorMessage);
           this.loading = false;
           this.loadingMessage = "Sign In";
         }

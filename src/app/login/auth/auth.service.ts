@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  
+  private errorMessageSource = new BehaviorSubject<string>('');
+  errorMessage$ = this.errorMessageSource.asObservable();
+
+  setErrorMessage(errorMessage: string) {
+    this.errorMessageSource.next(errorMessage);
+  }
+
   private usertype!: string;
   private companyemail!: string;
   private token!: string;
@@ -96,6 +105,7 @@ export class AuthService {
     this.isLoggedIn(); // Set the logged-in status to false
     this.setUserType(''); // Clear the user type
     this.router.navigate(['/login/login']); // Additional cleanup or redirect logic can be added here
+    window.location.reload();
   }
 
   getUserDetails(): void {

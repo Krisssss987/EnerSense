@@ -1,0 +1,66 @@
+.mail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.mail-card {
+  width: 50%;
+  height: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .mail-card {
+    width: 90%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -55%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #673ab7;
+}
+
+p {
+  font-size: 18px;
+}
+
+
+.mail-img{
+  height: 100px;
+  width: auto;
+}

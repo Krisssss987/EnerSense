@@ -43,7 +43,6 @@ export class ForgotComponent {
           this.snackBar.open('Reset Password Link send successful!', 'Dismiss', {
             duration: 2000
           });
-          this.router.navigate(['dashboard']); 
         },
         (error) => {
           this.snackBar.open(
