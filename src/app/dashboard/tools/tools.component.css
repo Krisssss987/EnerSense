@@ -1,9 +1,10 @@
 .main{
-    height: 95%;
-    margin: 2% 2% 0% 2%;
+    height: 80%;
+    margin: 6% 2% 0% 2%;
 }
 @media(max-width:425px){
     .main{
-        height: 110%;
+        height: 100%;
+        margin-top: 18%;
     }
 }

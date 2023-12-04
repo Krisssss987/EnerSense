@@ -26,7 +26,7 @@ table {
 
 .custom-button {
   border: 2px solid black;
-  width: 318px;
+  width: 304px;
   border-radius: 23px; 
   display: flex;
   justify-content: flex-start;
@@ -38,6 +38,6 @@ table {
 }
 @media(max-width:425px){
   .custom-button{
-    width: 250px;
+    width: 180px;
   }
 }
