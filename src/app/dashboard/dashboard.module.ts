@@ -32,6 +32,16 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { SummaryComponent } from './overview/summary/summary.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { UserProfileComponent } from './tools/user-profile/user-profile.component';
+import { FeederConfigurationComponent } from './tools/feeder-configuration/feeder-configuration.component';
+import { AlertsComponent } from './tools/alerts/alerts.component';
+import { DayShiftComponent } from './tools/day-shift/day-shift.component';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { EditFeederComponent } from './tools/feeder-configuration/edit-feeder/edit-feeder.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EditUserComponent } from './tools/user-profile/edit-user/edit-user.component';
+import { EditAlertsComponent } from './tools/alerts/edit-alerts/edit-alerts.component';
 import { HeaderComponent } from './dashboard-layout/header/header.component';
 import { FooterComponent } from './dashboard-layout/footer/footer.component';
 import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
@@ -48,6 +58,13 @@ import { ReportComponent } from './report/report.component';
     FeederComponent,
     AnalyticsComponent,
     SummaryComponent,
+    UserProfileComponent,
+    FeederConfigurationComponent,
+    AlertsComponent,
+    DayShiftComponent,
+    EditFeederComponent,
+    EditUserComponent,
+    EditAlertsComponent,
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
@@ -62,6 +79,15 @@ import { ReportComponent } from './report/report.component';
     MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatTabsModule,
+    MatCardModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule,
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule ,
+    MatSelectModule,
     MatToolbarModule,
     MatIconModule,
     MatListModule,
