@@ -138,7 +138,6 @@ export class OverviewComponent  implements OnInit {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '185vh',
       backgroundColor: 'white',
       style: {
         border: 'none' // Remove stroke
@@ -232,7 +231,6 @@ export class OverviewComponent  implements OnInit {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '185vh',
       backgroundColor: 'white',
       style: {
         border: 'none' // Remove stroke
@@ -326,7 +324,6 @@ export class OverviewComponent  implements OnInit {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '185vh',
       backgroundColor: 'white',
       style: {
         border: 'none' // Remove stroke
@@ -420,7 +417,6 @@ export class OverviewComponent  implements OnInit {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '185vh',
       backgroundColor: 'white',
       style: {
         border: 'none' // Remove stroke
@@ -514,7 +510,6 @@ export class OverviewComponent  implements OnInit {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '185vh',
       backgroundColor: 'white',
       style: {
         border: 'none' // Remove stroke
@@ -608,7 +603,6 @@ export class OverviewComponent  implements OnInit {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '185vh',
       backgroundColor: 'white',
       style: {
         border: 'none' // Remove stroke
