@@ -1,7 +1,20 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
+import { DashService } from '../../dash.service';
+import { AutofillMonitor } from '@angular/cdk/text-field';
+import { DashboardService } from '../../dash_service/dashboard.service';
 HighchartsMore(Highcharts);
+
+interface GraphDataItem {
+  id: number;
+  meter_name: string;
+  shift_name: string;
+  group_name: string;
+  virtual_group: string;
+  kwh_value: number;
+  timestamp: string;
+}
 
 @Component({
   selector: 'app-consuption',
@@ -9,6 +22,15 @@ HighchartsMore(Highcharts);
   styleUrls: ['./consuption.component.css']
 })
 export class ConsuptionComponent implements OnInit, AfterViewInit {
+
+  graphdata = [] ;
+   MeterName: any;
+   KWHValues: number[] = [];
+
+   ShiFTNAmes:string[] = [];
+
+   KWHDATASHIFTA:number[]=[];
+   KWHDATASHIFTB:number[]=[];
 
 
   feeders =[
@@ -29,7 +51,10 @@ export class ConsuptionComponent implements OnInit, AfterViewInit {
     { value: 'Shift A', label: 'Shift A' },
     { value: 'Shift B', label: 'Shift B' },
   ]
-
+  data: any;
+  
+  constructor(private service: DashboardService) {} 
+  
   ngOnInit(): void {
 
   }
@@ -38,27 +63,73 @@ export class ConsuptionComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.consumption(this.chart1Container.nativeElement); 
-
+    this.getgraphdata();
   }
+
+  // getgraphdata(){
+  //   this.service.getConsuptionGraphdata().subscribe((data) => {
+  //     this.graphdata = data;
+  //     console.log(this.graphdata);
+  //   });
+  // }
+
+  getgraphdata() {
+    this.service.getConsuptionGraphdata().subscribe((data) => {
+      this.graphdata = data;
+
+      this.MeterName = [];
+      this.KWHValues = [];
+      this.ShiFTNAmes = [];
+  
+
+      this.graphdata.forEach((item: GraphDataItem) => {
+        this.MeterName.push(item.meter_name);
+
+        this.KWHValues.push(item.kwh_value);
+        this.ShiFTNAmes.push(item.shift_name);
+
+        if(item.shift_name == 'ShiftA'){
+          this.KWHDATASHIFTA.push(item.kwh_value);
+        }
+        else{
+          this.KWHDATASHIFTB.push(item.kwh_value);
+        }
+        
+
+      });
+
+
+      console.log(this.MeterName);
+
+
+      const container = this.chart1Container.nativeElement;
+      this.consumption(container);
+    });
+  }
+  
+
+
+
+  
 
   consumption(container: HTMLElement) {
     Highcharts.chart(container, {
       chart: {
         type: 'column',
-        plotBorderWidth: 1, // Set the plot border width to 1 to add a small thin border
+        plotBorderWidth: 0, 
       },
       title: {
         text: ''
       },
       xAxis: {
-        categories: ['Meter 1', 'Meter 2', 'Meter 3', 'Meter 4', 'Meter 5']
+        categories: this.MeterName,
       },
       yAxis: {
         title: {
           text: 'KWH'
         },
         min: 0,
-        max: 100,
+        max: 300,
         gridLineWidth: 0,
         plotLines: [
           {
@@ -82,7 +153,7 @@ export class ConsuptionComponent implements OnInit, AfterViewInit {
             width: 0,
           },
           {
-            value: 100,
+            value: AutofillMonitor,
             color: 'transparent',
             width: 0,
           },
@@ -99,19 +170,20 @@ export class ConsuptionComponent implements OnInit, AfterViewInit {
         verticalAlign: 'top',
       },
       series: [{
-        name: 'A shift',
-        data: [10, 20, 30, 40, 50]
-      }, {
-        name: 'B Shift',
-        data: [20, 30, 40, 50, 60]
-      }] as any
+        name: 'shiftA',
+        data: [this.KWHDATASHIFTA,]
+      },
+      {
+        name: 'shiftB',
+        data: [this.KWHDATASHIFTB]
+      },
+   
+    ] as any
     } as Highcharts.Options);
   }
 
 
-
-
-
+  
 
 }
 

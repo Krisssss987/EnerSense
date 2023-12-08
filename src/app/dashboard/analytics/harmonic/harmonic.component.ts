@@ -60,7 +60,8 @@ export class HarmonicComponent implements OnInit,AfterViewInit{
   harmonic(container: HTMLElement) {
     Highcharts.chart(container, {
       chart: {
-        type: 'spline'
+        type: 'spline',
+        plotBorderWidth: 0, // Remove the plot border
       },
       title: {
         text: 'Harmonic Chart'
@@ -74,6 +75,11 @@ export class HarmonicComponent implements OnInit,AfterViewInit{
         },
         min: 0,
         max: 100,
+        gridLineWidth: 0, // Remove the gridlines
+      },
+      legend: {
+        symbolRadius: 0, // Set the symbol radius to 0 to make the legend symbols rectangular
+        verticalAlign: 'top', // Position the legends above the graph
       },
       series: [{
         name: 'Harmonic 1',

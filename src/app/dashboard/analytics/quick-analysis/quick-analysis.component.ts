@@ -59,7 +59,8 @@ export class QuickAnalysisComponent implements OnInit,AfterViewInit{
   quickAnalysis(container: HTMLElement) {
     Highcharts.chart(container, {
       chart: {
-        type: 'spline'
+        type: 'spline',
+        plotBorderWidth: 0, // Remove the plot border
       },
       title: {
         text: 'Quick Analysis Chart'
@@ -73,6 +74,11 @@ export class QuickAnalysisComponent implements OnInit,AfterViewInit{
         },
         min: 0,
         max: 100,
+        gridLineWidth: 0, // Remove the gridlines
+      },
+      legend: {
+        symbolRadius: 0, // Set the symbol radius to 0 to make the legend symbols rectangular
+        verticalAlign: 'top', // Position the legends above the graph
       },
       series: [{
         name: 'Analysis 1',
