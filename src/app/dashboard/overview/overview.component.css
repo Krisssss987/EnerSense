@@ -87,4 +87,16 @@
     }
 }
 
+#KVAguage,
+#KWguage,
+#KVRguage,
+#PFguage,
+#Currentguage,
+#Voltageguage {
+    height: 19vh; /* Set default width */
+}
+
+
+
+
 
