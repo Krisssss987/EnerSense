@@ -7,40 +7,37 @@
 }
 
 .card-heading{
-    color: green;
-    margin-top: 4px;
-    margin-left: 9px;
-    margin-bottom: 2px;
-    font-size: 22px;
+    color: rgb(78, 78, 255);
+    font-size: 17px;
+}
+
+.card-heading3{
+    color: rgb(78, 78, 255);
+    font-size: 23px;
 }
 
 .numbers{
-    font-size: 28px;
-    color: rgb(158, 158, 158);
+    font-size: 30px;
+}
+
+.co2{
+    font-size: 40px;
+    color: red;
+    margin-top: 3px;
 }
 
 .blur-row{
     color: rgb(158, 158, 158);
     padding-bottom: 7px;
+    margin-top: -20px;
     font-size: small;
 }
 
 .incard{
-    padding-left: 35px;
-    padding-right: 35px;
-}
-
-.chart{
-    height: 45vh;
-    width:100%
-}
-
-.demandChart{
-    height: 40vh;
-}
-
-.pieChart{
-    height: 35vh;
+    display: flex;
+    margin-top: -5px;
+    align-items: center;
+    justify-content: center;
 }
 
 .button{
@@ -48,16 +45,58 @@
     margin-top: -5px;
 }
 
-@media (max-width:1200px) {
-    .incard{
-        margin-left: 0px;
-        padding-right:0px;
-        margin-bottom: 20px;
-        padding-top: 5px;
+
+#PieChart, #BarChart {
+    height: 39vh; /* Set the desired height */
+  }
+
+.allCard{
+    margin-left: -0.6vh;
+    margin-right: -0.6vh;
+}
+
+@media (max-height:450px) {
+  #PieChart, #BarChart {
+    height: 60vh; /* Set the desired height */
+  } 
+}
+
+@media (max-width:998px) {
+    .firstcard{
+        margin-bottom: 1vh;
+    }
+}
+
+@media (max-width:800px) {
+    .numbers{
+        font-size: 22px;
     }
 
-    .numbers{
-        font-size: 18px;
-        color: rgb(158, 158, 158);
-    }    
+    h5{
+        font-size: 10px;
+    }
 }
+
+@media (min-width: 998px) and (max-width:1520px) {
+    .numbers{
+        font-size: 25px;
+    }
+
+    h5{
+        font-size: 10px;
+    }
+}
+
+#KVAguage,
+#KWguage,
+#KVRguage,
+#PFguage,
+#Currentguage,
+#Voltageguage {
+    height: 19vh; /* Set default width */
+}
+
+
+
+
+

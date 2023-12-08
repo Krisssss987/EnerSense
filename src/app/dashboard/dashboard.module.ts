@@ -28,13 +28,25 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { SummaryComponent } from './overview/summary/summary.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { UserProfileComponent } from './tools/user-profile/user-profile.component';
+import { FeederConfigurationComponent } from './tools/feeder-configuration/feeder-configuration.component';
+import { AlertsComponent } from './tools/alerts/alerts.component';
+import { DayShiftComponent } from './tools/day-shift/day-shift.component';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { EditFeederComponent } from './tools/feeder-configuration/edit-feeder/edit-feeder.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EditUserComponent } from './tools/user-profile/edit-user/edit-user.component';
+import { EditAlertsComponent } from './tools/alerts/edit-alerts/edit-alerts.component';
 import { HeaderComponent } from './dashboard-layout/header/header.component';
 import { FooterComponent } from './dashboard-layout/footer/footer.component';
 import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
 import { ContainerComponent } from './dashboard-layout/container/container.component';
+<<<<<<< HEAD
 import {MatTabsModule} from '@angular/material/tabs';
 
 
@@ -49,6 +61,9 @@ import {MatChipsModule} from '@angular/material/chips';
 
 
 
+=======
+import { ReportComponent } from './report/report.component';
+>>>>>>> 58ad810096a2686e3d228a36befb8c24bbcce953
 
 
 
@@ -60,15 +75,26 @@ import {MatChipsModule} from '@angular/material/chips';
     FeederComponent,
     AnalyticsComponent,
     SummaryComponent,
+    UserProfileComponent,
+    FeederConfigurationComponent,
+    AlertsComponent,
+    DayShiftComponent,
+    EditFeederComponent,
+    EditUserComponent,
+    EditAlertsComponent,
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
     ContainerComponent,
+<<<<<<< HEAD
     HarmonicComponent,
     QuickAnalysisComponent,
     ConsuptionComponent,
     ParamaterisedComponent,
     
+=======
+    ReportComponent,
+>>>>>>> 58ad810096a2686e3d228a36befb8c24bbcce953
   ],
   imports: [
     CommonModule,
@@ -78,9 +104,19 @@ import {MatChipsModule} from '@angular/material/chips';
     MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatTabsModule,
+    MatCardModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule,
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule ,
+    MatSelectModule,
     MatToolbarModule,
     MatIconModule,
     MatListModule,
+<<<<<<< HEAD
     MatTabsModule,
     MatRadioModule,
     MatFormFieldModule,
@@ -96,6 +132,13 @@ import {MatChipsModule} from '@angular/material/chips';
     MatSliderModule,
     MatChipsModule
      
+=======
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatInputModule,
+    MatSelectModule,
+>>>>>>> 58ad810096a2686e3d228a36befb8c24bbcce953
   ]
 })
 export class DashboardModule { }

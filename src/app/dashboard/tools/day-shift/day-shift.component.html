@@ -1,0 +1,77 @@
+<div class="content">
+    <div class="demo-button-container">
+        <div class="row">
+          <div class="col-lg-9">
+
+          </div>
+          <div class="col-lg-3">
+            <button mat-stroked-button class="custom-button" style="color: grey;" >
+                <mat-icon>search</mat-icon>
+                Search
+              </button>
+          </div>
+
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <h5>Day & Shift</h5>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8">
+
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1">
+                <h5> <mat-icon>add</mat-icon>Create</h5>
+            </div>
+        </div>
+    </div>
+    <div>
+        <section class="example-container">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z7 mt-3">
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="shift">
+                    <th mat-header-cell *matHeaderCellDef class="header-colour">Shift code</th>
+                    <td mat-cell *matCellDef="let element" class="data-colour"> {{element.shift}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef class="header-colour"> Shift Name </th>
+                    <td mat-cell *matCellDef="let element" class="data-colour"> {{element.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="start">
+                    <th mat-header-cell *matHeaderCellDef class="header-colour"> Start Time </th>
+                    <td mat-cell *matCellDef="let element" class="data-colour"> {{element.start}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="end">
+                    <th mat-header-cell *matHeaderCellDef class="header-colour"> End Time </th>
+                    <td mat-cell *matCellDef="let element" class="data-colour"> {{element.end}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="grace">
+                    <th mat-header-cell *matHeaderCellDef class="header-colour"> Grace Time(min) </th>
+                    <td mat-cell *matCellDef="let element" class="data-colour"> {{element.grace}} </td>
+                </ng-container>
+
+               
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="header-colour"> Action</th>
+                    <!-- Inside your table -->
+                    <td mat-cell *matCellDef="let element" class="data-colour">
+                        <button mat-icon-button color="dark" >
+                            <mat-icon>drag_indicator</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-colour"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-colour"></tr>
+            </table>
+
+        </section>
+
+    </div>
+    
+</div>
