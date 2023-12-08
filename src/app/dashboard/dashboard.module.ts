@@ -7,6 +7,7 @@ import { ToolsComponent } from './tools/tools.component';
 import { OverviewComponent } from './overview/overview.component';
 import { FeederComponent } from './feeder/feeder.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -47,6 +48,7 @@ import { FooterComponent } from './dashboard-layout/footer/footer.component';
 import { SidebarComponent } from './dashboard-layout/sidebar/sidebar.component';
 import { ContainerComponent } from './dashboard-layout/container/container.component';
 import { ReportComponent } from './report/report.component';
+import { FilterComponent } from './overview/filter/filter.component';
 
 
 
@@ -70,6 +72,7 @@ import { ReportComponent } from './report/report.component';
     SidebarComponent,
     ContainerComponent,
     ReportComponent,
+    FilterComponent,
   ],
   imports: [
     CommonModule,
@@ -96,6 +99,13 @@ import { ReportComponent } from './report/report.component';
     MatCardModule,
     MatInputModule,
     MatSelectModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ]
 })
 export class DashboardModule { }
