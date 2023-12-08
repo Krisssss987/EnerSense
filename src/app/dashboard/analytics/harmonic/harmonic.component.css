@@ -1,0 +1,11 @@
+.mat-form-field{
+    width: 100%;
+}
+mat-card{
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: #673ab7;
+}
+mat-form-field{
+    width: 100%;
+}

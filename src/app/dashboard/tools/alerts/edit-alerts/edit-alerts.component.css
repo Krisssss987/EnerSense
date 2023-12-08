@@ -1,5 +1,5 @@
 .model-head {
-  background-color: #3AA440;
+  background-color: #673AB7;
   height: 50px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   color: whitesmoke;
@@ -18,7 +18,7 @@
   width: 100%;
 }
 .save{
-  background-color: #3AA440;
+  background-color: #673AB7;
 }
 .update{
   background-color: #4C4C4C; 

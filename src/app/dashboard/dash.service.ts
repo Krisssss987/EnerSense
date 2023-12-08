@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,4 +21,7 @@ export class DashService {
   public isPageLoading(isLoading: boolean) {
     this.pageLoading = isLoading;
   }
+
+
+
 }

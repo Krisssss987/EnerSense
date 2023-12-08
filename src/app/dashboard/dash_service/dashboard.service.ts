@@ -16,4 +16,7 @@ export class DashboardService {
     return this.http.get(`${this.API_URL}/live-device-detail/${CompanyId}`);
   }
 
+ getConsuptionGraphdata(): Observable<any>{
+   return this.http.get(`${this.API_URL}/feeder/SenseLive`);
+ }
 }
