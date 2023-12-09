@@ -3,10 +3,17 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
+  getuserdetailsdata() {
+    throw new Error('Method not implemented.');
+  }
+  isPageLoading(arg0: boolean) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -16,7 +23,19 @@ export class DashboardService {
     return this.http.get(`${this.API_URL}/live-device-detail/${CompanyId}`);
   }
 
- getConsuptionGraphdata(): Observable<any>{
-   return this.http.get(`${this.API_URL}/feeder/SenseLive`);
- }
+  getuserdata(UserId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/userdetails/${UserId}`);
+  }
+
+  getfeederdata(Feeder_Id: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederdetails/${Feeder_Id}`);
+  }
+  getalertdata(Threshold: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/alerteventsDetail/${Threshold}`);
+  }
+
+  getConsuptionGraphdata(): Observable<any>{
+    return this.http.get(`${this.API_URL}/feeder/SenseLive`);
+  }
+
 }

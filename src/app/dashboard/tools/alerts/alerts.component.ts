@@ -1,33 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { EditAlertsComponent } from './edit-alerts/edit-alerts.component';
+import { DashboardService } from '../../dash_service/dashboard.service';
+import{ DashService } from '../../dash.service';
+import { MatPaginator } from '@angular/material/paginator';
+
 
 export interface PeriodicElement {
-  name: string;
-  feeder: string;
-  parameter:string;
-  condition: string;
-  threshold :string;
-  repeat:string;
-  start:string;
-  end:string;
-  email:string;
-  sms:string;
+  name: any;
+  feedername: any;
+  parameter:any;
+  condition: any;
+  threshold :any;
+  repeat:any;
+  start_time:any;
+  end_time:any;
+  email:any;
+  sms:any;
+  alertname:any;
+  actions:any;
+  enabled:any;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { name: 'high S/Stn 1', feeder:'Main PCC',parameter:'AVG_AMP',condition:'>', threshold:'2400.000',
-   repeat:'15 Min' ,start:'00:00', end:'23:59', email:'xyz@gmail.com', sms:'---'},
-   { name: 'high S/Stn 1', feeder:'Main PCC',parameter:'AVG_AMP',condition:'>', threshold:'2400.000',
-   repeat:'15 Min' ,start:'00:00', end:'23:59', email:'xyz@gmail.com', sms:'---'},
-   { name: 'high  S/Stn 1', feeder:'Main PCC',parameter:'AVG_AMP',condition:'>', threshold:'2400.000',
-   repeat:'15 Min' ,start:'00:00', end:'23:59', email:'xyz@gmail.com', sms:'---'},
-   { name: 'high  S/Stn 1', feeder:'Main PCC',parameter:'AVG_AMP',condition:'>', threshold:'2400.000',
-   repeat:'15 Min' ,start:'00:00', end:'23:59', email:'xyz@gmail.com', sms:'---'},
-  
-  
-];
+const ELEMENT_DATA: PeriodicElement[] = [];
 
 @Component({
   selector: 'app-alerts',
@@ -35,12 +31,32 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./alerts.component.css']
 })
 export class AlertsComponent {
-  displayedColumns: string[] = ['name', 'feeder','parameter','condition','threshold','repeat','start','end','email','sms',
-  'actions','enabled' ];
-  dataSource = ELEMENT_DATA;
+  displayedColumns: string[] = ['name', 'feedername','parameter','condition','threshold','repeat','start_time','end_time','email','sms',
+  'alertname','actions','enabled' ];
+  dataSource = new MatTableDataSource<PeriodicElement>([]);
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  
+  constructor(public dashService: DashService, private service: DashboardService,public dialog: MatDialog) {}
+  threshold:string = "mainpcc";
 
 
-  constructor(public dialog: MatDialog) {}
+  ngOnInit(): void {
+    this.getAlert();
+    this.dashService.isPageLoading(true);
+  }
+  getAlert(){
+    if(this.threshold){
+      this.service.getalertdata(this.threshold).subscribe(
+        (alert) =>{
+          console.log(alert);
+          this.dataSource = alert;
+        },
+        (error)=>{
+            console.log(error);
+        }
+      );
+    }
+  }
 
   openEditAlertsDialog(): void {
     const dialogConfig = new MatDialogConfig();
