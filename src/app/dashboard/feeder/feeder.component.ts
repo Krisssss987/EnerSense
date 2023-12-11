@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SummaryComponent } from '../overview/summary/summary.component';
 import * as Highcharts from 'highcharts';
+import { AleartsComponent } from './alearts/alearts.component';
 
 @Component({
   selector: 'app-feeder',
@@ -10,8 +11,7 @@ import * as Highcharts from 'highcharts';
 })
 export class FeederComponent {
   ngAfterViewInit() {
-    Highcharts.chart('chartContainer', this.chartOptions);
-    Highcharts.chart('pieContainer', this.pieChart);
+    Highcharts.chart('barContainer', this.BarChart);
     
     Highcharts.chart('KVAguage', this.KVAguage);
     Highcharts.chart('KWguage', this.KWguage);
@@ -22,66 +22,67 @@ export class FeederComponent {
   constructor(
     public dialog: MatDialog,
   ){}
+  openAleartsDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '500px';
+    dialogConfig.height = 'auto';
+    dialogConfig.maxWidth = '90vw';
 
-  chartOptions: Highcharts.Options = {
+    const dialogRef = this.dialog.open(AleartsComponent, dialogConfig);
+  }
+  BarChart: Highcharts.Options = {
     chart: {
-      type: 'line'
-    },
-    title: {
-      text: ' '
+      type: 'column',
     },
     credits: {
       enabled: false
     },
-    xAxis: {
-      categories: [
-        'Main PCC',
-        'HT Meter (S/Sn-4)',
-        'LT Meter (COB)',
-        'LT HILTOP INCOMER'
-      ]
+    title: {
+      text: ''
     },
-    yAxis: [{
+    xAxis: {
+      categories: ['Category 1', 'Category 2', 'Category 3'],
+      startOnTick: true,
+      endOnTick: false,
+      tickmarkPlacement: 'between',
+      minPadding: 0,
+      maxPadding: 0,
       min: 0,
-      title: {
-        text: ''
+      max: undefined,
+      labels: {
+        step: 0.5,
+        enabled:false
       }
-    }, {
+    },
+    yAxis: {
       title: {
         text: ''
       },
-      opposite: true
-    }],
-    legend: {
-      shadow: false
-    },
-    tooltip: {
-      shared: true
-    },
-    plotOptions: {
-      column: {
-        grouping: false,
-        shadow: false,
-        borderWidth: 0
-      }
+      plotLines: [{
+        color: 'black',
+        width: 2,
+        value: 130000,
+        label: {
+          text: 'Max Inflation',
+          align: 'right',
+          x: -20
+        }
+      }]
     },
     series: [{
-      type:'column',
-      name: 'Max Demand KVA',
-      color: 'rgba(165,170,217,1)',
-      data: [140, 90, 90, 90],
-      pointPadding: 0.1,
-      pointPlacement: 0
+      type: 'column',
+      name: 'KVAH',
+      data: [50000, 100000, 100005]
     }, {
-      type:'column',
-      name: 'Live Demand KVA',
-      color: 'rgba(126,86,134,.9)',
-      data: [150, 73, 20, 54],
-      pointPadding: 0.25,
-      pointPlacement: 0
-    }],
+      type: 'column',
+      name: 'KWH',
+      data: [51086, 136000, 5500, 141000]
+    }, {
+      type: 'spline',
+      name: 'Line Series',
+      data: [10000, 20000, 30000,50000,60000, 200000]
+    }]
   };
- 
   KVAguage: Highcharts.Options = {
     chart: {
       type: 'gauge',
@@ -365,60 +366,6 @@ export class FeederComponent {
   exporting: {
     enabled: false // Disable the options button
   }
-  };
-  pieChart:Highcharts.Options={
-    chart: {
-      type: 'pie'
-    },
-    title: {
-      text: ''
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      valueSuffix: '%'
-    },
-    plotOptions: {
-      series: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: {
-          enabled: true,
-          format: '{point.percentage:.1f}%',
-          style: {
-            fontSize: '1.2em',
-            textOutline: 'none',
-            opacity: 0.7
-          },
-          filter: {
-            operator: '>',
-            property: 'percentage',
-            value: 10
-          }
-        }
-      }
-    },
-    series: [{
-      type:'pie',
-      name: 'Percentage',
-      data: [{
-        name: 'Water',
-        y: 55.02
-      }, {
-        name: 'Fat',
-        y: 26.71
-      }, {
-        name: 'Carbohydrates',
-        y: 1.09
-      }, {
-        name: 'Protein',
-        y: 15.5
-      }, {
-        name: 'Ash',
-        y: 1.68
-      }]
-    }]
   };
   PFguage: Highcharts.Options = {
     chart: {

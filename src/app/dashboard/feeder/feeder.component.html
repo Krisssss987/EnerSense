@@ -136,9 +136,15 @@
             </div>
         </div>
     </div> -->
-
+    <!-- <div class="row">
+       <div class="col-12">
+        <div class="card">
+            
+        </div>
+       </div> 
+    </div> -->
     <div class="row">
-        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-3">
             <div class="card chart">
                 <div class="meter-lables">
                     <p class="card-heading">Max vs Actual Demand</p>
@@ -151,10 +157,10 @@
                     </mat-form-field>
                 </div>
 
-                <div id="chartContainer" class="demandChart"></div>
+                <div id="barContainer" class="demandChart"></div>
             </div>
         </div>
-        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-3">
             <div class="card">
                 <p class="card-heading">POWER Parametres </p>
                 <div class="row ">
@@ -278,7 +284,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-3">
             <div class="card">
                 <div class="row">
                     <div class="col-md-6 ">
@@ -323,10 +329,70 @@
 
             </div>
         </div>
-        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-3">
             <div class="card chart">
-                <p class="card-heading">Consumption Overview</p>
-                <div id="pieContainer" class="pieChart"></div>
+                <p class="card-heading">Alearts & Eventes</p>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="p-1 mx-auto" style="text-align: center;">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Active(KWH)</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Apprent(KVAH)</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                            <mat-form-field class="w-100 mb-0" appearance="outline">
+                                <mat-label>Reactive(KVARH)</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                            <button mat-raised-button color="primary" class="p-1 mt-0">Primary</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-1 mx-auto" style="text-align: center;">
+                            <table>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Event</th>
+                                </tr>
+                                <tr>
+                                    <td>12:00</td>
+                                    <td>Event 1</td>
+                                </tr>
+                                <tr>
+                                    <td>12:00</td>
+                                    <td>Event 1</td>
+                                </tr>
+                                <tr>
+                                    <td>12:00</td>
+                                    <td>Event 1</td>
+                                </tr>
+                                <tr>
+                                    <td>12:00</td>
+                                    <td>Event 1</td>
+                                </tr>
+                                <tr>
+                                    <td>12:00</td>
+                                    <td>Event 1</td>
+                                </tr>
+                                <tr>
+                                    <td>12:00</td>
+                                    <td>Event 1</td>
+                                </tr>
+                                <tr>
+                                    <td>12:00</td>
+                                    <td>Event 1</td>
+                                </tr>
+                                <tr>
+                                    <td>12:00</td>
+                                    <td>Event 1</td>
+                                </tr>
+                            </table>
+                            
+                        </div>
+                    </div>
 
             </div>
         </div>

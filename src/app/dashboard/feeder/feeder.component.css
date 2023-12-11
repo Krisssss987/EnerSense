@@ -32,9 +32,11 @@
 }
 .card{
     max-height: fit-content;
-    min-height: 300px;
+    min-height: 320px;
 }
-
+.vline{
+    border: 5px solid rgb(158, 158, 158);
+}
 
 .progress-lables{
  display: flex;
@@ -137,3 +139,7 @@
         color: rgb(158, 158, 158);
     }    
 }
+
+/* #KWguage, #KVRguage, #KVAguage, #PFguage{
+    height: 20vh;
+} */
