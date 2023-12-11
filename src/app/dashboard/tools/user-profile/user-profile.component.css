@@ -16,12 +16,12 @@ table {
     margin-right: 5px; 
   }
   .header-colour {
-    background-color:#3AA440;
+    background-color:#673AB7;
     color: white; 
   }
  .data-colour{
-  background-color: #4C4C4C;
-  color: white;
+  background-color: white;
+  color: black;
  }
 
 .custom-button {

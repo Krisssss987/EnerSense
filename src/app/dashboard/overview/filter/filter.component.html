@@ -1,0 +1,96 @@
+<div class="container-fluid">
+    <div class="row edit-head mb-2">
+      <div class="col-lg-12 col-md-12 col-sm-12 pt-1">
+        <div class="edit-title">Filter - Device Details</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 mb-1">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Device Name</mat-label>
+          <mat-select [ngModel]="selectedDevice" required>
+            <mat-option *ngFor="let device of deviceOptions" [value]="device.deviceid">
+              {{ device.deviceid }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-12 mb-1">
+        <mat-radio-group [(ngModel)]="selectedRadioButton">
+          <div class="row">
+            <div class="col-lg-12">
+              <mat-radio-button value="Last">Last</mat-radio-button>
+              <div *ngIf="selectedRadioButton === 'Last'">
+                <mat-form-field appearance="outline" class="from-field-sm">
+                  <mat-label>Last</mat-label>
+                  <mat-select [ngModel]="selectedDeviceInterval">
+                    <mat-option value="30sec">30 Seconds</mat-option>
+                    <mat-option value="1min">1 Minute</mat-option>
+                    <mat-option value="2min">2 Minutes</mat-option>
+                    <mat-option value="5min">5 Minutes</mat-option>
+                    <mat-option value="10min">10 Minutes</mat-option>
+                    <mat-option value="30min">30 Minutes</mat-option>
+                    <mat-option value="1hour">1 Hour</mat-option>
+                    <mat-option value="2hour">2 Hours</mat-option>
+                    <mat-option value="10hour">10 Hours</mat-option>
+                    <mat-option value="12hour">12 Hours</mat-option>
+                    <mat-option value="1day">1 Day</mat-option>
+                    <mat-option value="7day">7 Days</mat-option>
+                    <mat-option value="30day">30 Days</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <mat-radio-button value="timePeriod">Custom</mat-radio-button>
+              <div *ngIf="selectedRadioButton === 'timePeriod'">
+                <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field  class="from-field-sm" appearance="outline">
+                      <mat-label>Start Date</mat-label>
+                      <input matInput [ngxMatDatetimePicker]="start"
+                        [formControl]="start_date" [max]="currentDate" [disabled]="disabled" (dateChange)="updateStartDate($event)">
+                      <ngx-mat-datepicker-toggle matSuffix [for]="start"></ngx-mat-datepicker-toggle>
+                      <ngx-mat-datetime-picker #start [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                        [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+                        [color]="'primary'" [enableMeridian]="enableMeridian" [disableMinute]="disableMinute" [hideTime]="hideTime">
+                        <ngx-mat-datepicker-actions>
+                          <button mat-button ngxMatDatepickerCancel>Cancel</button>
+                          <button mat-raised-button color="primary" ngxMatDatepickerApply>Apply</button>
+                        </ngx-mat-datepicker-actions>
+                      </ngx-mat-datetime-picker>
+                      <mat-error *ngIf = "start_date.invalid">Start Date is Required*</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-12">
+                    <mat-form-field  class="from-field-sm" appearance="outline">
+                      <mat-label>End Date</mat-label>
+                      <input matInput [ngxMatDatetimePicker]="end"
+                        [formControl]="end_date" [min]="startDate" [max]="currentDate" [disabled]="disabled">
+                      <ngx-mat-datepicker-toggle matSuffix [for]="end"></ngx-mat-datepicker-toggle>
+                      <ngx-mat-datetime-picker #end [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                        [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+                        [color]="'primary'" [enableMeridian]="enableMeridian" [disableMinute]="disableMinute" [hideTime]="hideTime">
+                        <ngx-mat-datepicker-actions>
+                          <button mat-button ngxMatDatepickerCancel>Cancel</button>
+                          <button mat-raised-button color="primary" ngxMatDatepickerApply>Apply</button>
+                        </ngx-mat-datepicker-actions>
+                      </ngx-mat-datetime-picker>
+                      <mat-error *ngIf = "end_date.invalid">Start Date is Required*</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-radio-group>
+      </div>
+      <div class="col-6 justify-content-end d-flex mb-2">
+        <button mat-raised-button (click)="onNoClick()">Close</button>
+      </div>
+      <div class="col-6 mb-2">
+        <button mat-raised-button color="primary" (click)="onSaveClick()">Filter</button>
+      </div>
+    </div>
+  </div>
+  

@@ -3,7 +3,12 @@
         <div class="row mt-1">
             <div class="col-12 col-md-12 col-lg-6">
                 <div class="card pb-2 allCard firstcard">
-                    <p class="card-heading2">Main PCC</p>
+                    <div class="card-heading2-container mt-1 mb-1">
+                        <p class="card-heading2">Main PCC</p>
+                        <button style="margin-right: 3px;" color="primary" mat-mini-fab (click)="openFilterDailog()">
+                            <mat-icon>filter_list</mat-icon>
+                        </button>
+                    </div>
                     <mat-divider></mat-divider>
                     <div class="row text-center">
                         <div class="row mt-2">

@@ -93,7 +93,13 @@
 #PFguage,
 #Currentguage,
 #Voltageguage {
-    height: 19vh; /* Set default width */
+    height: 18.4vh; /* Set default width */
+}
+
+.card-heading2-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 

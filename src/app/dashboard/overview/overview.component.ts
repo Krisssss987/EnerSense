@@ -5,6 +5,7 @@ import { SummaryComponent } from './summary/summary.component';
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import HighchartsExporting from 'highcharts/modules/exporting';
+import { FilterComponent } from './filter/filter.component';
 
 HighchartsMore(Highcharts);
 HighchartsExporting(Highcharts);
@@ -31,6 +32,7 @@ export class OverviewComponent  implements OnInit {
   constructor(
     public dialog: MatDialog,
   ){}
+
 
   BarChart: Highcharts.Options = {
     chart: {
@@ -698,5 +700,18 @@ export class OverviewComponent  implements OnInit {
     dialogConfig.maxWidth = '90vw';
     const dialogRef = this.dialog.open(SummaryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(userAdded => {});
+  }
+
+  openFilterDailog(): void{
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '500px';
+    dialogConfig.height = 'auto';
+    dialogConfig.maxWidth = '90vw';
+
+    const dialogRef = this.dialog.open(FilterComponent, dialogConfig);
+
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 }
