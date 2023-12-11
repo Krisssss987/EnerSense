@@ -32,23 +32,24 @@
 }
 .card{
     max-height: fit-content;
-    min-height: 300px;
+    min-height: 320px;
 }
-
+.vline{
+    border: 5px solid rgb(158, 158, 158);
+}
 
 .progress-lables{
  display: flex;
  justify-content: space-between;
 }
+
 .meter-lables{
     color: gray;
     font-size: small;
     display: flex;
     justify-content: space-between;
    }
-.progress-col{
-width: 315px;
-}
+   
 
 .chart{
     height: 40vh; /* 40% of viewport height remove it in small screen  */
@@ -84,14 +85,13 @@ width: 315px;
         color: rgb(158, 158, 158);
     }    
 }
-@media (max-width:992px) {
+@media (max-width:800px) {
     .incard{
         margin-left: 0px;
         padding-right:0px;
         margin-bottom: 20px;
         padding-top: 5px;
     }
-
     .numbers{
         font-size: 18px;
         color: rgb(158, 158, 158);
@@ -104,7 +104,6 @@ width: 315px;
         margin-bottom: 20px;
         padding-top: 5px;
     }
-
     .numbers{
         font-size: 18px;
         color: rgb(158, 158, 158);
@@ -140,3 +139,7 @@ width: 315px;
         color: rgb(158, 158, 158);
     }    
 }
+
+/* #KWguage, #KVRguage, #KVAguage, #PFguage{
+    height: 20vh;
+} */

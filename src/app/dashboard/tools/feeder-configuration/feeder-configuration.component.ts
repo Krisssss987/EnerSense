@@ -1,25 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { EditFeederComponent } from './edit-feeder/edit-feeder.component';
+import { DashboardService } from '../../dash_service/dashboard.service';
+import{ DashService } from '../../dash.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
-  name: string;
-  location: string;
-  id: string;
-  device: string;
-  group: string;
-  vgroup: string;
+  feeder_id: any;
+  name: any;
+  location: any;
+  deviceuid:any;
+  device: any;
+  group_id:any;
+  virtual_group_id:any;
+  group_name:any;
+  virtual_group_name:any;
+  thresholdvalue:any;
+  actions:any;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { name: 'PD1-CB1', location: 'Location', id: 'DI1001', device: 'DEVICE', group: 'S/Stn#4- SN Area', vgroup: '--' },
-  { name: 'CB-2', location: 'Location', id: 'DI1002', device: 'DEVICE', group: 'S/Stn#4- SN Area', vgroup: '--' },
-  { name: 'PD2(1)', location: 'Location', id: 'DI1003', device: 'DEVICE', group: 'S/Stn#4- SN Area', vgroup: '--' },
-  { name: 'PD-6', location: 'Location', id: 'DI1004', device: 'DEVICE', group: 'S/Stn#4- SN Area', vgroup: 'Load on DG4_S/Stn1' },
-  { name: 'PP LAB', location: 'Location', id: 'DI1005', device: 'DEVICE', group: 'S/Stn#4- SN Area', vgroup: 'Load on DG2_S/Stn1' },
-  { name: 'PD-03', location: 'Location', id: 'DI1006', device: 'DEVICE', group: 'S/Stn#4- SN Area', vgroup: '--' },
- 
-];
+const ELEMENT_DATA: PeriodicElement[] = [];
 
 @Component({
   selector: 'app-feeder-configuration',
@@ -27,10 +28,33 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./feeder-configuration.component.css']
 })
 export class FeederConfigurationComponent {
-  displayedColumns: string[] = ['name', 'location', 'id', 'device', 'group', 'vgroup', 'actions'];
-  dataSource = ELEMENT_DATA;
+  displayedColumns: string[] = ['feeder_id', 'name', 'location', 'deviceuid', 'device', 'group_id', 
+  'virtual_group_id','group_name','virtual_group_name','thresholdvalue','actions'];
+  dataSource = new MatTableDataSource<PeriodicElement>([]);
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  
+  constructor(public dashService: DashService, private service: DashboardService,public dialog: MatDialog) {}
+  fedder_Id:string = "123";
+  
 
-  constructor(public dialog: MatDialog) {}
+  
+  ngOnInit(): void {
+    this.getFeeder();
+    this.dashService.isPageLoading(true);
+  }
+  getFeeder(){
+    if(this.fedder_Id){
+      this.service.getfeederdata(this.fedder_Id).subscribe(
+        (feeder) =>{
+          console.log(feeder);
+          this.dataSource = feeder;
+        },
+        (error)=>{
+            console.log(error);
+        }
+      );
+    }
+  }
 
   openEditFeederDialog(): void {
     const dialogConfig = new MatDialogConfig();
