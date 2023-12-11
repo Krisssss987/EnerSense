@@ -6,6 +6,9 @@ import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import HighchartsExporting from 'highcharts/modules/exporting';
 import { FilterComponent } from './filter/filter.component';
+import { DashboardService } from '../dash_service/dashboard.service';
+import { Subscription } from 'rxjs';
+import { MqttService, IMqttMessage } from 'ngx-mqtt';
 
 HighchartsMore(Highcharts);
 HighchartsExporting(Highcharts);
@@ -17,6 +20,19 @@ HighchartsExporting(Highcharts);
 })
 export class OverviewComponent  implements OnInit {
 
+  firstname=sessionStorage.getItem('firstname')
+  lastname=sessionStorage.getItem('lastname')
+  mqttSubscriptions: Subscription[] = [];
+  deviceUID!:string;
+  devices!: any[];
+  deviceData: any[] = [];
+  kva:number=0;
+  kw:number=0;
+  kvr:number=0;
+  current:number=0;
+  voltage:number=0;
+  pf:number=0;
+
   ngOnInit() {
     Highcharts.chart('KVAguage', this.KVAguage);
     Highcharts.chart('KWguage', this.KWguage);
@@ -24,15 +40,63 @@ export class OverviewComponent  implements OnInit {
     Highcharts.chart('PFguage', this.PFguage);
     Highcharts.chart('Currentguage', this.Currentguage);
     Highcharts.chart('Voltageguage', this.Voltageguage);
-    
     Highcharts.chart('PieChart', this.PieChart);
     Highcharts.chart('BarChart', this.BarChart);
+    this.retrievingValues();
   }
 
   constructor(
+    private mqttService: MqttService,
     public dialog: MatDialog,
+    public DashDataService: DashboardService,
   ){}
 
+  retrievingValues(){
+    this.DashDataService.deviceID$.subscribe((deviceID) => {
+      this.deviceUID=deviceID??'';
+      this.subscribeToTopics();
+    });
+    this.DashDataService.interval$.subscribe((interval) => {
+      console.log(interval);
+    });
+    this.DashDataService.StartDate$.subscribe((StartDate) => {
+      console.log(StartDate);
+    });
+    this.DashDataService.EndDate$.subscribe((EndDate) => {
+      console.log(EndDate);
+    });
+  }
+
+  unsubscribeFromTopics() {
+    this.mqttSubscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+    this.mqttSubscriptions = [];
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeFromTopics();
+  }
+
+  subscribeToTopics() {
+    this.deviceData = [];
+    console.log(this.deviceUID);
+
+      const dataTopic = `ems_live/${this.deviceUID}`;
+  
+      const dataSubscription = this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
+        const dataPayload = JSON.parse(dataMessage.payload.toString());
+        console.log(dataPayload)
+        this.kva=dataPayload.kva;
+        this.kw=dataPayload.kw;
+        this.kvr=dataPayload.kvr;
+        this.voltage=dataPayload.voltage_n;
+        this.current=dataPayload.current;
+        this.pf=dataPayload.pf;
+      });
+  
+      this.mqttSubscriptions.push(dataSubscription);
+  }
 
   BarChart: Highcharts.Options = {
     chart: {
@@ -195,7 +259,7 @@ export class OverviewComponent  implements OnInit {
     series: [{
       type: 'gauge',
       name: '',
-      data: [240],
+      data: [this.kva],
       tooltip: {
         valueSuffix: 'm'
       },
@@ -288,7 +352,7 @@ export class OverviewComponent  implements OnInit {
     series: [{
       type: 'gauge',
       name: '',
-      data: [240],
+      data: [this.kw],
       tooltip: {
         valueSuffix: 'm'
       },
@@ -381,7 +445,7 @@ export class OverviewComponent  implements OnInit {
     series: [{
       type: 'gauge',
       name: '',
-      data: [240],
+      data: [this.kvr],
       tooltip: {
         valueSuffix: 'm'
       },
@@ -474,7 +538,7 @@ export class OverviewComponent  implements OnInit {
     series: [{
       type: 'gauge',
       name: '',
-      data: [240],
+      data: [this.pf],
       tooltip: {
         valueSuffix: 'm'
       },
@@ -567,7 +631,7 @@ export class OverviewComponent  implements OnInit {
     series: [{
       type: 'gauge',
       name: '',
-      data: [240],
+      data: [this.current],
       tooltip: {
         valueSuffix: 'm'
       },
@@ -660,7 +724,7 @@ export class OverviewComponent  implements OnInit {
     series: [{
       type: 'gauge',
       name: '',
-      data: [240],
+      data: [this.voltage],
       tooltip: {
         valueSuffix: 'm'
       },

@@ -4,7 +4,7 @@
             <div class="col-12 col-md-12 col-lg-6">
                 <div class="card pb-2 allCard firstcard">
                     <div class="card-heading2-container mt-1 mb-1">
-                        <p class="card-heading2">Main PCC</p>
+                        <p class="card-heading2">Hello, {{firstname}}&nbsp;{{lastname}}</p>
                         <button style="margin-right: 3px;" color="primary" mat-mini-fab (click)="openFilterDailog()">
                             <mat-icon>filter_list</mat-icon>
                         </button>
@@ -14,17 +14,17 @@
                         <div class="row mt-2">
                             <h4 class="col-4 mt-3">KVAH :</h4>
                             <p class="col-4 numbers">1373.80</p>
-                            <p class="col-4 numbers">0.994</p>
+                            <p class="col-4 numbers">&#x20B9;0.994</p>
                         </div>
                         <div class="row">
                             <h6 class="col-4 blur-row ">&nbsp;</h6>
                             <h6 class="col-4 blur-row ">Value</h6>
-                            <h6 class="col-4 blur-row ">Rs</h6>
+                            <h6 class="col-4 blur-row ">Lakh</h6>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-4 col-6 incard">
                                 <h5>KWH :&nbsp;</h5>
-                                <p class="numbers">1373.80</p>
+                                <p class="numbers">{{1373.80}}</p>
                             </div>
                             <div class="col-md-4 col-6 incard">
                                 <h5>KVARH :&nbsp;</h5>
@@ -43,19 +43,19 @@
 
                             <div class="col-md-4 col-6 incard">
                                 <h5>PF :&nbsp;</h5>
-                                <p class="numbers">1373.80</p>
+                                <p class="numbers">{{pf}}</p>
                             </div>
                             <div class="col-md-4 col-6 incard">
                                 <h5>KVA :&nbsp;</h5>
                                 <div>
-                                    <p class="numbers">1373.80</p>
+                                    <p class="numbers">{{kva}}</p>
                                     <h6 class="col-12 blur-row">(MD)</h6>
                                 </div>
                             </div>
                             <div class="col-md-4 col-6 incard">
                                 <h5>KW :&nbsp;</h5>
                                 <div>
-                                    <p class="numbers">1373.80</p>
+                                    <p class="numbers">{{kw}}</p>
                                     <h6 class="col-12 blur-row">(MD)</h6>
                                 </div>
                             </div>
