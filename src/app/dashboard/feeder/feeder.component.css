@@ -32,7 +32,7 @@
 }
 .card{
     max-height: fit-content;
-    min-height: 320px;
+    min-height: 310px;
 }
 .vline{
     border: 5px solid rgb(158, 158, 158);
@@ -54,7 +54,7 @@
 .chart{
    max-height: 27vh; /* 40% of viewport height remove it in small screen  */
     width:100%;
-    min-height: 320px;
+    min-height: 310px;
 
 }
 
