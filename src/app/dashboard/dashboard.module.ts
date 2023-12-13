@@ -128,6 +128,8 @@ import { FilterComponent } from './overview/filter/filter.component';
     MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatRadioModule,
+
     ReactiveFormsModule,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,

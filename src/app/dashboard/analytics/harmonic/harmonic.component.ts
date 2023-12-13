@@ -49,8 +49,6 @@ export class HarmonicComponent implements OnInit,AfterViewInit{
   @ViewChild('chart3', { static: false }) chart3Container!: ElementRef;
 
 
-  // ... existing code
-
   ngAfterViewInit() {
 
     this.harmonic(this.chart3Container.nativeElement);

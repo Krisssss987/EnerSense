@@ -1,190 +1,163 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { DashboardService } from '../../dash_service/dashboard.service';
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
-import { DashService } from '../../dash.service';
-import { AutofillMonitor } from '@angular/cdk/text-field';
-import { DashboardService } from '../../dash_service/dashboard.service';
+import { MatSelectChange } from '@angular/material/select'; // Import MatSelectChange
 HighchartsMore(Highcharts);
-
-interface GraphDataItem {
-  id: number;
-  meter_name: string;
-  shift_name: string;
-  group_name: string;
-  virtual_group: string;
-  kwh_value: number;
-  timestamp: string;
-}
 
 @Component({
   selector: 'app-consuption',
   templateUrl: './consuption.component.html',
   styleUrls: ['./consuption.component.css']
 })
-export class ConsuptionComponent implements OnInit, AfterViewInit {
+export class ConsuptionComponent implements OnInit {
 
-  graphdata = [] ;
-   MeterName: any;
-   KWHValues: number[] = [];
+  graphdata = [];
+  MeterName: any;
+  KWHValues: number[] = [];
+  data: any;
+  DeviceID:any;
 
-   ShiFTNAmes:string[] = [];
-
-   KWHDATASHIFTA:number[]=[];
-   KWHDATASHIFTB:number[]=[];
-
-
-  feeders =[
-    { value: '6 Th Boiler', label: 'O6 Th Boiler' },
-    { value: 'air compressor', label: 'air compressor' },
-    { value: 'Borewell no 4', label: 'Borewell No 4' }
-  ]
+  devices: any[] = [];
 
   intervals = [
-    { value: 'Yesterday', label: 'Yesterday' },
-    { value: 'This Month', label: 'This Month' },
-    { value: 'Last Month', label: 'Last Month' },
-    { value: 'Date', label: 'Date' },
-    { value: 'Date&Time', label:'Date&Time' },
+    { value: '5min', label: '5min' },
+    { value: '15min', label: '15min' },
+    { value: '30min', label: '30min' },
+    { value: '1hour', label: '1hour' },
+    { value: '12hour', label: '12hour' },
+    { value: '1day', label: '1day' },
+    { value: '30day', label: '30day' },
+    { value: '1year', label: '1year' },
+  ];
+
+  shifts=[
+    {value:'ShiftA', label:'SHIFT A'},
+    {value:'ShiftB', label:'ShIFTB'},
   ]
 
-  shifts =[
-    { value: 'Shift A', label: 'Shift A' },
-    { value: 'Shift B', label: 'Shift B' },
-  ]
-  data: any;
-  
-  constructor(private service: DashboardService) {} 
-  
+  selectedInterval: string = '1hour'; // Default interval value
+  selectedDevice: string ='';
+  selectedshift:string='ShiftA';
+
+  constructor(private service: DashboardService) {}
+
+  @ViewChild('chart', { static: false }) chartContainer!: ElementRef;
+
   ngOnInit(): void {
-
-  }
-  @ViewChild('chart1', { static: false }) chart1Container!: ElementRef;
-
-
-  ngAfterViewInit() {
-    this.consumption(this.chart1Container.nativeElement); 
-    this.getgraphdata();
+    this.fetchData(); // Initial data fetch
+    this.fetchdevicedata();
   }
 
-  // getgraphdata(){
-  //   this.service.getConsuptionGraphdata().subscribe((data) => {
-  //     this.graphdata = data;
-  //     console.log(this.graphdata);
-  //   });
-  // }
-
-  getgraphdata() {
-    this.service.getConsuptionGraphdata().subscribe((data) => {
-      this.graphdata = data;
-
-      this.MeterName = [];
-      this.KWHValues = [];
-      this.ShiFTNAmes = [];
-  
-
-      this.graphdata.forEach((item: GraphDataItem) => {
-        this.MeterName.push(item.meter_name);
-
-        this.KWHValues.push(item.kwh_value);
-        this.ShiFTNAmes.push(item.shift_name);
-
-        if(item.shift_name == 'ShiftA'){
-          this.KWHDATASHIFTA.push(item.kwh_value);
-        }
-        else{
-          this.KWHDATASHIFTB.push(item.kwh_value);
-        }
-        
-
-      });
-
-
-      console.log(this.MeterName);
-
-
-      const container = this.chart1Container.nativeElement;
-      this.consumption(container);
+  // Function to fetch data based on the selected interval
+  fetchData(): void {
+    this.service.getconsuptiondata(this.selectedInterval,this.selectedDevice,this.selectedshift).subscribe((result) => {
+      this.data = result; 
+      console.log(this.data);
+      this.renderHarmonicChart();
     });
   }
+
+  fetchdevicedata():void{
+    this.service.getdevicename(this.selectedInterval).subscribe((result) => {
+      this.data = result;
+
+      // Update the devices array with unique devices from the API response
+      this.updateDevices(result);
+
+      // Render the chart with the new data
+      this.renderHarmonicChart();
+    });
+  }
+ 
+
+  // Function to update the devices array with unique devices
+  updateDevices(apiData: any[]): void {
+    this.devices = [];
+
+    apiData.forEach(item => {
+      const device = item.device;
+      // Check if the device is not already in the devices array
+      if (!this.devices.some((d) => d.value === device)) {
+        this.devices.push({ value: device, label: device });
+      }
+    });
+  }
+
+  // Function to handle interval selection change
+  onIntervalChange(): void {
+    this.fetchData(); // Fetch data based on the selected interval
+  }
   
 
 
 
-  
+  // Function to handle button click and print the API URL
+  onGenerateButtonClick(): void {
+    if (this.selectedDevice) {
+      this.DeviceID = this.selectedDevice;
+      // console.log('Selected Device:', this.DeviceID);
+      // const apiUrl = `http://localhost:3000/feeder/SenseLive?TimeInterval=${this.selectedInterval}&DeviceId=${this.DeviceID}&Shift=${this.selectedshift}`;
+      // console.log('Generated API URL:', apiUrl);
 
-  consumption(container: HTMLElement) {
+      // Optionally, you can also trigger the data fetch here
+      this.fetchData();
+    } else {
+      console.error('No device selected.');
+    }
+  }
+
+  // Function to render harmonic chart
+  renderHarmonicChart(): void {
+    if (this.chartContainer) {
+      const chartData = {
+        categories: this.data.map((item: { data: { date_time: any; }; }) => item.data.date_time), // Assuming device names are to be displayed on X-axis
+        series: [
+          { name: 'kvah', data: this.data.map((item: { data: { kvah: any; }; }) => item.data.kvah) },
+          { name: 'kwh', data: this.data.map((item: { data: { kwh: any; }; }) => item.data.kwh) },
+          { name: 'imp_kvarh', data: this.data.map((item: { data: { imp_kvarh: any; }; }) => item.data.imp_kvarh) },
+          { name: 'exp_kvarh', data: this.data.map((item: { data: { exp_kvarh: any; }; }) => item.data.exp_kvarh) },
+          { name: 'kvarh', data: this.data.map((item: { data: {kvarh: any; }; }) => item.data.kvarh) },
+        ],
+      };
+
+      this.harmonic(this.chartContainer.nativeElement, chartData);
+    } else {
+      console.error('Chart container not available.');
+    }
+  }
+
+
+  onDeviceSelectionChange(event: MatSelectChange): void {
+    this.selectedDevice = event.value;
+  }
+
+  harmonic(container: HTMLElement, chartData: any) {
     Highcharts.chart(container, {
       chart: {
-        type: 'column',
+        type: 'spline',
         plotBorderWidth: 0, 
       },
       title: {
-        text: ''
+        text: 'Consumption Chart'
       },
       xAxis: {
-        categories: this.MeterName,
+        categories: chartData.categories
       },
       yAxis: {
         title: {
-          text: 'KWH'
+          text: 'Values'
         },
         min: 0,
-        max: 300,
-        gridLineWidth: 0,
-        plotLines: [
-          {
-            value: 0,
-            color: 'transparent',
-            width: 0,
-          },
-          {
-            value: 25,
-            color: 'transparent',
-            width: 0,
-          },
-          {
-            value: 50,
-            color: 'transparent',
-            width: 0,
-          },
-          {
-            value: 75,
-            color: 'transparent',
-            width: 0,
-          },
-          {
-            value: AutofillMonitor,
-            color: 'transparent',
-            width: 0,
-          },
-        ]
-      },
-      plotOptions: {
-        column: {
-          borderWidth: 0,
-          lineWidth: 0,
-        }
+        gridLineWidth: 0, // Remove the gridlines
       },
       legend: {
-        symbolRadius: 0,
-        verticalAlign: 'top',
+        symbolRadius: 0, // Set the symbol radius to 0 to make the legend symbols rectangular
+        verticalAlign: 'top', // Position the legends above the graph
       },
-      series: [{
-        name: 'shiftA',
-        data: [this.KWHDATASHIFTA,]
-      },
-      {
-        name: 'shiftB',
-        data: [this.KWHDATASHIFTB]
-      },
-   
-    ] as any
+      series: chartData.series
     } as Highcharts.Options);
   }
 
-
   
-
 }
-
-

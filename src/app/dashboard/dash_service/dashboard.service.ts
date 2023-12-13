@@ -16,7 +16,17 @@ export class DashboardService {
     return this.http.get(`${this.API_URL}/live-device-detail/${CompanyId}`);
   }
 
- getConsuptionGraphdata(): Observable<any>{
-   return this.http.get(`${this.API_URL}/feeder/SenseLive`);
- }
+ 
+//  getconsuptiondata() :Observable <any>{
+//   return this.http.get(`http://localhost:3000/feeder/SenseLive?TimeInterval=1hour`);
+//  }
+getconsuptiondata(interval: string,selectedDevice:any, selectedshift: string): Observable<any> {
+  return this.http.get(`${this.API_URL}/feeder/SenseLive?TimeInterval=${interval}&Shift=${selectedshift}&DeviceIds=${selectedDevice}`)
+}
+getdevicename(interval: string): Observable<any> {
+  return this.http.get(`${this.API_URL}/feeder/SenseLive?TimeInterval=${interval}`)
+}
+
+
+
 }
