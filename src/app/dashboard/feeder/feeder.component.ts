@@ -462,7 +462,13 @@ export class FeederComponent {
   }
   };
 
-  
+  intervals = [
+    { value: 'Yesterday', label: 'Yesterday' },
+    { value: 'This Month', label: 'This Month' },
+    { value: 'Last Month', label: 'Last Month' },
+    { value: 'Date', label: 'Date' },
+    { value: 'Date&Time', label:'Date&Time' },
+  ]
 
   openSummary(): void {
     const dialogConfig = new MatDialogConfig();
