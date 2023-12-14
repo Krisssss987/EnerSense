@@ -11,12 +11,13 @@ import { AleartsComponent } from './alearts/alearts.component';
 })
 export class FeederComponent {
   ngAfterViewInit() {
-    Highcharts.chart('barContainer', this.BarChart);
+    Highcharts.chart('chartContainer', this.chartOptions);
+
     
-    Highcharts.chart('KVAguage', this.KVAguage);
-    Highcharts.chart('KWguage', this.KWguage);
-    Highcharts.chart('KVRguage', this.KVRguage);
-    Highcharts.chart('PFguage', this.PFguage);
+    Highcharts.chart('KVAYguage', this.KVAguage);
+    Highcharts.chart('KWYguage', this.KWguage);
+    Highcharts.chart('KVRYguage', this.KVRguage);
+    Highcharts.chart('PFYguage', this.PFguage);
   }
 
   constructor(
@@ -30,65 +31,72 @@ export class FeederComponent {
 
     const dialogRef = this.dialog.open(AleartsComponent, dialogConfig);
   }
-  BarChart: Highcharts.Options = {
+ 
+  chartOptions: Highcharts.Options = {
     chart: {
-      type: 'column',
+      type: 'line'
+    },
+    title: {
+      text: ' '
     },
     credits: {
       enabled: false
     },
-    title: {
-      text: ''
-    },
     xAxis: {
-      categories: ['Category 1', 'Category 2', 'Category 3'],
-      startOnTick: true,
-      endOnTick: false,
-      tickmarkPlacement: 'between',
-      minPadding: 0,
-      maxPadding: 0,
-      min: 0,
-      max: undefined,
-      labels: {
-        step: 0.5,
-        enabled:false
-      }
+      categories: [
+        'Main PCC',
+        'HT Meter (S/Sn-4)',
+        'LT Meter (COB)',
+        'LT HILTOP INCOMER'
+      ]
     },
-    yAxis: {
+    yAxis: [{
+      min: 0,
+      title: {
+        text: ''
+      }
+    }, {
       title: {
         text: ''
       },
-      plotLines: [{
-        color: 'black',
-        width: 2,
-        value: 130000,
-        label: {
-          text: 'Max Inflation',
-          align: 'right',
-          x: -20
-        }
-      }]
+      opposite: true
+    }],
+    legend: {
+      shadow: false
+    },
+    tooltip: {
+      shared: true
+    },
+    plotOptions: {
+      column: {
+        grouping: false,
+        shadow: false,
+        borderWidth: 0
+      }
     },
     series: [{
-      type: 'column',
-      name: 'KVAH',
-      data: [50000, 100000, 100005]
+      type:'column',
+      name: 'Max Demand KVA',
+      color: 'rgba(165,170,217,1)',
+      data: [140, 90, 90, 90],
+      pointPadding: 0.1,
+      pointPlacement: 0
     }, {
-      type: 'column',
-      name: 'KWH',
-      data: [51086, 136000, 5500, 141000]
-    }, {
-      type: 'spline',
-      name: 'Line Series',
-      data: [10000, 20000, 30000,50000,60000, 200000]
-    }]
-  };
-  KVAguage: Highcharts.Options = {
+      type:'column',
+      name: 'Live Demand KVA',
+      color: 'rgba(126,86,134,.9)',
+      data: [150, 73, 20, 54],
+      pointPadding: 0.25,
+      pointPlacement: 0
+    }],
+  };
+
+    KVAguage: Highcharts.Options = {
     chart: {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '155vh',
+      height: '160vh',
       margin: [0, 20, 20, 20],
       backgroundColor: 'white',
       style: {
@@ -183,7 +191,7 @@ export class FeederComponent {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '155vh',
+      height: '160vh',
       margin: [0, 20, 20, 20],
       backgroundColor: 'white',
       style: {
@@ -278,7 +286,7 @@ export class FeederComponent {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '155vh',
+      height: '160vh',
       margin: [0, 20, 20, 20],
       backgroundColor: 'white',
       style: {
@@ -372,7 +380,7 @@ export class FeederComponent {
       type: 'gauge',
       plotBorderWidth: 0,
       plotShadow: false,
-      height: '155vh',
+      height: '160vh',
       margin: [0, 20, 20, 20],
       backgroundColor: 'white',
       style: {

@@ -42,7 +42,9 @@
  display: flex;
  justify-content: space-between;
 }
+/* .meter-container{
 
+} */
 .meter-lables{
     color: gray;
     font-size: small;
