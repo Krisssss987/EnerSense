@@ -21,7 +21,7 @@ export class ConsuptionComponent implements OnInit {
   devices: any[] = [];
 
   intervals = [
-    { value: '5min', label: '5min' },
+
     { value: '15min', label: '15min' },
     { value: '30min', label: '30min' },
     { value: '1hour', label: '1hour' },
@@ -53,7 +53,7 @@ export class ConsuptionComponent implements OnInit {
   fetchData(): void {
     this.service.getconsuptiondata(this.selectedInterval,this.selectedDevice,this.selectedshift).subscribe((result) => {
       this.data = result; 
-      console.log(this.data);
+      // console.log(this.data);
       this.renderHarmonicChart();
     });
   }
@@ -65,42 +65,39 @@ export class ConsuptionComponent implements OnInit {
       // Update the devices array with unique devices from the API response
       this.updateDevices(result);
 
-      // Render the chart with the new data
       this.renderHarmonicChart();
     });
   }
  
 
-  // Function to update the devices array with unique devices
+
   updateDevices(apiData: any[]): void {
     this.devices = [];
 
     apiData.forEach(item => {
       const device = item.device;
-      // Check if the device is not already in the devices array
+
       if (!this.devices.some((d) => d.value === device)) {
         this.devices.push({ value: device, label: device });
       }
     });
   }
 
-  // Function to handle interval selection change
+
   onIntervalChange(): void {
-    this.fetchData(); // Fetch data based on the selected interval
+    this.fetchData();
   }
   
 
 
 
-  // Function to handle button click and print the API URL
+
   onGenerateButtonClick(): void {
     if (this.selectedDevice) {
       this.DeviceID = this.selectedDevice;
-      // console.log('Selected Device:', this.DeviceID);
-      // const apiUrl = `http://localhost:3000/feeder/SenseLive?TimeInterval=${this.selectedInterval}&DeviceId=${this.DeviceID}&Shift=${this.selectedshift}`;
-      // console.log('Generated API URL:', apiUrl);
+       console.log(this.selectedDevice,this.selectedInterval,this.selectedshift);
+    
 
-      // Optionally, you can also trigger the data fetch here
       this.fetchData();
     } else {
       console.error('No device selected.');
