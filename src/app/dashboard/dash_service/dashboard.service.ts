@@ -38,4 +38,8 @@ export class DashboardService {
     return this.http.get(`${this.API_URL}/feeder/SenseLive`);
   }
 
+  editUserDetails(userId: string, userData: any): Observable<any>{
+    return this.http.put(`${this.API_URL}/edituser/${userId}`, userData);
+  }
+
 }

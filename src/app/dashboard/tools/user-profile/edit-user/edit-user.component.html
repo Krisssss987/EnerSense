@@ -10,13 +10,15 @@
       <div class="col-md-6">
         <mat-form-field class="from-field">
           <mat-label>Name</mat-label>
-          <input matInput placeholder="admin">
+          <input matInput [formControl]="Name" required>
+		        <mat-error *ngIf="Name.invalid"> Name is Required.</mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-6">
         <mat-form-field class="from-field">
           <mat-label>Id</mat-label>
-          <input matInput placeholder="admin">
+          <input matInput [formControl]="Id" required>
+		        <mat-error *ngIf="Id.invalid"> Id is Required.</mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -25,13 +27,15 @@
       <div class="col-md-6">
         <mat-form-field class="from-field">
           <mat-label>Designation</mat-label>
-          <input matInput placeholder="Manager">
+          <input matInput [formControl]="Designation" required>
+		        <mat-error *ngIf="Designation.invalid"> Designation is Required.</mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-6">
         <mat-form-field class="from-field">
           <mat-label>Mobile</mat-label>
-          <input matInput placeholder="122345">
+          <input matInput [formControl]="Mobile" required>
+          <mat-error *ngIf="Mobile.invalid"> Mobile is Required.</mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -40,21 +44,23 @@
       <div class="col-md-6">
         <mat-form-field class="from-field">
           <mat-label>Plants</mat-label>
-          <input matInput placeholder="Solar">
+          <input matInput [formControl]="Plants" required>
+          <mat-error *ngIf="Plants.invalid"> Plants is Required.</mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-6">
         <mat-form-field class="from-field">
           <mat-label>Privileges</mat-label>
-          <input matInput placeholder="Privilage-1">
+          <input matInput [formControl]="Privileges" required>
+          <mat-error *ngIf="Privileges.invalid"> Privileges is Required.</mat-error>
         </mat-form-field>
       </div>
     </div>
     
 
     <div class="col-lg-12 justify-content-end d-flex mb-2">
-      <button mat-raised-button mat-dialog-close class="mx-2 update">Cancel</button>
-      <button mat-raised-button class="update" type="submit">Update</button>
+      <button mat-raised-button mat-dialog-close class="mx-2 update" >Cancel</button>
+      <button mat-raised-button class="update" type="submit" (click)="updateDetails()">Update</button>
 
     </div>
   </form>
