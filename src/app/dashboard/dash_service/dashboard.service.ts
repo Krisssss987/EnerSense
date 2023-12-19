@@ -37,6 +37,9 @@ export class DashboardService {
   getConsuptionGraphdata(): Observable<any>{
     return this.http.get(`${this.API_URL}/feeder/SenseLive`);
   }
+  getMaxvsActuladata(DeviceId:string): Observable<any>{
+    return this.http.get(`${this.API_URL}/fetchmaxdemand/${DeviceId}`);
+  }
 
   editUserDetails(userId: string, userData: any): Observable<any>{
     return this.http.put(`${this.API_URL}/edituser/${userId}`, userData);

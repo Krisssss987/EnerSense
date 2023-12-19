@@ -136,9 +136,79 @@
             </div>
         </div>
     </div> -->
-
     <div class="row">
-        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12">
+            <div class="card chart">
+                <div class="meter-lables">
+                    <p class="card-heading">Feeder</p>
+                </div>
+                <div class="row">
+                    <mat-radio-group aria-label="Select an option" color="primary" class="d-flex ">
+                        <mat-radio-button value="feeder">feeder</mat-radio-button>
+                        <mat-radio-button value="group">Group</mat-radio-button>
+                        <mat-radio-button value="group">Vgroup</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="row px-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-select placeholder="Select Feeder">
+                            <mat-option value="option1">Option 1</mat-option>
+                            <mat-option value="option2">Option 2</mat-option>
+                            <!-- Add more options as needed -->
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 ">
+                        <!-- First Subcolumn -->
+                        <div class="p-2 mx-auto" style="text-align: center;">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Select Interval</mat-label>
+                                <mat-select>
+                                    <mat-option *ngFor="let interval of intervals" [value]="interval.value">
+                                        {{ interval.label }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Second Subcolumn -->
+                        <div class="p-2 mx-auto" style="text-align: center;">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate placeholder="Start date">
+                                    <input matEndDate placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <button mat-raised-button color="primary" style="width: 150px;">Generate</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12 ">
+            <div class="card chart">
+                <p class="card-heading">Alearts & Eventes</p>
+                <div class="row">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-1">
             <div class="card chart">
                 <div class="meter-lables">
                     <p class="card-heading">Max vs Actual Demand</p>
@@ -154,17 +224,53 @@
                 <div id="chartContainer" class="demandChart"></div>
             </div>
         </div>
-        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
-            <div class="card">
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-1">
+            <div class="card chart">
                 <p class="card-heading">POWER Parametres </p>
                 <div class="row ">
                     <div class="col-md-3 mx-auto">
                         <div class="px-2 ">
                             <!-- Meter on top -->
                             <div class="meter-container">
-                                <div class="meter">a</div>
+                                <div class="meter">
+
+                                    <div id="KWYguage"></div>
+
+                                </div>
                             </div>
                             <!-- Meter labels -->
+                            <div class="meter-lables-container">
+                                <div class="meter-lables">
+                                    <p>Min</p>
+                                    <p>412.7</p>
+                                </div>
+                                <div class="meter-lables">
+                                    <p>Max</p>
+                                    <p>412.7</p>
+                                </div>
+                                <div class="meter-lables">
+                                    <p>Avg</p>
+                                    <p>412.7</p>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-3 mx-auto">
+                        <div class="px-2">
+                            <!-- Meter on top -->
+                            <div class="meter-container">
+                                <div class="meter">
+                                    <div id="KVRYguage"></div>
+
+                                </div>
+                            </div>
+                            <!-- Meter labels -->
+                            <div>
+
+                            </div>
                             <div class="meter-lables">
                                 <p>Min</p>
                                 <p>412.7</p>
@@ -182,33 +288,17 @@
                     </div>
                     <div class="col-md-3 mx-auto">
                         <div class="px-2">
-                             <!-- Meter on top -->
-                             <div class="meter-container">
-                                <div class="meter">a</div>
-                            </div>
-                            <!-- Meter labels -->
-                            <div class="meter-lables">
-                                <p>Min</p>
-                                <p>412.7</p>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Max</p>
-                                <p>412.7</p>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Avg</p>
-                                <p>412.7</p>
-                            </div>
+                            <!-- Meter on top -->
+                            <div class="meter-container">
+                                <div class="meter">
+                                    <div id="KVAYguage"></div>
 
-                        </div>
-                    </div>
-                    <div class="col-md-3 mx-auto">
-                        <div class="px-2">
-                             <!-- Meter on top -->
-                             <div class="meter-container">
-                                <div class="meter">a</div>
+                                </div>
                             </div>
                             <!-- Meter labels -->
+                            <div>
+
+                            </div>
                             <div class="meter-lables">
                                 <p>Min</p>
                                 <p>412.7</p>
@@ -225,11 +315,18 @@
                     </div>
                     <div class="col-md-3 mx-auto">
                         <div class="px-2">
-                             <!-- Meter on top -->
-                             <div class="meter-container">
-                                <div class="meter">a</div>
+                            <!-- Meter on top -->
+                            <div class="meter-container">
+                                <div class="meter">
+
+                                    <div id="PFYguage"></div>
+
+                                </div>
                             </div>
                             <!-- Meter labels -->
+                            <div>
+
+                            </div>
                             <div class="meter-lables">
                                 <p>Min</p>
                                 <p>412.7</p>
@@ -251,8 +348,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
-            <div class="card">
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-1">
+            <div class="card chart">
                 <div class="row">
                     <div class="col-md-6 ">
                         <!-- First Subcolumn -->
@@ -292,15 +389,48 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
-        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
+        <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-1">
             <div class="card chart">
-                <p class="card-heading">Consumption Overview</p>
-                <div id="pieContainer" class="pieChart"></div>
+                <p class="card-heading">Alearts & Eventes</p>
+                <div class="row px-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-select placeholder="Select Feeder">
+                            <mat-option value="option1">Option 1</mat-option>
+                            <mat-option value="option2">Option 2</mat-option>
+                            <!-- Add more options as needed -->
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 ">
+                        <!-- First Subcolumn -->
+                        <p class="card-heading">Set aleart value</p>
+                        <div class="p-2 mx-auto" style="text-align: center;">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>value at which alerts are shown</mat-label>
+                                <input matInput>
+                            </mat-form-field>
 
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Second Subcolumn -->
+                        <p class="card-heading">Set max value</p>
+                        <div class="p-2 mx-auto" style="text-align: center;">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Max vlaue for feeder</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <button mat-raised-button color="primary" style="width: 150px;">Add Aleart</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -309,7 +439,7 @@
 
             <div class="card p-1">
                 <div class="d-flex flex-wrap">
-                    <div class=" progress-col mx-3 mt-2">
+                    <div class="progress-col  p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                         <mat-card-header class="mt-2">
                             <h6>Line voltage(LL)</h6>
                         </mat-card-header>
@@ -349,7 +479,7 @@
                         </div>
                         <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
                     </div>
-                    <div class=" progress-col mx-3 mt-2">
+                    <div class="progress-col  p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                         <mat-card-header class="mt-2">
                             <h6>Phase voltage(LN)</h6>
                         </mat-card-header>
@@ -389,7 +519,7 @@
                         </div>
                         <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
                     </div>
-                    <div class="progress-col mx-3 mt-2">
+                    <div class="progress-col  p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                         <mat-card-header>
                             <h6>Current</h6>
                         </mat-card-header>
@@ -429,7 +559,7 @@
                         </div>
                         <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
                     </div>
-                    <div class="progress-col mx-3 mt-2">
+                    <div class="progress-col  p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                         <mat-card-header>
                             <h6>Harmonics</h6>
                         </mat-card-header>
