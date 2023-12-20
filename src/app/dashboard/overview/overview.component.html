@@ -1,20 +1,21 @@
 <div class="content">
+    <button class="floating-button" color="primary" mat-mini-fab (click)="openFilterDailog()">
+        <mat-icon>filter_list</mat-icon>
+    </button>
     <div class="container-fluid">
         <div class="row mt-1">
             <div class="col-12 col-md-12 col-lg-6">
                 <div class="card pb-2 allCard firstcard">
                     <div class="card-heading2-container mt-1 mb-1">
                         <p class="card-heading2">Hello, {{firstname}}&nbsp;{{lastname}}</p>
-                        <button style="margin-right: 3px;" color="primary" mat-mini-fab (click)="openFilterDailog()">
-                            <mat-icon>filter_list</mat-icon>
-                        </button>
+                        
                     </div>
                     <mat-divider></mat-divider>
                     <div class="row text-center">
                         <div class="row mt-2">
                             <h4 class="col-4 mt-3">KVAH :</h4>
-                            <p class="col-4 numbers">1373.80</p>
-                            <p class="col-4 numbers">&#x20B9;0.994</p>
+                            <p class="col-4 numbers">{{kvah}}</p>
+                            <p class="col-4 numbers">&#x20B9;{{kvah*kval_rupees}}</p>
                         </div>
                         <div class="row">
                             <h6 class="col-4 blur-row ">&nbsp;</h6>
@@ -24,26 +25,26 @@
                         <div class="row mt-2">
                             <div class="col-md-4 col-6 incard">
                                 <h5>KWH :&nbsp;</h5>
-                                <p class="numbers">{{1373.80}}</p>
+                                <p class="numbers">{{kwh}}</p>
                             </div>
                             <div class="col-md-4 col-6 incard">
                                 <h5>KVARH :&nbsp;</h5>
                                 <div>
-                                    <p class="numbers">1373.80</p>
-                                    <h6 class="col-12 blur-row">(Leg)</h6>
+                                    <p class="numbers">{{kvarh_led}}</p>
+                                    <h6 class="col-12 blur-row">(Led)</h6>
                                 </div>
                             </div>
                             <div class="col-md-4 col-6 incard">
                                 <h5>KVARH :&nbsp;</h5>
                                 <div>
-                                    <p class="numbers">1373.80</p>
+                                    <p class="numbers">{{kvarh_lag}}</p>
                                     <h6 class="col-12 blur-row">(Lag)</h6>
                                 </div>
                             </div>
 
                             <div class="col-md-4 col-6 incard">
                                 <h5>PF :&nbsp;</h5>
-                                <p class="numbers">{{pf}}</p>
+                                <p class="numbers" style="margin-bottom: 12px;">{{pf}}</p>
                             </div>
                             <div class="col-md-4 col-6 incard">
                                 <h5>KVA :&nbsp;</h5>
@@ -63,7 +64,7 @@
                         <div class="row mb-3 mt-1">
                             <div class="col-12 incard">
                                 <h3>CO2 emission :&nbsp;</h3>
-                                <p class="co2">1373.80</p>
+                                <p class="co2">{{CO2}}</p>
                             </div>
                             <button mat-raised-button style="width: 100px;" class="mx-auto" color="primary" (click)="openSummary()">Summary</button>
                         </div>                        
@@ -81,7 +82,7 @@
                         </div>
                         <div class="col-6 col-md-4">
                             <div id="KVRguage"></div>
-                            <h5 class="card-heading text-center">KVR</h5>
+                            <h5 class="card-heading text-center">KVAR</h5>
                         </div>
                         <div class="col-6 col-md-4">
                             <div id="PFguage"></div>

@@ -94,4 +94,16 @@ export class DashboardService {
     throw new Error('Method not implemented.');
   }
 
+  pieDetails(CompanyId: string,interval: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/piechart/${CompanyId}/${interval}`);
+  }
+
+  barDetails(DeviceId: string,interval: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/Bargraph/${DeviceId}/${interval}`);
+  }
+  
+  feederinterval(DeviceId: string,interval: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederinterval/${DeviceId}/${interval}`);
+  }
+
 }

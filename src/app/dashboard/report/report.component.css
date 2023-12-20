@@ -1,0 +1,32 @@
+.form-field, .form-field-button {
+    width: 100%;
+    }
+
+.button-group{
+    width: 100%;
+    background-color: #e6e6e6;
+    border: 1px solid #a6a6a6;
+}
+
+.custom-theme-table th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 2;
+}
+
+.online {
+	background: linear-gradient(to right, #3c9e55, #00FFFF);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+    font-weight: 550;
+}
+
+.offline {
+  background: linear-gradient(to right, red, #A9A9A9);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+    font-weight: 550;
+}

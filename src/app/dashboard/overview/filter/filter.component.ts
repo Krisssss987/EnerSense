@@ -89,7 +89,6 @@ export class FilterComponent {
 
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
-    console.log(this.CompanyId);
     if (this.CompanyId) {
       this.DashDataService.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
@@ -109,38 +108,17 @@ export class FilterComponent {
   }
 
   onSaveClick(): void {
-    if(this.selectedRadioButton==='Custom' && this.start_date.valid && this.end_date.valid && this.deviceID!=null||undefined){
-      console.log(this.deviceID,this.selectedDeviceInterval);
+    if(this.selectedRadioButton==='Custom' ){
       this.DashDataService.setDeviceId(this.deviceID);
       this.DashDataService.setInterval('Custom');
       this.DashDataService.setStartDate(this.start_date.value??'');
       this.DashDataService.setEndDate(this.end_date.value??'');
     }
-    else if(this.selectedRadioButton!='Custom' && this.deviceID!=null||undefined ){
-      if(this.selectedDeviceInterval==null||''||undefined){
-        this.snackBar.open('Please Select appropriate Filter!', 'Dismiss', {
-          duration: 2000
-        });  
-      }
-      else{
-        this.DashDataService.setDeviceId(this.deviceID);
-        this.DashDataService.setInterval(this.selectedDeviceInterval);    
-      }
-    }
-    else if(this.selectedRadioButton==='Custom' && this.start_date.valid && this.end_date.valid && this.deviceID==null||undefined||''){
-      this.snackBar.open('Please Select Device!', 'Dismiss', {
-        duration: 2000
-      });
-    }
-    else if(this.selectedRadioButton==='Custom' && this.start_date.invalid && this.end_date.invalid && this.deviceID!=null||undefined||''){
-      this.snackBar.open('Please Select Filter!', 'Dismiss', {
-        duration: 2000
-      });
-    }
-    else{
-      this.snackBar.open('Please Select Device and Filter!', 'Dismiss', {
-        duration: 2000
-      });
+    else {
+      this.DashDataService.setDeviceId(this.deviceID);
+      this.DashDataService.setInterval(this.selectedDeviceInterval);
+      this.DashDataService.setStartDate('');
+      this.DashDataService.setEndDate('');
     }
   }
 }

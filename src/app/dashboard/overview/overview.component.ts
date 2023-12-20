@@ -7,8 +7,11 @@ import HighchartsMore from 'highcharts/highcharts-more';
 import HighchartsExporting from 'highcharts/modules/exporting';
 import { FilterComponent } from './filter/filter.component';
 import { DashboardService } from '../dash_service/dashboard.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take, interval } from 'rxjs';
 import { MqttService, IMqttMessage } from 'ngx-mqtt';
+import { AuthService } from 'src/app/login/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 HighchartsMore(Highcharts);
 HighchartsExporting(Highcharts);
@@ -32,6 +35,22 @@ export class OverviewComponent  implements OnInit {
   current:number=0;
   voltage:number=0;
   pf:number=0;
+  datapayload:any;
+  CompanyId!:string | null;
+  interval!:string;
+  pieChartData: PieChartData[] = [];
+  kvah:number=0;
+  kval_rupees:number=10;
+  kwh:number=0;
+  kvarh_led:number=0;
+  kvarh_lag:number=0;
+  CO2:number=0;
+  deviceOptions:any;
+  intervalSubscription: Subscription | undefined;
+  kvahArray= [];
+  kvaArray= [];
+  kwhArray= [];
+  dateTimeArray= [];
 
   ngOnInit() {
     Highcharts.chart('KVAguage', this.KVAguage);
@@ -40,16 +59,43 @@ export class OverviewComponent  implements OnInit {
     Highcharts.chart('PFguage', this.PFguage);
     Highcharts.chart('Currentguage', this.Currentguage);
     Highcharts.chart('Voltageguage', this.Voltageguage);
-    Highcharts.chart('PieChart', this.PieChart);
-    Highcharts.chart('BarChart', this.BarChart);
     this.retrievingValues();
+    this.getUserDevices();
+    this.startInterval();
   }
 
   constructor(
     private mqttService: MqttService,
     public dialog: MatDialog,
     public DashDataService: DashboardService,
+    public authService: AuthService,
+    public snackBar: MatSnackBar,
+    private datePipe: DatePipe
   ){}
+
+  getUserDevices() {
+    this.CompanyId = this.authService.getCompanyId();
+    if (this.CompanyId) {
+      this.DashDataService.deviceDetails(this.CompanyId).subscribe(
+        (devices: any) => {
+          this.deviceOptions = devices;
+          let id=sessionStorage.getItem('deviceID');
+          let interval=sessionStorage.getItem('interval');
+          if(id==null || interval==null){
+            this.DashDataService.setDeviceId(this.deviceOptions[0].deviceid);
+            this.DashDataService.setInterval('1hour');
+          }else{
+            
+          }
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
 
   retrievingValues(){
     this.DashDataService.deviceID$.subscribe((deviceID) => {
@@ -57,7 +103,10 @@ export class OverviewComponent  implements OnInit {
       this.subscribeToTopics();
     });
     this.DashDataService.interval$.subscribe((interval) => {
-      console.log(interval);
+      this.interval=interval??'';
+      this.pieData();
+      this.barData();
+      this.feederinterval();
     });
     this.DashDataService.StartDate$.subscribe((StartDate) => {
       console.log(StartDate);
@@ -65,6 +114,132 @@ export class OverviewComponent  implements OnInit {
     this.DashDataService.EndDate$.subscribe((EndDate) => {
       console.log(EndDate);
     });
+  }
+
+  pieData() {
+    this.CompanyId = this.authService.getCompanyId();
+    if (this.CompanyId) {
+      this.DashDataService.pieDetails(this.CompanyId, this.interval).subscribe(
+        (piedata) => {
+          this.pieChartData.length = 0;
+          Array.prototype.push.apply(this.pieChartData, piedata.map((entry: { device: any; data: { kvah: any; }; }) => ({
+            name: entry.device,
+            y: entry.data.kvah
+          })));
+  
+          Highcharts.chart('PieChart', this.PieChart);
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching Pie Data!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  } 
+
+  barData() {
+    if (this.CompanyId) {
+      this.DashDataService.barDetails(this.deviceUID, this.interval).subscribe(
+        (bardata) => {
+          const new_data = bardata[this.deviceUID].aggregatedValues;
+          this.kvahArray = new_data.map((item: { kvah: any; }) => item.kvah);
+          this.kvaArray = new_data.map((item: { kva: any; }) => item.kva);
+          this.kwhArray = new_data.map((item: { kwh: any; }) => item.kwh);
+          this.dateTimeArray = new_data.map((item: { date_time: any }) => {
+            return this.datePipe.transform(item.date_time, 'dd-MM-yyyy HH:mm:ss') || '';
+          });      
+
+          const BarChartOptions: Highcharts.Options = {
+            chart: {
+              type: 'column',
+            },
+            credits: {
+              enabled: false
+            },
+            title: {
+              text: ''
+            },
+            xAxis: {
+              categories: this.dateTimeArray,
+              startOnTick: true,
+              endOnTick: false,
+              tickmarkPlacement: 'between',
+              minPadding: 0,
+              maxPadding: 0,
+              min: 0,
+              max: undefined,
+              labels: {
+                step: 1,
+              }
+            },
+            yAxis: {
+              title: {
+                text: ''
+              },
+              plotLines: [{
+                color: 'black',
+                width: 2,
+                value: 130000,
+                label: {
+                  text: 'Max Demand',
+                  align: 'right',
+                  x: -20
+                }
+              }]
+            },
+            series: [{
+              type: 'column',
+              name: 'KVAH',
+              data: this.kvahArray
+            }, {
+              type: 'column',
+              name: 'KWH',
+              data: this.kwhArray
+            }, {
+              type: 'spline',
+              name: 'KVA',
+              data: this.kvaArray
+            }]
+          };
+          
+          Highcharts.chart('BarChart', BarChartOptions);
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching Bar Data!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  } 
+
+  feederinterval() {
+    if (this.CompanyId) {
+      this.DashDataService.feederinterval(this.deviceUID, this.interval).subscribe(
+        (data) => {
+          this.kvah=data.kvah;
+          this.kwh=data.kwh;
+          this.kvarh_led=data.kvarh;
+        },
+        (error) => {
+        }
+      );
+    }
+  } 
+
+  startInterval() {
+    this.intervalSubscription = interval(5000)
+      .pipe(take(Infinity))
+      .subscribe(() => {
+        this.feederinterval();
+      });
+  }
+
+  stopInterval() {
+    if (this.intervalSubscription) {
+      this.intervalSubscription.unsubscribe();
+    }
   }
 
   unsubscribeFromTopics() {
@@ -80,77 +255,95 @@ export class OverviewComponent  implements OnInit {
 
   subscribeToTopics() {
     this.deviceData = [];
-    console.log(this.deviceUID);
 
       const dataTopic = `ems_live/${this.deviceUID}`;
   
       const dataSubscription = this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
         const dataPayload = JSON.parse(dataMessage.payload.toString());
+
+        Object.keys(dataPayload).forEach(key => {
+          if (typeof dataPayload[key] === 'number' && dataPayload[key] < 0) {
+              dataPayload[key] = Math.abs(dataPayload[key]);
+          }
+        });
+
         console.log(dataPayload)
         this.kva=dataPayload.kva;
         this.kw=dataPayload.kw;
-        this.kvr=dataPayload.kvr;
+        this.kvr=dataPayload.kvar;
         this.voltage=dataPayload.voltage_n;
         this.current=dataPayload.current;
         this.pf=dataPayload.pf;
-      });
+
+        const kvachart = Highcharts.charts[0]; // Assuming the gauge chart is the first chart on the page
+
+        kvachart?.series[0].update({ 
+          type: 'gauge',
+          data: [this.kva]
+        });
+
+        kvachart?.yAxis[0].update({
+          max: this.kva < 200 ? 200 : undefined
+        });
+
+        const kwchart = Highcharts.charts[1]; // Assuming the gauge chart is the first chart on the page
+
+        kwchart?.series[0].update({ 
+          type: 'gauge',
+          data: [this.kw]
+        });
+
+        kwchart?.yAxis[0].update({
+          max: this.kw < 200 ? 200 : undefined
+        });
+
+        const kvrchart = Highcharts.charts[2]; // Assuming the gauge chart is the first chart on the page
+
+        kvrchart?.series[0].update({ 
+          type: 'gauge',
+          data: [this.kvr]
+        });
+
+        kvrchart?.yAxis[0].update({
+          max: this.kvr < 200 ? 200 : undefined
+        });
+
+        const pfchart = Highcharts.charts[3]; // Assuming the gauge chart is the first chart on the page
+
+        pfchart?.series[0].update({ 
+          type: 'gauge',
+          data: [this.pf]
+        });
+
+        pfchart?.yAxis[0].update({
+          max: this.pf < 2 ? 2 : undefined
+        });
+
+        const currentchart = Highcharts.charts[4]; // Assuming the gauge chart is the first chart on the page
+
+        currentchart?.series[0].update({ 
+          type: 'gauge',
+          data: [this.current]
+        });
+
+        currentchart?.yAxis[0].update({
+          max: this.current < 200 ? 200 : undefined
+        });
   
       this.mqttSubscriptions.push(dataSubscription);
-  }
 
-  BarChart: Highcharts.Options = {
-    chart: {
-      type: 'column',
-    },
-    credits: {
-      enabled: false
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Category 1', 'Category 2', 'Category 3'],
-      startOnTick: true,
-      endOnTick: false,
-      tickmarkPlacement: 'between',
-      minPadding: 0,
-      maxPadding: 0,
-      min: 0,
-      max: undefined,
-      labels: {
-        step: 0.5,
-        enabled:false
-      }
-    },
-    yAxis: {
-      title: {
-        text: ''
-      },
-      plotLines: [{
-        color: 'black',
-        width: 2,
-        value: 130000,
-        label: {
-          text: 'Max Inflation',
-          align: 'right',
-          x: -20
-        }
-      }]
-    },
-    series: [{
-      type: 'column',
-      name: 'KVAH',
-      data: [50000, 100000, 100005]
-    }, {
-      type: 'column',
-      name: 'KWH',
-      data: [51086, 136000, 5500, 141000]
-    }, {
-      type: 'spline',
-      name: 'Line Series',
-      data: [10000, 20000, 30000,50000,60000, 200000]
-    }]
-  };
+        const voltagechart = Highcharts.charts[5]; // Assuming the gauge chart is the first chart on the page
+
+        voltagechart?.series[0].update({ 
+          type: 'gauge',
+          data: [this.voltage]
+        });
+
+        voltagechart?.yAxis[0].update({
+          max: this.voltage < 200 ? 200 : undefined
+        });
+      });      
+  }
 
   PieChart: Highcharts.Options = {
     chart: {
@@ -191,12 +384,11 @@ export class OverviewComponent  implements OnInit {
     series: [{
       type: 'pie',
       name: 'Data',
-      data: [
-        { name: 'Red', y: 320 },
-        { name: 'Green', y: 50 },
-        { name: 'Blue', y: 20 }
-      ]
-    }]
+      data: this.pieChartData
+    }],
+    exporting: {
+      enabled: false // Disable the options button
+    }
   };
 
   KVAguage: Highcharts.Options = {
@@ -226,6 +418,7 @@ export class OverviewComponent  implements OnInit {
     },
     yAxis: {
       min: 0,
+      max:this.kva < 200 ? 200 : undefined,
       tickPixelInterval: 72,
       tickPosition: 'inside',
       tickColor: 'white',
@@ -319,6 +512,7 @@ export class OverviewComponent  implements OnInit {
     },
     yAxis: {
       min: 0,
+      max:this.kw < 200 ? 200 : undefined,
       tickPixelInterval: 72,
       tickPosition: 'inside',
       tickColor: 'white',
@@ -412,6 +606,7 @@ export class OverviewComponent  implements OnInit {
     },
     yAxis: {
       min: 0,
+      max:this.kvr < 200 ? 200 : undefined,
       tickPixelInterval: 72,
       tickPosition: 'inside',
       tickColor: 'white',
@@ -505,6 +700,7 @@ export class OverviewComponent  implements OnInit {
     },
     yAxis: {
       min: 0,
+      max:this.pf < 2 ? 2 : undefined,
       tickPixelInterval: 72,
       tickPosition: 'inside',
       tickColor: 'white',
@@ -520,16 +716,16 @@ export class OverviewComponent  implements OnInit {
       lineWidth: 0,
       plotBands: [{
         from: 0,
-        to: 120,
+        to: 0.75,
         color: '#55BF3B', // green
         thickness: 20
       }, {
-        from: 120,
-        to: 160,
+        from: 0.75,
+        to: 1,
         color: '#DDDF0D', // yellow
         thickness: 20
       }, {
-        from: 160,
+        from: 1,
         to: 50000000000000,
         color: '#DF5353', // red
         thickness: 20
@@ -598,6 +794,7 @@ export class OverviewComponent  implements OnInit {
     },
     yAxis: {
       min: 0,
+      max:this.current < 200 ? 200 : undefined,
       tickPixelInterval: 72,
       tickPosition: 'inside',
       tickColor: 'white',
@@ -691,6 +888,7 @@ export class OverviewComponent  implements OnInit {
     },
     yAxis: {
       min: 0,
+      max:this.voltage < 200 ? 200 : undefined,
       tickPixelInterval: 72,
       tickPosition: 'inside',
       tickColor: 'white',
@@ -778,4 +976,9 @@ export class OverviewComponent  implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+}
+
+interface PieChartData {
+  name: string;
+  y: number;
 }

@@ -25,7 +25,7 @@
                   <mat-label>Last</mat-label>
                   <mat-select [(ngModel)]="selectedDeviceInterval">
                     <mat-option value="1hour">1 Hour</mat-option>
-                    <mat-option value="24hour">24 hour</mat-option>
+                    <mat-option value="12hour">12 hours</mat-option>
                     <mat-option value="day">This Day</mat-option>
                     <mat-option value="week">This Week</mat-option>
                     <mat-option value="month">This Month</mat-option>
@@ -68,7 +68,7 @@
                           <button mat-raised-button color="primary" ngxMatDatepickerApply>Apply</button>
                         </ngx-mat-datepicker-actions>
                       </ngx-mat-datetime-picker>
-                      <mat-error *ngIf = "end_date.invalid">Start Date is Required*</mat-error>
+                      <mat-error *ngIf = "end_date.invalid">End Date is Required*</mat-error>
                     </mat-form-field>
                   </div>
                 </div>
