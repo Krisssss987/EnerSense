@@ -57,6 +57,7 @@ import { ParamaterisedComponent } from './analytics/paramaterised/paramaterised.
 import {MatChipsModule} from '@angular/material/chips';
 import { ReportComponent } from './report/report.component';
 import { FilterComponent } from './overview/filter/filter.component';
+import { AleartsComponent } from './feeder/alearts/alearts.component';
 
 
 
@@ -85,6 +86,7 @@ import { FilterComponent } from './overview/filter/filter.component';
     ParamaterisedComponent,
     ReportComponent,
     FilterComponent,
+    AleartsComponent,
   ],
   imports: [
     CommonModule,

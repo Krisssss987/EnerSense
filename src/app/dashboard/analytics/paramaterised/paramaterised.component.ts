@@ -17,9 +17,6 @@ export class ParamaterisedComponent implements OnInit, AfterViewInit {
     { value: '30min', label: '30 min' },
     { value: '1hour', label: '1 hour' },
   ];
-
-
-
   shifts = [
     { value: 'Shift A', label: 'Shift A' },
     { value: 'Shift B', label: 'Shift B' },
@@ -53,6 +50,7 @@ export class ParamaterisedComponent implements OnInit, AfterViewInit {
   fetchdata(): void {
     this.service.getParamaterisedData(this.selectedIntervals).subscribe((result) => {
       this.data = result;
+      
 
       // Clear existing arrays
       this.kvavalue = [];
@@ -140,7 +138,7 @@ export class ParamaterisedComponent implements OnInit, AfterViewInit {
 
   onIntervalChange(event: any): void {
     // Log the selected interval value
-    console.log('Selected Interval:', this.selectedIntervals);
+    // console.log('Selected Interval:', this.selectedIntervals);
   }
 
 
