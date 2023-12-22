@@ -82,59 +82,79 @@ export class ParamaterisedComponent implements OnInit, AfterViewInit {
 
 
   parametrisedGraph(): void {
+    const seriesData: any[] = [];
+  
+    // Iterate over each device and create a series for it
+    this.data.forEach((item: any, index: number) => {
+      const deviceData = item.data;
+  
+      // Create series for each parameter
+      const kvASeries = {
+        name: `Device ${index + 1} - ${item.device} - KvA`,
+        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.kva]),
+      };
+  
+      const kwSeries = {
+        name: `Device ${index + 1} - ${item.device} - KW`,
+        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.kw]),
+      };
+  
+      const kvarSeries = {
+        name: `Device ${index + 1} - ${item.device} - Kvar`,
+        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.kvar]),
+      };
+  
+      const voltageLSeries = {
+        name: `Device ${index + 1} - ${item.device} - Voltage L`,
+        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.voltage_l]),
+      };
+  
+      const currentSeries = {
+        name: `Device ${index + 1} - ${item.device} - Current`,
+        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.current]),
+      };
+  
+      const voltageNSeries = {
+        name: `Device ${index + 1} - ${item.device} - Voltage N`,
+        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.voltage_n]),
+      };
+  
+      // Add series to the array
+      seriesData.push(kvASeries, kwSeries, kvarSeries, voltageLSeries, currentSeries, voltageNSeries);
+    });
+  
     Highcharts.chart(this.chart2Container.nativeElement, {
       chart: {
         type: 'spline',
-        plotBorderWidth: 0, // Remove the plot border
+        plotBorderWidth: 0,
       },
       title: {
-        text: 'Parametrised Chart'
+        text: 'Parametrised Chart',
       },
       xAxis: {
-        categories: this.date_time // Use the extracted date_time values
+        type: 'datetime',
+        labels: {
+          formatter: function () {
+            return Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', (this.value as number));
+          },
+        },
       },
       yAxis: {
         title: {
-          text: 'Values'
+          text: 'Values',
         },
         min: 0,
-        max: 10,
-        gridLineWidth: 0, // Remove the gridlines
+        max: 500, // Adjust the max value as needed
+        gridLineWidth: 0,
       },
       legend: {
-        symbolRadius: 0, // Set the symbol radius to 0 to make the legend symbols rectangular
-        verticalAlign: 'top', // Position the legends above the graph
+        symbolRadius: 0,
+        verticalAlign: 'top',
       },
-      series: [
-        {
-          name: 'KvA',
-          data: this.kvavalue // Use the extracted kva values
-        },
-        {
-          name: 'KW',
-          data: this.kw // Use the extracted kw values
-        },
-        {
-          name: 'Kvar',
-          data: this.kvar // Use the extracted kvar values
-        },
-        {
-          name: 'voltage_l',
-          data: this.voltage_l // Use the extracted kvar values
-        },
-        {
-          name: 'current',
-          data: this.current// Use the extracted kvar values
-        },
-        {
-          name: 'voltage_n',
-          data: this.voltage_n // Use the extracted kvar values
-        },
-
-        // Add more series for other parameters if needed
-      ] as any
+      series: seriesData as any,
     });
   }
+  
 
   onIntervalChange(event: any): void {
     // Log the selected interval value
@@ -143,7 +163,6 @@ export class ParamaterisedComponent implements OnInit, AfterViewInit {
 
 
   generateGraph(): void {
- 
     this.fetchdata();
   }
 }

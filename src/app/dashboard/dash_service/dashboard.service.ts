@@ -23,6 +23,7 @@ export class DashboardService {
     return this.http.get(`${this.API_URL}/live-device-detail/${CompanyId}`);
   }
 
+
  // http://localhost:3000/feeder/SenseLive?TimeInterval=15min&Shift=ShiftA
 
 // getConsuptiondata(interval:string,shift:string){
@@ -46,6 +47,13 @@ getharmonicdata(interval:string): Observable<any>{
   return this.http.get(`http://localhost:3000/feederharmonic/SenseLive?TimeInterval=${interval}`);
 }
 
+getHigestEnergyConsuptionArea(): Observable<any>{
+return this.http.get(`${this.API_URL}/fetchHighestKva/SenseLive/1hour`);
+}
+
+getLowPF() :Observable <any>{
+  return this.http.get(`${this.API_URL}/fetchLowestPF/SenseLive/1hour`);
+}
 
 
   getuserdata(UserId: string):Observable<any> {
@@ -62,7 +70,14 @@ getharmonicdata(interval:string): Observable<any>{
   getConsuptionGraphdata(): Observable<any>{
     return this.http.get(`${this.API_URL}/feeder/SenseLive`);
   }
-  
+
+  getMaxvsActuladata(DeviceId:string): Observable<any>{
+    return this.http.get(`${this.API_URL}/fetchmaxdemand/${DeviceId}`);
+  }
+
+  editUserDetails(userId: string, userData: any): Observable<any>{
+    return this.http.put(`${this.API_URL}/edituser/${userId}`, userData);
+  }
 
 
 }
