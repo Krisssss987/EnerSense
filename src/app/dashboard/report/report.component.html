@@ -1,1 +1,122 @@
-<p>report works!</p>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row pt-2">
+        	<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+        		<mat-card>
+        			<mat-card-content>
+		        		<div class="container-fluid">
+					    	<div class="row">
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+									<!-- <h2>Device Status : 
+										<div *ngIf="actualStatus === '0'" class="online">
+											Online
+										</div>
+										<div *ngIf="actualStatus === '1'" class="offline">
+											Offline
+										</div>
+									</h2> -->
+								</div>
+					    		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+					    			<div>Download Report</div>
+					        		<mat-button-toggle-group name="fontStyle" class="button-group" aria-label="Font Style">
+										<mat-button-toggle class="button-group" value="bold" (click)="downloadCSV()">CSV</mat-button-toggle>
+										<mat-button-toggle class="button-group" value="italic" (click)="downloadExcel()">Excel</mat-button-toggle>
+										<mat-button-toggle class="button-group" value="underline" (click)="downloadPDF()">Print</mat-button-toggle>
+									</mat-button-toggle-group>
+					        	</div>
+
+					        	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
+					        		<div>Apply Filter</div>
+					        	</div>
+					    		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
+					                <mat-form-field appearance="outline" class="form-field">
+					                    <mat-label>Select Device</mat-label>
+					                    <mat-select required [formControl]="device_uid">
+											<mat-option *ngFor="let device of dataSource2" [value]="device.deviceid">{{device.deviceid}}</mat-option>
+										</mat-select>
+										<mat-error *ngIf = "device_uid.invalid">Device Name is Required*</mat-error>
+					                </mat-form-field>
+					            </div>
+					            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
+					                <mat-form-field class="form-field" appearance="outline">
+										<mat-label>Start Date</mat-label>
+										<input matInput placeholder="Select Date" [matDatepicker]="startPicker" required [formControl]="start_date"
+										[max]="currentDate" (dateChange)="updateStartDate($event)">
+										<mat-datepicker-toggle matPrefix [for]="startPicker"></mat-datepicker-toggle>
+										<mat-datepicker #startPicker></mat-datepicker>
+										<mat-error *ngIf = "start_date.invalid">Start Date is Required*</mat-error>
+									  </mat-form-field>
+					            </div>
+					            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
+					                <mat-form-field class="form-field" appearance="outline">
+										<mat-label>End Date</mat-label>
+										<input matInput placeholder="Select Date" [matDatepicker]="endPicker" required [formControl]="end_date"
+										[min]="startDate" [max]="currentDate" (dateChange)="updateEndDate($event)">
+										<mat-datepicker-toggle matPrefix [for]="endPicker"></mat-datepicker-toggle>
+										<mat-datepicker #endPicker></mat-datepicker>
+										<mat-error *ngIf = "end_date.invalid ">End Date is Required*</mat-error>
+									  </mat-form-field>
+					            </div>
+					            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
+					                <div class="d-flex justify-content-end">
+					                	<button mat-raised-button color="primary" (click)= "applyFilter()">Filter</button>
+					                </div>
+					            </div>
+					    	</div>
+					    </div>
+        			</mat-card-content>
+        		</mat-card>
+        	</div>
+        	<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-2">
+        		<mat-card class="mat-card-outline">
+                    <mat-card-content>
+					  <div class="table-container" style="overflow: auto; max-height:68vh;">
+                        <table mat-table [dataSource]="dataSource" matSort class="custom-theme-table mat-table">
+                            
+                            <ng-container matColumnDef="Device">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                                <td mat-cell *matCellDef="let element">{{ element.device_uid }}</td>
+                            </ng-container>
+
+                            
+                            <ng-container matColumnDef="Date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+                            </ng-container>
+
+                            
+                            <ng-container matColumnDef="Time">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+                                <td mat-cell *matCellDef="let element">{{ element.time}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ORP">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ORP</th>
+                                <td mat-cell *matCellDef="let element">{{ element.orp }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Pump1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Pump 1</th>
+							    <td mat-cell *matCellDef="let element" [ngClass]="{'online': element.pump_1 === '1', 'offline': element.pump_1 !== '1'}">
+							        {{ element.pump_1 === '1' ? 'On' : 'Off' }}
+							    </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Pump2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Pump 2</th>
+                                <td mat-cell *matCellDef="let element" [ngClass]="{'online': element.pump_2 === '1', 'offline': element.pump_2 !== '1'}">
+							        {{ element.pump_2 === '1' ? 'On' : 'Off' }}
+							    </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                        </table>
+					  </div>
+					  <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
+                    </mat-card-content>
+                </mat-card>
+        	</div>
+        </div>
+    </div>
+</div>

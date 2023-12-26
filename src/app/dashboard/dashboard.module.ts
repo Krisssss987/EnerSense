@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.component';
@@ -136,6 +136,7 @@ import { AleartsComponent } from './feeder/alearts/alearts.component';
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
-  ]
+  ],
+  providers: [DatePipe],
 })
 export class DashboardModule { }

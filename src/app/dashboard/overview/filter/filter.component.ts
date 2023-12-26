@@ -15,7 +15,7 @@ export class FilterComponent {
 
   public disabled = false;
   public showSpinners = true;
-  public showSeconds = true;
+  public showSeconds = false;
   public touchUi = false;
   public enableMeridian = false;
   public minDate!: Date;
@@ -28,7 +28,7 @@ export class FilterComponent {
 
   CompanyEmail!: string | null;
   selectedDevice!: FormControl;
-  selectedDeviceInterval!: FormControl;
+  selectedDeviceInterval: string ='';
   deviceOptions: any[] = [];
   selectedRadioButton: string = 'Last';
   currentDate: Date = new Date();
@@ -37,6 +37,7 @@ export class FilterComponent {
   start_date = new FormControl('', [Validators.required]);
   end_date = new FormControl('', [Validators.required]);
   CompanyId!: string | null;
+  deviceID!:string;
 
   @HostListener('window:resize')
   onWindowResize() {
@@ -54,6 +55,10 @@ export class FilterComponent {
   ngOnInit() {
     this.adjustDialogWidth();
     this.getUserDevices();
+  }
+
+  open(device: any){
+    this.deviceID = device.deviceid;
   }
 
   updateStartDate(event: any): void {
@@ -84,12 +89,10 @@ export class FilterComponent {
 
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
-    console.log(this.CompanyId);
     if (this.CompanyId) {
       this.DashDataService.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.deviceOptions = devices;
-          console.log(this.deviceOptions);
         },
         (error) => {
           this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
@@ -105,69 +108,17 @@ export class FilterComponent {
   }
 
   onSaveClick(): void {
-    // if (this.selectedRadioButton === 'Last') {
-    //   if (this.selectedDevice.value) {
-    //     const device = this.selectedDevice.value;
-    //     const interval = this.selectedDeviceInterval.value;
-
-    //     this.DashDataService.dataLast(device, interval).subscribe(
-    //       (resultData: any) => {
-    //         const data = resultData;
-    //         this.DashDataService.dataLastStatus(device, interval).subscribe(
-    //           (resultDataStatus: any) => {
-    //             const dataStatus = resultDataStatus;
-    //             this.dialogRef.close({ data, dataStatus, device });
-    //           },
-    //           (error) => {
-    //             this.snackBar.open('Error while fetching last data status!', 'Dismiss', {
-    //               duration: 2000
-    //             });
-    //           }
-    //         );
-    //       },
-    //       (error) => {
-    //         this.snackBar.open('Error while fetching last data!', 'Dismiss', {
-    //           duration: 2000
-    //         });
-    //       }
-    //     );
-    //   } else {
-    //     this.snackBar.open('No device has been selected!', 'Dismiss', {
-    //       duration: 2000
-    //     });
-    //   }
-    // } else if (this.selectedRadioButton === 'timePeriod') {
-    //   if (this.selectedDevice.value) {
-    //     const device = this.selectedDevice.value;
-    //     const formattedStartDate = this.startDate.toISOString().split('T')[0];
-    //     const formattedEndDate = this.endDate.toISOString().split('T')[0];
-
-    //     this.DashDataService.DataByCustomDate(device, formattedStartDate, formattedEndDate).subscribe(
-    //       (resultData: any) => {
-    //         const data = resultData;
-    //         this.DashDataService.DataByCustomDateStatus(device, formattedStartDate, formattedEndDate).subscribe(
-    //           (resultDataStatus: any) => {
-    //             const dataStatus = resultDataStatus;
-    //             this.dialogRef.close({ data, dataStatus, device });
-    //           },
-    //           (error) => {
-    //             this.snackBar.open('Error while fetching data status by custom date!', 'Dismiss', {
-    //               duration: 2000
-    //             });
-    //           }
-    //         );
-    //       },
-    //       (error) => {
-    //         this.snackBar.open('Error while fetching data by custom date!', 'Dismiss', {
-    //           duration: 2000
-    //         });
-    //       }
-    //     );
-    //   } else {
-    //     this.snackBar.open('No device has been selected!', 'Dismiss', {
-    //       duration: 2000
-    //     });
-    //   }
-    // }
+    if(this.selectedRadioButton==='Custom' ){
+      this.DashDataService.setDeviceId(this.deviceID);
+      this.DashDataService.setInterval('Custom');
+      this.DashDataService.setStartDate(this.start_date.value??'');
+      this.DashDataService.setEndDate(this.end_date.value??'');
+    }
+    else {
+      this.DashDataService.setDeviceId(this.deviceID);
+      this.DashDataService.setInterval(this.selectedDeviceInterval);
+      this.DashDataService.setStartDate('');
+      this.DashDataService.setEndDate('');
+    }
   }
 }
