@@ -21,7 +21,7 @@ export const navbarData = [
     },
     {
         routeLink: 'report',
-        icon: 'people',
+        icon: 'save_alt',
         label: 'Report'
     },
 ];

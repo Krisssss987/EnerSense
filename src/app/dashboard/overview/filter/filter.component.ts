@@ -13,31 +13,11 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 })
 export class FilterComponent {
 
-  public disabled = false;
-  public showSpinners = true;
-  public showSeconds = false;
-  public touchUi = false;
-  public enableMeridian = false;
-  public minDate!: Date;
-  public maxDate!: Date;
-  public stepHour = 1;
-  public stepMinute = 1;
-  public stepSecond = 1;
-  public disableMinute = false;
-  public hideTime = false;
-
   CompanyEmail!: string | null;
-  selectedDevice!: FormControl;
+  selectedDevice!: string;
   selectedDeviceInterval: string ='';
   deviceOptions: any[] = [];
-  selectedRadioButton: string = 'Last';
-  currentDate: Date = new Date();
-  startDate!: Date;
-  endDate: Date = this.currentDate;
-  start_date = new FormControl('', [Validators.required]);
-  end_date = new FormControl('', [Validators.required]);
   CompanyId!: string | null;
-  deviceID!:string;
 
   @HostListener('window:resize')
   onWindowResize() {
@@ -55,25 +35,12 @@ export class FilterComponent {
   ngOnInit() {
     this.adjustDialogWidth();
     this.getUserDevices();
+    this.retrieveValues();
   }
 
-  open(device: any){
-    this.deviceID = device.deviceid;
-  }
-
-  updateStartDate(event: any): void {
-    const selectedStartDate = event.value;
-    this.startDate = selectedStartDate;
-  }
-
-  updateEndDate(event: any): void {
-    const selectedEndDate = event.value;
-    if (!this.startDate || selectedEndDate >= this.startDate) {
-      this.endDate = selectedEndDate;
-    } else {
-      this.endDate = this.currentDate;
-      console.error('End date must be greater than or equal to the start date');
-    }
+  retrieveValues(){
+    this.selectedDevice = sessionStorage.getItem('deviceID')??'';
+    this.selectedDeviceInterval = sessionStorage.getItem('interval')??'';
   }
 
   adjustDialogWidth() {
@@ -108,17 +75,7 @@ export class FilterComponent {
   }
 
   onSaveClick(): void {
-    if(this.selectedRadioButton==='Custom' ){
-      this.DashDataService.setDeviceId(this.deviceID);
-      this.DashDataService.setInterval('Custom');
-      this.DashDataService.setStartDate(this.start_date.value??'');
-      this.DashDataService.setEndDate(this.end_date.value??'');
-    }
-    else {
-      this.DashDataService.setDeviceId(this.deviceID);
-      this.DashDataService.setInterval(this.selectedDeviceInterval);
-      this.DashDataService.setStartDate('');
-      this.DashDataService.setEndDate('');
-    }
+    this.DashDataService.setDeviceId(this.selectedDevice);
+    this.DashDataService.setInterval(this.selectedDeviceInterval);
   }
 }

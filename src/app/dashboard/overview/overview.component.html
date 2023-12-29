@@ -1,15 +1,19 @@
 <div class="content">
-    <button class="floating-button" color="primary" mat-mini-fab (click)="openFilterDailog()">
-        <mat-icon>filter_list</mat-icon>
-    </button>
     <div class="container-fluid">
         <div class="row mt-1">
             <div class="col-12 col-md-12 col-lg-6">
                 <div class="card pb-2 allCard firstcard">
-                    <div class="card-heading2-container mt-1 mb-1">
-                        <p class="card-heading2">Hello, {{firstname}}&nbsp;{{lastname}}</p>
+                        <div *ngIf="!isWideScreen" class="d-flex justify-content-between align-items-center mt-1 mb-1">
+                            <p class="card-heading2">Hello, {{firstname}}&nbsp;{{lastname}}</p>
+                            
+                            <button color="primary" class="filter_button" mat-mini-fab (click)="openFilterDailog()" style="z-index: 2;">
+                                <mat-icon>filter_list</mat-icon>
+                            </button>
+                        </div>
                         
-                    </div>
+                        <div *ngIf="isWideScreen" class="mt-1 mb-1">
+                            <p class="card-heading2">Hello, {{firstname}}&nbsp;{{lastname}}</p>
+                        </div>                        
                     <mat-divider></mat-divider>
                     <div class="row text-center">
                         <div class="row mt-2">
@@ -70,7 +74,7 @@
                         </div>                        
                     </div>
                     <mat-divider></mat-divider>
-                    <h5 class="card-heading3 text-center mt-2" style="padding-bottom: -20px;">Consumption Overview</h5>
+                    <h5 class="card-heading3 text-center mt-2" style="padding-bottom: -20px;">Instantaneous Device Data</h5>
                     <div class="row">
                         <div class="col-6 col-md-4">
                             <div id="KVAguage"></div>
@@ -94,7 +98,7 @@
                         </div>
                         <div class="col-6 col-md-4 ">
                             <div id="Voltageguage"></div>
-                            <h5 class="card-heading text-center">Voltage</h5>
+                            <h5 class="card-heading text-center">Voltage N</h5>
                         </div>
                     </div>
                 </div>
@@ -104,14 +108,37 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card allCard">
-                            <h5 class="card-heading3 text-center mt-2">Consumption Overview</h5>
-                            <div id="PieChart"></div>
+                            <div *ngIf="isWideScreen" class="d-flex justify-content-between align-items-center" style="margin-top: 1px;">
+                                <h5 class="card-heading4 mt-2">Consumption Pattern</h5>
+                                
+                                <button color="primary" class="filter_button" mat-mini-fab (click)="openFilterDailog()" style="z-index: 2;">
+                                    <mat-icon>filter_list</mat-icon>
+                                </button>
+                            </div>
+                            <div *ngIf="!isWideScreen">
+                                <h5 class="card-heading3 text-center mt-2">Consumption Pattern</h5>
+                            </div>
+                            <div id="BarChart"></div>
                         </div>
                     </div>
                     <div class="col-12 mt-2">
-                        <div class="card allCard">
+                        <div class="card allCard pb-2">
                             <h5 class="card-heading3 text-center mt-2">Consumption Overview</h5>
-                            <div id="BarChart"></div>
+                            <div id="PieChart"></div>
+
+                            <mat-button-toggle-group name="fontStyle" aria-label="Font Style" style="height: 40px" class="mx-auto" [(value)]="selectedDuration" (change)="onDurationChange($event)">
+                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="1hour">1 Hr</mat-button-toggle>
+                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="12hour">12 Hr</mat-button-toggle>
+                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="day">Day</mat-button-toggle>
+                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="week">Week</mat-button-toggle>
+                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="month">Month</mat-button-toggle>
+                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="1hour">1 Hour</mat-button-toggle>
+                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="12hour">12 Hour</mat-button-toggle>
+                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="day">This Day</mat-button-toggle>
+                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="week">This Week</mat-button-toggle>
+                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="month">This Month</mat-button-toggle>
+                            </mat-button-toggle-group>
+
                         </div>
                     </div>
                 </div>

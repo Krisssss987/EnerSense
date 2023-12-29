@@ -16,6 +16,16 @@
     font-size: 23px;
 }
 
+.card-heading4{
+    color: rgb(78, 78, 255);
+    margin-left: 12px;
+    font-size: 23px;
+}
+
+.filter_button{
+    margin-right: 3px;
+}
+
 .numbers{
     padding-bottom: -1px;
     font-size: 30px;
@@ -47,9 +57,13 @@
 }
 
 
-#PieChart, #BarChart {
-    height: 39vh; /* Set the desired height */
-  }
+#BarChart {
+    height: 405px; /* Set the desired height */
+}
+
+#PieChart{
+    height: 338px; /* Set the desired height */
+}
 
 .allCard{
     margin-left: -0.6vh;
@@ -94,21 +108,13 @@
 #PFguage,
 #Currentguage,
 #Voltageguage {
-    height: 18.7vh; /* Set default width */
+    height: 192px; /* Set default width */
 }
 
 .card-heading2-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.floating-button {
-    position: fixed;
-    bottom: 50px;
-    right: 12px;
-    cursor: pointer;
-    z-index: 100;
 }
 
 

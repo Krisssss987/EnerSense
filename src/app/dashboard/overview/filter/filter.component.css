@@ -16,9 +16,7 @@
 
 .from-field{
   width: 100%;
-}
-.from-field-sm{
-  width: 100%;
-  padding-left: 10%;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 

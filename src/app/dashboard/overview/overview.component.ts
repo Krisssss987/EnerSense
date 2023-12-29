@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SummaryComponent } from './summary/summary.component';
 
@@ -23,6 +23,16 @@ HighchartsExporting(Highcharts);
 })
 export class OverviewComponent  implements OnInit {
 
+  isWideScreen = window.innerWidth > 998;
+  isMobileScreen = window.innerWidth > 468;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.isWideScreen = window.innerWidth > 998;
+    this.isMobileScreen = window.innerWidth > 468;
+  }
+
+  selectedDuration!: string;
   firstname=sessionStorage.getItem('firstname')
   lastname=sessionStorage.getItem('lastname')
   mqttSubscriptions: Subscription[] = [];
@@ -47,10 +57,10 @@ export class OverviewComponent  implements OnInit {
   CO2:number=0;
   deviceOptions:any;
   intervalSubscription: Subscription | undefined;
-  kvahArray= [];
-  kvaArray= [];
-  kwhArray= [];
-  dateTimeArray= [];
+  kvahArray: any[] = [];
+  kvaArray: any[] = [];
+  kwhArray: any[] = [];
+  dateTimeArray: any[] = [];
 
   ngOnInit() {
     Highcharts.chart('KVAguage', this.KVAguage);
@@ -59,9 +69,10 @@ export class OverviewComponent  implements OnInit {
     Highcharts.chart('PFguage', this.PFguage);
     Highcharts.chart('Currentguage', this.Currentguage);
     Highcharts.chart('Voltageguage', this.Voltageguage);
-    this.retrievingValues();
     this.getUserDevices();
     this.startInterval();
+    this.piedataRetrieve();
+    this.retrievingValues();
   }
 
   constructor(
@@ -83,7 +94,7 @@ export class OverviewComponent  implements OnInit {
           let interval=sessionStorage.getItem('interval');
           if(id==null || interval==null){
             this.DashDataService.setDeviceId(this.deviceOptions[0].deviceid);
-            this.DashDataService.setInterval('1hour');
+            this.DashDataService.setInterval('12hour');
           }else{
             
           }
@@ -104,27 +115,37 @@ export class OverviewComponent  implements OnInit {
     });
     this.DashDataService.interval$.subscribe((interval) => {
       this.interval=interval??'';
-      this.pieData();
       this.barData();
       this.feederinterval();
     });
-    this.DashDataService.StartDate$.subscribe((StartDate) => {
-      console.log(StartDate);
-    });
-    this.DashDataService.EndDate$.subscribe((EndDate) => {
-      console.log(EndDate);
-    });
+  }
+
+  piedataRetrieve(){
+    const pieValue = sessionStorage.getItem('pieInterval');
+    if(pieValue=='' || pieValue==null || pieValue==undefined){
+      this.selectedDuration = '1hour';
+      this.pieData();
+    }else{
+      this.selectedDuration = pieValue;
+      this.pieData();
+    }
+  }
+
+  onDurationChange(event: any) {
+    this.selectedDuration = event.value;
+    sessionStorage.setItem('pieInterval',this.selectedDuration);
+    this.pieData();
   }
 
   pieData() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.DashDataService.pieDetails(this.CompanyId, this.interval).subscribe(
+      this.DashDataService.pieDetails(this.CompanyId, this.selectedDuration).subscribe(
         (piedata) => {
           this.pieChartData.length = 0;
-          Array.prototype.push.apply(this.pieChartData, piedata.map((entry: { device: any; data: { kvah: any; }; }) => ({
+          Array.prototype.push.apply(this.pieChartData, piedata.map((entry: { device: any; data: { kvah_diff: any; }; }) => ({
             name: entry.device,
-            y: entry.data.kvah
+            y: entry.data.kvah_diff
           })));
   
           Highcharts.chart('PieChart', this.PieChart);
@@ -142,13 +163,29 @@ export class OverviewComponent  implements OnInit {
     if (this.CompanyId) {
       this.DashDataService.barDetails(this.deviceUID, this.interval).subscribe(
         (bardata) => {
-          const new_data = bardata[this.deviceUID].aggregatedValues;
-          this.kvahArray = new_data.map((item: { kvah: any; }) => item.kvah);
-          this.kvaArray = new_data.map((item: { kva: any; }) => item.kva);
-          this.kwhArray = new_data.map((item: { kwh: any; }) => item.kwh);
-          this.dateTimeArray = new_data.map((item: { date_time: any }) => {
-            return this.datePipe.transform(item.date_time, 'dd-MM-yyyy HH:mm:ss') || '';
-          });      
+          const new_data = bardata;
+          this.kvahArray = new_data.map((entry: any) => [
+            new Date(entry.date_time).getTime(),
+            entry.kvah
+          ]);
+          this.kvaArray = new_data.map((entry: any) => [
+            new Date(entry.date_time).getTime(),
+            entry.kva
+          ]);
+          this.kwhArray = new_data.map((entry: any) => [
+            new Date(entry.date_time).getTime(),
+            entry.kwh
+          ]);
+          if(this.interval=='12hour' || this.interval=='day'){
+              this.dateTimeArray = new_data.map((item: { date_time: any }) => {
+              return new Date(item.date_time).getTime();
+            }); 
+          }else if(this.interval=='week' || this.interval=='month'){
+              this.dateTimeArray = new_data.map((item: { date_time: any }) => {
+              return new Date(item.date_time).getTime();
+            });
+          }
+               
 
           const BarChartOptions: Highcharts.Options = {
             chart: {
@@ -161,17 +198,7 @@ export class OverviewComponent  implements OnInit {
               text: ''
             },
             xAxis: {
-              categories: this.dateTimeArray,
-              startOnTick: true,
-              endOnTick: false,
-              tickmarkPlacement: 'between',
-              minPadding: 0,
-              maxPadding: 0,
-              min: 0,
-              max: undefined,
-              labels: {
-                step: 1,
-              }
+              type: 'datetime',
             },
             yAxis: {
               title: {
@@ -180,7 +207,7 @@ export class OverviewComponent  implements OnInit {
               plotLines: [{
                 color: 'black',
                 width: 2,
-                value: 130000,
+                value: 30,
                 label: {
                   text: 'Max Demand',
                   align: 'right',
@@ -199,8 +226,14 @@ export class OverviewComponent  implements OnInit {
             }, {
               type: 'spline',
               name: 'KVA',
-              data: this.kvaArray
-            }]
+              data: this.kvaArray,
+              marker: {
+                  enabled: false
+              }
+            }],
+            exporting: {
+              enabled: false // Disable the options button
+            }
           };
           
           Highcharts.chart('BarChart', BarChartOptions);
@@ -229,7 +262,7 @@ export class OverviewComponent  implements OnInit {
   } 
 
   startInterval() {
-    this.intervalSubscription = interval(5000)
+    this.intervalSubscription = interval(50000)
       .pipe(take(Infinity))
       .subscribe(() => {
         this.feederinterval();
