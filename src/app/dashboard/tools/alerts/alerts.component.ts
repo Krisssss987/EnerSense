@@ -50,9 +50,10 @@ export class AlertsComponent {
         (alert) =>{
           console.log(alert);
           this.dataSource = alert;
+          
         },
         (error)=>{
-            console.log(error);
+            // console.log(error);
         }
       );
     }

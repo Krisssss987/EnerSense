@@ -1,6 +1,9 @@
-import { Component, AfterContentInit, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
+import { DashboardService } from '../../dash_service/dashboard.service';
+import { MatChipSelectionChange } from '@angular/material/chips';
+
 HighchartsMore(Highcharts);
 
 @Component({
@@ -8,86 +11,118 @@ HighchartsMore(Highcharts);
   templateUrl: './quick-analysis.component.html',
   styleUrls: ['./quick-analysis.component.css']
 })
-export class QuickAnalysisComponent implements OnInit,AfterViewInit{
+export class QuickAnalysisComponent implements OnInit, AfterViewInit {
 
-  options = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' }
-  ];
+  selectedIntervals: string = '1hour';
+  selectedDevice: string = '';
+  selectedshift: string = 'ShiftA';
 
-  intervals = [
-    { value: 'default', label: 'Default' },
-    { value: '1 min', label: '1 min' },
-    { value: '5 min', label: '5 min' },
-    { value: '15 min', label: '15 min' },
-    { value: '30 min', label: '30 min' },
-    { value: '1 hour', label: '1 hour' },
-  ]
-  feeders =[
-    { value: 'feeder1', label: 'feeder1' },
-    { value: 'feeder2', label: 'feeder2' },
-    { value: 'feeder3', label: 'feeder3' },
-  ]
-  parameters = [
-    { value: 'KVA', label: 'KVA' },
-    { value: 'kwa', label: 'kwa2' },
-    { value: 'kvah', label: 'kvah' },
-  ]
-  days=[
-    { value: 'yesterday', label: 'yesterday' },
-    { value: 'last day', label: 'last day' },
-    { value: 'last 5 days', label: 'last 5 days' },
-    { value: 'date', label: 'date' },
-    { value: 'Date and time', label: 'Date and time' },
-  ]
+  @ViewChild('chart2', { static: false }) chart2Container!: ElementRef;
+  data: any;
+
+  Deviceid: string[] = [];
+  kvaSeriesData: any[] = [];
+
+  constructor(private service: DashboardService) { }
 
   ngOnInit(): void {
-
+    this.fetchHigestEnergyConsuption();
   }
-
-  @ViewChild('chart4', { static: false }) chart4Container!: ElementRef;
-
-  // ... existing code
 
   ngAfterViewInit() {
-
-    this.quickAnalysis(this.chart4Container.nativeElement);
+    this.fetchHigestEnergyConsuption();
   }
 
+  fetchHigestEnergyConsuption(): void {
+    this.service.getHigestEnergyConsuptionArea().subscribe((result) => {
+      console.log(result);
+      this.data = result;
 
-  quickAnalysis(container: HTMLElement) {
-    Highcharts.chart(container, {
+      // Reset arrays before updating them
+      this.Deviceid = [];
+      this.kvaSeriesData = [];
+
+      // Extract and store values from the 'data' object
+      Object.keys(this.data).forEach((deviceId: string, index: number) => {
+        const deviceData = this.data[deviceId];
+
+        this.Deviceid.push(deviceId);
+
+        const series = {
+          name: `Device ${index + 1} - ${deviceId}`,
+          data: deviceData.kva.map((kva: any, kvaIndex: string | number) => [new Date(deviceData.timestamp[kvaIndex]).getTime(), kva]),
+        };
+
+        this.kvaSeriesData.push(series);
+      });
+
+      // Call the method to generate the graph after updating the arrays
+      this.parametrisedGraph();
+    });
+  }
+
+  parametrisedGraph(): void {
+    const seriesData: any[] = [];
+  
+    // Iterate over each device and create a series for it
+    Object.keys(this.data).forEach((deviceId: string, index: number) => {
+      const deviceData = this.data[deviceId];
+  
+      const series = {
+        name: `Device ${index + 1} - ${deviceId}`,
+        data: deviceData.kva.map((kva: any, kvaIndex: string | number) => [new Date(deviceData.timestamp[kvaIndex]).getTime(), kva]),
+      };
+  
+      seriesData.push(series);
+    });
+  
+    Highcharts.chart(this.chart2Container.nativeElement, {
       chart: {
-        type: 'spline',
-        plotBorderWidth: 0, // Remove the plot border
+        type: 'line',
+        plotBorderWidth: 0,
       },
       title: {
-        text: 'Quick Analysis Chart'
+        text: 'Parametrised Chart',
       },
       xAxis: {
-        categories: ['Analysis X', 'Analysis Y', 'Analysis Z', 'Analysis W', 'Analysis V']
+        type: 'datetime',
+        labels: {
+          formatter: function () {
+            return Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', (this.value as number));
+          },
+        },
       },
       yAxis: {
         title: {
-          text: 'Analysis Values'
+          text: 'Values',
         },
         min: 0,
-        max: 100,
-        gridLineWidth: 0, // Remove the gridlines
+        max: 50, // Adjust the max value as needed
+        gridLineWidth: 0,
       },
       legend: {
-        symbolRadius: 0, // Set the symbol radius to 0 to make the legend symbols rectangular
-        verticalAlign: 'top', // Position the legends above the graph
+        symbolRadius: 0,
+        verticalAlign: 'top',
       },
-      series: [{
-        name: 'Analysis 1',
-        data: [5, 15, 25, 35, 45]
-      }, {
-        name: 'Analysis 2',
-        data: [15, 25, 35, 45, 55]
-      }] as any
-    } as Highcharts.Options);
+      series: seriesData as any,
+    });
+  }
+  
+
+  onIntervalChange(event: any): void {
+    // Log the selected interval value
+    // console.log('Selected Interval:', this.selectedIntervals);
   }
 
+  generateGraph(): void {
+    this.fetchHigestEnergyConsuption();
+  }
+
+  onParameterSelected(event: MatChipSelectionChange): void {
+    if (event.source.selected) {
+      const selectedParameter = event.source.value;
+      console.log('Selected Parameter:', selectedParameter);
+      // You can do further processing with the selected parameter here
+    }
+  }
 }

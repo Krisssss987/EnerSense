@@ -130,6 +130,8 @@ import { AleartsComponent } from './feeder/alearts/alearts.component';
     MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatRadioModule,
+
     ReactiveFormsModule,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,

@@ -1,20 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
-import { DashService } from '../../dash.service';
-import { AutofillMonitor } from '@angular/cdk/text-field';
 import { DashboardService } from '../../dash_service/dashboard.service';
-HighchartsMore(Highcharts);
+import { MatSelectChange } from '@angular/material/select';
 
-interface GraphDataItem {
-  id: number;
-  meter_name: string;
-  shift_name: string;
-  group_name: string;
-  virtual_group: string;
-  kwh_value: number;
-  timestamp: string;
-}
+HighchartsMore(Highcharts);
 
 @Component({
   selector: 'app-consuption',
@@ -23,168 +13,138 @@ interface GraphDataItem {
 })
 export class ConsuptionComponent implements OnInit, AfterViewInit {
 
-  graphdata = [] ;
-   MeterName: any;
-   KWHValues: number[] = [];
-
-   ShiFTNAmes:string[] = [];
-
-   KWHDATASHIFTA:number[]=[];
-   KWHDATASHIFTB:number[]=[];
-
-
-  feeders =[
-    { value: '6 Th Boiler', label: 'O6 Th Boiler' },
-    { value: 'air compressor', label: 'air compressor' },
-    { value: 'Borewell no 4', label: 'Borewell No 4' }
-  ]
-
   intervals = [
-    { value: 'Yesterday', label: 'Yesterday' },
-    { value: 'This Month', label: 'This Month' },
-    { value: 'Last Month', label: 'Last Month' },
-    { value: 'Date', label: 'Date' },
-    { value: 'Date&Time', label:'Date&Time' },
-  ]
+    { value: '15min', label: '15 min' },
+    { value: '30min', label: '30 min' },
+    { value: '1hour', label: '1 hour' },
+  ];
 
-  shifts =[
-    { value: 'Shift A', label: 'Shift A' },
-    { value: 'Shift B', label: 'Shift B' },
-  ]
+  shifts = [
+    { value: 'ShiftA', label: 'ShiftA' },
+    { value: 'ShiftB', label: 'ShiftB' },
+  ];
+
+  devices = [
+    { value: 'slqoqo', label: 'slqoqo' },
+    { value: 'slqoqo1', label: 'slqoqo1' },
+  ];
+
+  selectedIntervals: string = '1hour';
+  selecteddevice: string = '';
+  selectedshift: string = '';
+
+  @ViewChild('chart2', { static: false }) chart2Container!: ElementRef;
+
   data: any;
-  
-  constructor(private service: DashboardService) {} 
-  
+  devicedata: any;
+  devicenames: string[] = [];
+  kvah: number[] = [];
+  kwh: number[] = [];
+  imp_kvarh: number[] = [];
+  exp_kvarh: number[] = [];
+  kvarh: number[] = [];
+  date_time: number[] = [];
+
+  constructor(private service: DashboardService) {}
+
   ngOnInit(): void {
-
+    this.fetchdata();
+    this.fetchdevicedata();
   }
-  @ViewChild('chart1', { static: false }) chart1Container!: ElementRef;
-
 
   ngAfterViewInit() {
-    this.consumption(this.chart1Container.nativeElement); 
-    this.getgraphdata();
+    this.fetchdata();
+    this.fetchdevicedata();
   }
 
-  // getgraphdata(){
-  //   this.service.getConsuptionGraphdata().subscribe((data) => {
-  //     this.graphdata = data;
-  //     console.log(this.graphdata);
-  //   });
-  // }
+  fetchdata(): void {
+    this.service.getConsuptiondata(this.selectedIntervals, this.selectedshift).subscribe((result) => {
+      this.data = result;
 
-  getgraphdata() {
-    this.service.getConsuptionGraphdata().subscribe((data) => {
-      this.graphdata = data;
+      // Clear existing arrays
+      this.kvah = [];
+      this.kwh = [];
+      this.imp_kvarh = [];
+      this.exp_kvarh = [];
+      this.kvarh = [];
+      this.date_time = [];
 
-      this.MeterName = [];
-      this.KWHValues = [];
-      this.ShiFTNAmes = [];
-  
+      // Extract and store values from the 'data' array
+      this.data.forEach((item: any) => {
+        // Assuming 'data' is an array of objects with a 'data' property
+        item.data.forEach((dataItem: any) => {
+          const datetime = new Date(dataItem.date_time).getTime(); // Convert to timestamp
 
-      this.graphdata.forEach((item: GraphDataItem) => {
-        this.MeterName.push(item.meter_name);
-
-        this.KWHValues.push(item.kwh_value);
-        this.ShiFTNAmes.push(item.shift_name);
-
-        if(item.shift_name == 'ShiftA'){
-          this.KWHDATASHIFTA.push(item.kwh_value);
-        }
-        else{
-          this.KWHDATASHIFTB.push(item.kwh_value);
-        }
-        
-
+          this.kvah.push(dataItem.kvah);
+          this.kwh.push(dataItem.kwh);
+          this.imp_kvarh.push(dataItem.imp_kvarh);
+          this.exp_kvarh.push(dataItem.exp_kvarh);
+          this.kvarh.push(dataItem.kvarh);
+          this.date_time.push(datetime);
+        });
       });
 
-
-      console.log(this.MeterName);
-
-
-      const container = this.chart1Container.nativeElement;
-      this.consumption(container);
+      // Map the values to the Highcharts graph
+      this.consumptionGraph();
     });
   }
-  
 
+  fetchdevicedata(): void {
+    this.service.getdevicename().subscribe((result) => {
+      this.devicedata = result;
 
+      // Assuming that each item in the result array has a 'device' property
+      this.devices = this.devicedata.map((item: any) => ({
+        value: item.device,
+        label: item.device,
+      }));
+      this.devicenames = this.devicedata.map((item: any) => item.device);
 
-  
+      // console.log(this.devicenames);
+    });
+  }
 
-  consumption(container: HTMLElement) {
-    Highcharts.chart(container, {
+  consumptionGraph(): void {
+    Highcharts.chart(this.chart2Container.nativeElement, {
       chart: {
         type: 'column',
-        plotBorderWidth: 0, 
+       
+        plotBorderWidth: 0,
       },
       title: {
-        text: ''
+        text: 'Consumption Chart'
       },
       xAxis: {
-        categories: this.MeterName,
+        type: 'datetime',
+        labels: {
+          formatter: function () {
+            return Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', (this.value as number));
+          },
+        },
       },
       yAxis: {
         title: {
-          text: 'KWH'
+          text: 'Values'
         },
         min: 0,
-        max: 300,
+        max: 10000,
         gridLineWidth: 0,
-        plotLines: [
-          {
-            value: 0,
-            color: 'transparent',
-            width: 0,
-          },
-          {
-            value: 25,
-            color: 'transparent',
-            width: 0,
-          },
-          {
-            value: 50,
-            color: 'transparent',
-            width: 0,
-          },
-          {
-            value: 75,
-            color: 'transparent',
-            width: 0,
-          },
-          {
-            value: AutofillMonitor,
-            color: 'transparent',
-            width: 0,
-          },
-        ]
-      },
-      plotOptions: {
-        column: {
-          borderWidth: 0,
-          lineWidth: 0,
-        }
       },
       legend: {
         symbolRadius: 0,
         verticalAlign: 'top',
       },
-      series: [{
-        name: 'shiftA',
-        data: [this.KWHDATASHIFTA,]
-      },
-      {
-        name: 'shiftB',
-        data: [this.KWHDATASHIFTB]
-      },
-   
-    ] as any
-    } as Highcharts.Options);
+      series: [
+        { name: 'KVAh', data: this.kvah.map((value, index) => [this.date_time[index], value]) },
+        { name: 'KWh', data: this.kwh.map((value, index) => [this.date_time[index], value]) },
+        { name: 'Import Kvarh', data: this.imp_kvarh.map((value, index) => [this.date_time[index], value]) },
+        { name: 'Export Kvarh', data: this.exp_kvarh.map((value, index) => [this.date_time[index], value]) },
+        { name: 'Kvarh', data: this.kvarh.map((value, index) => [this.date_time[index], value]) },
+      ] as any
+    });
   }
 
-
-  
-
+  generateGraph(): void {
+    this.fetchdata();
+  }
 }
-
-

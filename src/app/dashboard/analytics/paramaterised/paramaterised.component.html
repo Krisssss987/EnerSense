@@ -1,91 +1,56 @@
 <div class="container-fluid">
-    <div class="row col-lg-12 col-md-12 col-sm-12">
-      
-      <div class="col-lg-4 col-md-4 col-sm-12 px-2">
-        <div class="row d-flex justify-content-center">Feeder</div>
-        <div class="row">
-          <mat-form-field>
-            <mat-label>Select an option</mat-label>
-            <mat-select multiple>
-              <mat-option *ngFor="let option of options" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-  
-      <div class="col-lg-4 col-md-4 col-sm-12 px-2">
-        <div class="row d-flex justify-content-center">Parameters</div>
-        <div class="row">
-          <mat-form-field>
-            <mat-label>Select an option</mat-label>
-            <mat-select multiple>
-              <mat-option *ngFor="let option of options" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div> 
-  
-      <div class="col-lg-4 col-md-4 col-sm-12 px-2">
-        <div class="row d-flex justify-content-center">intervals</div>
-        <div class="row">
-          <mat-form-field>
-            <mat-label>Select an option</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let interval of intervals" [value]="interval.value">
-                {{ interval.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div> 
-     </div>
-
-
-    <div class="row">
-  
-      <div class="col-lg-6 col-md-6 col-sm-12 px-2">
-        <div class="row d-flex justify-content-center">intervals</div>
-        <div class="row">
-          <mat-form-field>
-            <mat-label>Select an option</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let intervalday of intervaldays" [value]="intervalday.value">
-                {{ intervalday.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-  
-      <div class="col-lg-6 col-md-6 col-sm-12 px-2">
-        <div class="row d-flex justify-content-center">Date and Time</div>
+  <div class="row col-lg-12 col-md-12 col-sm-12">
+    <div class="col-lg-4 col-md-4 col-sm-12 px-2">
+      <div class="row d-flex justify-content-center">intervals</div>
+      <div class="row">
         <mat-form-field>
-          <mat-label>Enter a date range</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate placeholder="Start date">
-            <input matEndDate placeholder="End date">
-          </mat-date-range-input>
-          <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-label>Select Interval</mat-label>
+          <mat-select [(ngModel)]="selectedIntervals" (ngModelChange)="onIntervalChange($event)">
+            <mat-option
+              *ngFor="let interval of intervals"
+              [value]="interval.value"
+            >
+              {{ interval.label }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
-      </div> 
-  
-      <div class="row d-flex justify-content-center mt-3">
-        <button mat-raised-button color="primary" style="width: 150px;">Generate</button>
       </div>
-  
-      <div class="row mt-3 mx-auto">
-        <mat-card>
-            <div #chart2></div>
-        </mat-card>
-       
-      </div>
-  
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-12 px-2">
+      <div class="row d-flex justify-content-center">Date and Time</div>
+      <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Start date" />
+          <input matEndDate placeholder="End date" />
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
     </div>
   </div>
-  
+
+  <div class="row">
+    <div class="row d-flex justify-content-center mt-3">
+      <button
+        mat-raised-button
+        color="primary"
+        style="width: 150px"
+        (click)="generateGraph()"
+      >
+        Generate
+      </button>
+    </div>
+
+    <div class="row mt-3 mx-auto">
+      <mat-card>
+        <div #chart2></div>
+      </mat-card>
+    </div>
+  </div>
+</div>
