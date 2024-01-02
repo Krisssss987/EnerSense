@@ -95,8 +95,6 @@ export class OverviewComponent  implements OnInit {
           if(id==null || interval==null){
             this.DashDataService.setDeviceId(this.deviceOptions[0].deviceid);
             this.DashDataService.setInterval('12hour');
-          }else{
-            
           }
         },
         (error) => {
@@ -175,17 +173,7 @@ export class OverviewComponent  implements OnInit {
           this.kwhArray = new_data.map((entry: any) => [
             new Date(entry.date_time).getTime(),
             entry.kwh
-          ]);
-          if(this.interval=='12hour' || this.interval=='day'){
-              this.dateTimeArray = new_data.map((item: { date_time: any }) => {
-              return new Date(item.date_time).getTime();
-            }); 
-          }else if(this.interval=='week' || this.interval=='month'){
-              this.dateTimeArray = new_data.map((item: { date_time: any }) => {
-              return new Date(item.date_time).getTime();
-            });
-          }
-               
+          ]);              
 
           const BarChartOptions: Highcharts.Options = {
             chart: {
@@ -204,16 +192,6 @@ export class OverviewComponent  implements OnInit {
               title: {
                 text: ''
               },
-              plotLines: [{
-                color: 'black',
-                width: 2,
-                value: 30,
-                label: {
-                  text: 'Max Demand',
-                  align: 'right',
-                  x: -20
-                }
-              }]
             },
             series: [{
               type: 'column',
@@ -223,25 +201,17 @@ export class OverviewComponent  implements OnInit {
               type: 'column',
               name: 'KWH',
               data: this.kwhArray
-            }, {
-              type: 'spline',
-              name: 'KVA',
-              data: this.kvaArray,
-              marker: {
-                  enabled: false
-              }
-            }],
+            }
+          ],
             exporting: {
-              enabled: false // Disable the options button
+              enabled: false
             }
           };
           
           Highcharts.chart('BarChart', BarChartOptions);
         },
-        (error) => {
-          this.snackBar.open('Error while fetching Bar Data!', 'Dismiss', {
-            duration: 2000
-          });
+        (error) =>{
+          
         }
       );
     }

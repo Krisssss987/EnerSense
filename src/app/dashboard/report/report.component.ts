@@ -19,18 +19,23 @@ export class ReportComponent {
 
   CompanyId!:string|null;
   dataSource2: any;
-  displayedColumns: string[] = ['Device', 'Date', 'Time', 'ORP', 'Pump1', 'Pump2'];
-  dataSource = new MatTableDataSource<Devices>(ELEMENT_DATA);
+  displayedColumns: string[] = ['Device ID', 'TimeStamp'];
+  predefinedColumns: string[] = ['Device ID', 'TimeStamp'];
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
   panelOpenState = false;
   first_device!:string;
   data:any
   currentDate: Date = new Date();
   startDate!: Date;
   endDate: Date = this.currentDate;
+  parameterOptions:any[] = [];
   
   device_uid = new FormControl('', [Validators.required]);
+  parameters = new FormControl('', [Validators.required]);
   start_date = new FormControl('', [Validators.required]);
   end_date = new FormControl('', [Validators.required]);
+  selectedDevice: any[] = [];
+  savedID: any;
 
   constructor(
     public DashDataService: DashboardService,
@@ -40,6 +45,7 @@ export class ReportComponent {
 
   ngOnInit(){
     this.getUserDevices();
+    this.getParameters();
   }
 
   getUserDevices() {
@@ -48,6 +54,28 @@ export class ReportComponent {
       this.DashDataService.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.dataSource2 = devices;
+          const savedParameters = sessionStorage.getItem('reportParameters');
+          const savedID = sessionStorage.getItem('reportDevice');
+          if (savedParameters === null || savedParameters === undefined || savedParameters === ''){
+            const reportParameters = ['KVA','KW','KVAR','PF','Current','Voltage N'];
+            this.selectedDevice = reportParameters;
+            const initialID = this.dataSource2[0].deviceid;
+            sessionStorage.setItem('reportDevice', initialID);
+            this.savedID = sessionStorage.getItem('reportDevice');
+            const parametersArray: string[] = Array.isArray(reportParameters) ? reportParameters : [reportParameters];
+            this.displayedColumns = [...this.predefinedColumns, ...parametersArray];
+            this.displayedColumns = Array.from(new Set(this.displayedColumns));
+            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+          }
+          else {
+            const reportParameters = JSON.parse(savedParameters);
+            this.selectedDevice = reportParameters;
+            this.savedID = savedID;
+            const parametersArray: string[] = Array.isArray(reportParameters) ? reportParameters : [reportParameters];
+            this.displayedColumns = [...this.predefinedColumns, ...parametersArray];
+            this.displayedColumns = Array.from(new Set(this.displayedColumns));
+            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+          }
         },
         (error) => {
           this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
@@ -56,6 +84,24 @@ export class ReportComponent {
         }
       );
     }
+  }
+
+  getParameters() {
+    this.DashDataService.getreportparameters().subscribe(
+      (parameters: string[]) => {
+        this.parameterOptions= parameters.map(str => {
+          let transformedStr = str.replace(/_/g, ' ');
+          transformedStr = transformedStr.replace(/\b\w/g, match => match.toUpperCase());
+          transformedStr = transformedStr.replace(/\b\w{1,4}\b/g, match => match.toUpperCase());
+          return transformedStr;
+        });
+      },
+      (error) => {
+        this.snackBar.open('Error while fetching Parameters!', 'Dismiss', {
+          duration: 2000
+        });
+      }
+    );
   }
 
   downloadCSV() {
@@ -118,23 +164,17 @@ export class ReportComponent {
     }
   }
 
-  select(deviceStat:any){
+  applyFilter(){
+    const selectedParameters: string | string[] = this.parameters.value!;
+    const serializedParameters = JSON.stringify(selectedParameters);
+    sessionStorage.setItem('reportParameters', serializedParameters);
+    sessionStorage.setItem('reportDevice', this.device_uid.value!);
+    const parametersArray: string[] = Array.isArray(selectedParameters) ? selectedParameters : [selectedParameters];
+    this.displayedColumns = [...this.predefinedColumns, ...parametersArray];
+    this.displayedColumns = Array.from(new Set(this.displayedColumns));
+    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
   }
-
-  applyFilter(){}
-
 }
 
-export interface Devices {
-  device_name: string;
-  pump1: string;
-  pump2: string;
-  Location: string;
-  device_latitude: number;
-  device_longitude: number;
-  date: string | null;
-  time: string | null;
-  date_time: string;
-}
 
-const ELEMENT_DATA: Devices[] = [];
+const ELEMENT_DATA : any[]= [];

@@ -61,6 +61,10 @@ getdevicename(): Observable<any> {
   return this.http.get(`${this.API_URL}/feeder/SenseLive?TimeInterval=1hour`)
 }
 
+getreportparameters(): Observable<any> {
+  return this.http.get(`${this.API_URL}/getArray`)
+}
+
 getParamaterisedData(interval:string){
   return this.http.get(`${this.API_URL}/feederParametrised/SenseLive?TimeInterval=${interval}`)
 }
