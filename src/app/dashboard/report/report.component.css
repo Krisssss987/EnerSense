@@ -4,15 +4,16 @@
 
 .button-group{
     width: 100%;
-    background-color: #e6e6e6;
-    border: 1px solid #a6a6a6;
+    background-color: #ebe3f8;
+    border: 1px solid #673ab7;
 }
 
 .custom-theme-table th {
     position: sticky;
     top: 0;
-    background-color: white;
+    background-color: #673ab7;
     z-index: 2;
+    color: whitesmoke;
 }
 
 .online {

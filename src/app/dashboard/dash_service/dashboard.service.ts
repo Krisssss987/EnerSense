@@ -65,6 +65,10 @@ getreportparameters(): Observable<any> {
   return this.http.get(`${this.API_URL}/getArray`)
 }
 
+getreport(data:any): Observable<any> {
+  return this.http.post(`${this.API_URL}/getReportData`,data)
+}
+
 getParamaterisedData(interval:string){
   return this.http.get(`${this.API_URL}/feederParametrised/SenseLive?TimeInterval=${interval}`)
 }
