@@ -25,6 +25,7 @@ import{ AuthService } from '../login/auth/auth.service';
 import { ResendVerifyComponent } from './login/resend-verify/resend-verify.component';
 import { VerifyComponent } from './forgot/verify/verify.component';
 import { MailComponent } from './forgot/mail/mail.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { MailComponent } from './forgot/mail/mail.component';
     MatSelectModule,
     MatStepperModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatRadioModule
     
   ]
 })

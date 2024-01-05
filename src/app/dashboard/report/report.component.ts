@@ -31,6 +31,7 @@ export class ReportComponent {
   startDate!: Date;
   endDate: Date = this.currentDate;
   parameterOptions:any[] = [];
+  errorMessage!: string;
   
   device_uid = new FormControl('', [Validators.required]);
   parameters = new FormControl('', [Validators.required]);
@@ -110,6 +111,7 @@ export class ReportComponent {
                   'Dismiss',
                   { duration: 2000 }
                 );
+                this.errorMessage = error.error.message || '';
               }
             );
 
@@ -160,6 +162,7 @@ export class ReportComponent {
                   'Dismiss',
                   { duration: 2000 }
                 );
+                this.errorMessage = error.error.message || '';
               }
             );
 
@@ -188,6 +191,7 @@ export class ReportComponent {
         this.snackBar.open('Error while fetching Parameters!', 'Dismiss', {
           duration: 2000
         });
+        this.errorMessage = error.error.message || '';
       }
     );
   }

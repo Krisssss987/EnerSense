@@ -45,6 +45,10 @@ export class DashboardService {
     return this.http.get(`${this.API_URL}/live-device-detail/${CompanyId}`);
   }
 
+  userDetails(CompanyId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/userByCompanyname/${CompanyId}`);
+  }
+
 
  // http://localhost:3000/feeder/SenseLive?TimeInterval=15min&Shift=ShiftA
 

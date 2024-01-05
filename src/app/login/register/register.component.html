@@ -12,7 +12,7 @@
             <div class="row mb-2"> 
               <h5 class="text-center">Create an Account</h5>
             </div>
-            <div class="row text-center">
+            <!-- <div class="row text-center">
               <h6 class="link">- Company Detail</h6>
               <div class="col-lg-12 col-md-12">
                 <mat-form-field appearance="outline" class="from-field">
@@ -86,7 +86,187 @@
               <div class="col-lg-6 col-md-6">
                 <button class="from-field" mat-raised-button [routerLink]="['/login/login']">Sign In</button>
               </div>
-            </div>
+            </div> -->
+
+            <mat-horizontal-stepper #stepper="matHorizontalStepper">
+              <mat-step [stepControl]="firstFormGroup">
+                <form [formGroup]="firstFormGroup">
+                  <ng-template matStepLabel>Company Details</ng-template>
+                  <div class="row text-center">
+                    <h6 class="link">- Company Detail</h6>
+                    <div class="col-lg-12 col-md-12">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Enter Company Email</mat-label>
+                        <input matInput placeholder="Company Email" [formControl]="companyEmail" required>
+                        <mat-error *ngIf="companyEmail.invalid">Enter valid Company Email</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Enter Company Name</mat-label>
+                        <input matInput placeholder="Company Name" [formControl]="companyName" required>
+                        <mat-error *ngIf="companyName.invalid">Enter Company Name</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Enter Company Location</mat-label>
+                        <input matInput placeholder="Company Location" [formControl]="companyLocation" required>
+                        <mat-error *ngIf="companyLocation.invalid">Enter Company Location</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row text-center">
+                    <h6 class="link">- Company Energy Details</h6>
+                    <div class="col-lg-12 col-md-12" style="text-align: left; margin-left: 10px;">
+                      <mat-label style="font-weight: 500;">Energy Consumer :</mat-label>
+                      <mat-radio-group class="example-radio-group" [formControl]="energy_consumer" required>
+                        <mat-radio-button value="lt">LT</mat-radio-button>
+                        <mat-radio-button value="ht">HT</mat-radio-button>
+                      </mat-radio-group>
+                      <mat-error *ngIf="energy_consumer.invalid">Select Appropriate Consumer</mat-error>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Sanctioned Load (KW)</mat-label>
+                        <input matInput placeholder="Sanctioned Load (KW)" [formControl]="sanctioned_load" required>
+                        <mat-error *ngIf="sanctioned_load.invalid">Enter Sanctined Load</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Contract Demand (KVA)</mat-label>
+                        <input matInput placeholder="Contract Demand (KVA)" [formControl]="contract_demand" required>
+                        <mat-error *ngIf="contract_demand.invalid">Enter Company Location</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Connected Load (KW)</mat-label>
+                        <input matInput placeholder="Connected Load (KW)" [formControl]="connected_load" required>
+                        <mat-error *ngIf="connected_load.invalid">Enter Connected Load</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Tariff</mat-label>
+                        <input matInput placeholder="Tariff" [formControl]="tariff" required>
+                        <mat-error *ngIf="tariff.invalid">Select Appropriate Tariff</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>% of Contract Demand</mat-label>
+                        <input matInput placeholder="Contract Demand" [formControl]="percent_demand">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Electricity Bill</mat-label>
+                        <input matInput placeholder="Electricity Bill" [formControl]="bill">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row text-center">
+                    <h6 class="link">- Energy Detail ( Solar/Digi ) Optional</h6>
+                      <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="from-field">
+                          <mat-select placeholder="Energy Detail" [formControl]="energy_detail">
+                            <mat-option value="solar">Solar</mat-option>
+                            <mat-option value="digi">Digi</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="from-field">
+                          <mat-label>Energy Value</mat-label>
+                          <input matInput placeholder="Energy Value" [formControl]="energy_value">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  <div>                    
+                    <button mat-button matStepperNext>Next</button>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step [stepControl]="secondFormGroup">
+                <form [formGroup]="secondFormGroup">
+                  <ng-template matStepLabel>Admin Details</ng-template>
+                  <div class="row text-center">
+                    <h6 class="link">- Personal Detail</h6>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Enter First Name</mat-label>
+                        <input matInput placeholder="First Name" [formControl]="firstName" required>
+                        <mat-error *ngIf="firstName.invalid">First Name is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Enter Last Name</mat-label>
+                        <input matInput placeholder="Last Name" [formControl]="lastName" required>
+                        <mat-error *ngIf="lastName.invalid">Last Name is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-8 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Personal Email</mat-label>
+                        <input matInput placeholder="Personal Email" [formControl]="personalEmail" required>
+                        <mat-error *ngIf="personalEmail.invalid">Personal Email is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Designation</mat-label>
+                        <input matInput placeholder="Designation" [formControl]="designation" required>
+                        <mat-error *ngIf="designation.invalid">Designation is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Contact No.</mat-label>
+                        <input matInput placeholder="Contact No." [formControl]="contact" required>
+                        <mat-error *ngIf="contact.invalid">Contact Number is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Plant</mat-label>
+                        <input matInput placeholder="Plant" [formControl]="plant" required>
+                        <mat-error *ngIf="plant.invalid">Plant Name is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <h6 class="link">- Set password</h6>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Enter your password</mat-label>
+                        <input matInput [type]="hidePassword ? 'password' : 'text'" [formControl]="password">
+                        <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+                        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <mat-form-field appearance="outline" class="from-field">
+                        <mat-label>Confirm password</mat-label>
+                        <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" [formControl]="confirmPassword">
+                        <mat-error *ngIf="confirmPassword.invalid">{{getConfirmPasswordErrorMessage()}}</mat-error>
+                        <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+                          <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mb-2">
+                      <button class="from-field" mat-raised-button color="primary" (click)="submit()" [disabled]="loading">{{ loadingMessage }}</button>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <button class="from-field" mat-raised-button [routerLink]="['/login/login']">Sign In</button>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+            </mat-horizontal-stepper>
           </div>
         </mat-card-content>
       </mat-card>
