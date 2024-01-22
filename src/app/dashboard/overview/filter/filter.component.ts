@@ -77,5 +77,6 @@ export class FilterComponent {
   onSaveClick(): void {
     this.DashDataService.setDeviceId(this.selectedDevice);
     this.DashDataService.setInterval(this.selectedDeviceInterval);
+    this.dialogRef.close();
   }
 }

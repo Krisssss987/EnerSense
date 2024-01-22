@@ -28,8 +28,12 @@ export class AuthService {
     return this.http.post(`${this.API_URL}/login`, loginData);
   }
 
-  register(registerData: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/register`, registerData);
+  registerCompany(registerData: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/register-company`, registerData);
+  }
+
+  registerUser(registerData: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/register-user`, registerData);
   }
 
   resendVerificationEmail(resendVerifyData: any): Observable<any> {
@@ -125,22 +129,22 @@ export class AuthService {
           (user: any) => {
             console.log(user)
             // Handle the response and set the user type
-            const userType = user.usertype;
+            const userType = user.privileges;
             this.setUserType(userType);
 
-            const companyid = user.companyid;
+            const companyid = user.companyId;
             this.setCompanyId(companyid);
 
-            const firstName = user.firstname;
+            const firstName = user.firstName;
             this.setFirstName(firstName);
 
-            const lastName = user.lastname;
+            const lastName = user.lastName;
             this.setLastname(lastName);
 
-            const companyEmail = user.companyemail;
+            const companyEmail = user.companyEmail;
             this.setCompanyEmail(companyEmail);
 
-            const userid = user.userid;
+            const userid = user.userId;
             sessionStorage.setItem('userid', userid);
           },
           (error: any) => {

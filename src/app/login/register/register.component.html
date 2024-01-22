@@ -1,92 +1,17 @@
 <div class="row">
-    <div class="col-lg-4 col-md-4 text-center">
+    <div class="col-xl-5 col-lg-4 col-md-4 text-center">
       <img mat-card-image src="../../../assets/img/login.gif" alt="Login">
       <h4 class="title">Welcome to the Energy Dashboard</h4>
       <p>Thank you for choosing our Energy dashboard. We are excited to have you on board!</p>
       <p>Before you can start using the dashboard, we kindly ask you to complete the registration process.</p>
     </div>
-    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-      <mat-card class="register-box">
+    <div class="col-xl-7 col-lg-8 col-md-8 col-sm-12 col-xs-12">
+      <mat-card class="register-box mb-3">
         <mat-card-content>
           <div class="register-container">
             <div class="row mb-2"> 
               <h5 class="text-center">Create an Account</h5>
             </div>
-            <!-- <div class="row text-center">
-              <h6 class="link">- Company Detail</h6>
-              <div class="col-lg-12 col-md-12">
-                <mat-form-field appearance="outline" class="from-field">
-                  <mat-label>Enter Company Email</mat-label>
-                  <input matInput placeholder="Company Email" [formControl]="companyEmail" required>
-                  <mat-error *ngIf="companyEmail.invalid">{{getCompanyEmailErrorMessage()}}</mat-error>
-                </mat-form-field>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <mat-form-field appearance="outline" class="from-field">
-                  <mat-label>Enter Contact</mat-label>
-                  <input matInput placeholder="Contact No" [formControl]="contact" required>
-                </mat-form-field>
-              </div> 
-              <div class="col-lg-6 col-md-6">
-                <mat-form-field appearance="outline" class="from-field">
-                  <mat-label>Enter Company Name</mat-label>
-                  <input matInput placeholder="Company Name" [formControl]="companyName" required>
-                </mat-form-field>
-              </div>
-              <h6 class="link">- Personal Detail</h6>
-              <div class="col-lg-6 col-md-6">
-                <mat-form-field appearance="outline" class="from-field">
-                  <mat-label>Enter First Name</mat-label>
-                  <input matInput placeholder="First Name" [formControl]="firstName" required>
-                </mat-form-field>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <mat-form-field appearance="outline" class="from-field">
-                  <mat-label>Enter Last Name</mat-label>
-                  <input matInput placeholder="Last Name" [formControl]="lastName" required>
-                </mat-form-field>
-              </div>
-              <div class="col-lg-8 col-md-6">
-                <mat-form-field appearance="outline" class="from-field">
-                  <mat-label>Personal Email</mat-label>
-                  <input matInput placeholder="Personal Email" [formControl]="personalEmail" required>
-                  <mat-error *ngIf="personalEmail.invalid">{{getPersonalEmailErrorMessage()}}</mat-error>
-                </mat-form-field>
-              </div>
-              <div class="col-lg-4 col-md-6">
-                <mat-form-field appearance="outline" class="from-field">
-                  <mat-label>Designation</mat-label>
-                  <input matInput placeholder="Designation" [formControl]="designation" required>
-                </mat-form-field>
-              </div>
-              <h6 class="link">- Set password</h6>
-              <div class="col-lg-6 col-md-6">
-                <mat-form-field appearance="outline" class="from-field">
-                  <mat-label>Enter your password</mat-label>
-                  <input matInput [type]="hidePassword ? 'password' : 'text'" [formControl]="password">
-                  <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
-                  <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <mat-form-field appearance="outline" class="from-field">
-                  <mat-label>Confirm password</mat-label>
-                  <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" [formControl]="confirmPassword">
-                  <mat-error *ngIf="confirmPassword.invalid">{{getConfirmPasswordErrorMessage()}}</mat-error>
-                  <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
-                    <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-              <div class="col-lg-6 col-md-6 mb-2">
-                <button class="from-field" mat-raised-button color="primary" (click)="submit()" [disabled]="loading">{{ loadingMessage }}</button>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <button class="from-field" mat-raised-button [routerLink]="['/login/login']">Sign In</button>
-              </div>
-            </div> -->
 
             <mat-horizontal-stepper #stepper="matHorizontalStepper">
               <mat-step [stepControl]="firstFormGroup">

@@ -7,7 +7,7 @@ import HighchartsMore from 'highcharts/highcharts-more';
 import HighchartsExporting from 'highcharts/modules/exporting';
 import { FilterComponent } from './filter/filter.component';
 import { DashboardService } from '../dash_service/dashboard.service';
-import { Subscription, take, interval } from 'rxjs';
+import { Subscription, take, interval, combineLatest, zip, distinctUntilChanged } from 'rxjs';
 import { MqttService, IMqttMessage } from 'ngx-mqtt';
 import { AuthService } from 'src/app/login/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -107,14 +107,15 @@ export class OverviewComponent  implements OnInit {
   }
 
   retrievingValues(){
-    this.DashDataService.deviceID$.subscribe((deviceID) => {
-      this.deviceUID=deviceID??'';
-      this.subscribeToTopics();
-    });
-    this.DashDataService.interval$.subscribe((interval) => {
-      this.interval=interval??'';
+    zip(this.DashDataService.deviceID$, this.DashDataService.interval$)
+    .pipe(distinctUntilChanged())
+    .subscribe(([deviceID, interval]) => {
+      this.deviceUID = deviceID ?? '';
+      this.interval = interval ?? '';
+
       this.barData();
       this.feederinterval();
+      this.subscribeToTopics();
     });
   }
 
@@ -211,7 +212,9 @@ export class OverviewComponent  implements OnInit {
           Highcharts.chart('BarChart', BarChartOptions);
         },
         (error) =>{
-          
+          this.snackBar.open('Error while fetching bar data!', 'Dismiss', {
+            duration: 2000
+          });
         }
       );
     }
@@ -257,8 +260,6 @@ export class OverviewComponent  implements OnInit {
   }
 
   subscribeToTopics() {
-    this.deviceData = [];
-
       const dataTopic = `ems_live/${this.deviceUID}`;
   
       const dataSubscription = this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {

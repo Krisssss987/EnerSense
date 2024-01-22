@@ -311,5 +311,4 @@ export class ReportComponent {
   }
 }
 
-
 const ELEMENT_DATA : any[]= [];
