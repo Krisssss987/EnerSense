@@ -51,6 +51,14 @@ import {MatChipsModule} from '@angular/material/chips';
 import { ReportComponent } from './report/report.component';
 import { FilterComponent } from './overview/filter/filter.component';
 import { AleartsComponent } from './feeder/alearts/alearts.component';
+import { AddFeederComponent } from './tools/tools-component/add-feeder/add-feeder.component';
+import { UpdateFeederComponent } from './tools/tools-component/update-feeder/update-feeder.component';
+import { UpdateUserComponent } from './tools/tools-component/update-user/update-user.component';
+import { AddUserComponent } from './tools/tools-component/add-user/add-user.component';
+import { AddShiftComponent } from './tools/tools-component/add-shift/add-shift.component';
+import { UpdateShiftComponent } from './tools/tools-component/update-shift/update-shift.component';
+import { UpdateAlertComponent } from './tools/tools-component/update-alert/update-alert.component';
+import { AddAlertComponent } from './tools/tools-component/add-alert/add-alert.component';
 
 
 
@@ -73,6 +81,14 @@ import { AleartsComponent } from './feeder/alearts/alearts.component';
     ReportComponent,
     FilterComponent,
     AleartsComponent,
+    AddFeederComponent,
+    UpdateFeederComponent,
+    UpdateUserComponent,
+    AddUserComponent,
+    AddShiftComponent,
+    UpdateShiftComponent,
+    UpdateAlertComponent,
+    AddAlertComponent,
   ],
   imports: [
     CommonModule,
@@ -122,6 +138,7 @@ import { AleartsComponent } from './feeder/alearts/alearts.component';
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
+    MatDividerModule
   ],
   providers: [DatePipe],
 })

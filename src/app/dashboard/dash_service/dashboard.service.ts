@@ -42,11 +42,67 @@ export class DashboardService {
   private readonly API_URL = 'http://localhost:3000';
 
   deviceDetails(CompanyId: string):Observable<any> {
-    return this.http.get(`${this.API_URL}/live-device-detail/${CompanyId}`);
+    return this.http.get(`${this.API_URL}/getFeederData/${CompanyId}`);
+  }
+
+  deviceAdd(deviceDetails: any):Observable<any> {
+    return this.http.post(`${this.API_URL}/addfeeder`,deviceDetails);
+  }
+
+  deviceDelete(feederId: string):Observable<any> {
+    return this.http.delete(`${this.API_URL}/delete_feeder/${feederId}`);
+  }
+
+  deviceUpdate(feederId: string,newData: any):Observable<any> {
+    return this.http.put(`${this.API_URL}/editfeeders/${feederId}`,newData);
   }
 
   userDetails(CompanyId: string):Observable<any> {
-    return this.http.get(`${this.API_URL}/userByCompanyname/${CompanyId}`);
+    return this.http.get(`${this.API_URL}/getUser_Data/${CompanyId}`);
+  }
+
+  userAdd(userDetails: any):Observable<any> {
+    return this.http.post(`${this.API_URL}/register-user`,userDetails);
+  }
+
+  userDelete(userId: string):Observable<any> {
+    return this.http.delete(`${this.API_URL}/delete_user/${userId}`);
+  }
+
+  userUpdate(userId: string,userDetails: any):Observable<any> {
+    return this.http.put(`${this.API_URL}/updateUser/${userId}`,userDetails);
+  }
+  
+  alertDetails(CompanyId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/getAlerts/${CompanyId}`);
+  }
+
+  alertAdd(alertDetails: any):Observable<any> {
+    return this.http.post(`${this.API_URL}/addAlerts`,alertDetails);
+  }
+
+  alertDelete(alertId: string):Observable<any> {
+    return this.http.delete(`${this.API_URL}/delete_alerts/${alertId}`);
+  }
+
+  alertUpdate(alertId: string,alertDetails: any):Observable<any> {
+    return this.http.put(`${this.API_URL}/editAlerts/${alertId}`,alertDetails);
+  }
+  
+  shiftDetails(CompanyId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/getDay_Shift/${CompanyId}`);
+  }
+
+  shiftAdd(shiftDetails: any):Observable<any> {
+    return this.http.post(`${this.API_URL}/addShift`,shiftDetails);
+  }
+
+  shiftDelete(shiftId: string):Observable<any> {
+    return this.http.delete(`${this.API_URL}/delete_shift/${shiftId}`);
+  }
+
+  shiftUpdate(shiftId: string,shiftDetails: any):Observable<any> {
+    return this.http.put(`${this.API_URL}/editshift/${shiftId}`,shiftDetails);
   }
 
 
@@ -89,7 +145,6 @@ getLowPF() :Observable <any>{
   return this.http.get(`${this.API_URL}/fetchLowestPF/SenseLive/1hour`);
 }
 
-
   getuserdata(UserId: string):Observable<any> {
     return this.http.get(`${this.API_URL}/userdetails/${UserId}`);
   }
@@ -123,16 +178,14 @@ getLowPF() :Observable <any>{
   }
 
   pieDetails(CompanyId: string,interval: string):Observable<any> {
-    return this.http.get(`${this.API_URL}/piechart/${CompanyId}/${interval}`);
+    return this.http.get(`${this.API_URL}/overviewPiechart/${CompanyId}/${interval}`);
   }
 
   barDetails(DeviceId: string,interval: string):Observable<any> {
-    return this.http.get(`${this.API_URL}/Bargraph/${DeviceId}/${interval}`);
+    return this.http.get(`${this.API_URL}/overviewBargraph/${DeviceId}/${interval}`);
   }
   
   feederinterval(DeviceId: string,interval: string):Observable<any> {
-    return this.http.get(`${this.API_URL}/feederinterval/${DeviceId}/${interval}`);
+    return this.http.get(`${this.API_URL}/fetchOverview/${DeviceId}/${interval}`);
   }
-
-
 }

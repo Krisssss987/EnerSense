@@ -100,6 +100,14 @@ export class AuthService {
     return sessionStorage.getItem('companyid');
   }
 
+  setCompanyName(companyname: string){
+    sessionStorage.setItem('companyname', companyname);
+  }
+
+  getCompanyName(): string | null {
+    return sessionStorage.getItem('companyname');
+  }
+
   setToken(token: string): void {
     this.token = token;
     sessionStorage.setItem('token', token); // Store the token in the session storage
@@ -129,22 +137,25 @@ export class AuthService {
           (user: any) => {
             console.log(user)
             // Handle the response and set the user type
-            const userType = user.privileges;
+            const userType = user.getUserDetails.privileges;
             this.setUserType(userType);
 
-            const companyid = user.companyId;
+            const companyid = user.getUserDetails.companyId;
             this.setCompanyId(companyid);
 
-            const firstName = user.firstName;
+            const firstName = user.getUserDetails.firstName;
             this.setFirstName(firstName);
 
-            const lastName = user.lastName;
+            const lastName = user.getUserDetails.lastName;
             this.setLastname(lastName);
 
-            const companyEmail = user.companyEmail;
+            const companyEmail = user.companyDetails.companyEmail;
             this.setCompanyEmail(companyEmail);
+            
+            const companyName = user.companyDetails.companyName;
+            this.setCompanyName(companyName);
 
-            const userid = user.userId;
+            const userid = user.getUserDetails.userId;
             sessionStorage.setItem('userid', userid);
           },
           (error: any) => {

@@ -62,13 +62,13 @@ export class ReportComponent {
     if (this.CompanyId) {
       this.DashDataService.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
-          this.dataSource2 = devices;
+          this.dataSource2 = devices.getFeederData;
           const savedParameters = sessionStorage.getItem('reportParameters');
           const savedID = sessionStorage.getItem('reportDevice');
           if (savedParameters === null || savedParameters === undefined || savedParameters === ''){
             const reportParameters = ['KVA','KW','KVAR','PF','Current','Voltage N'];
             this.selectedDevice = reportParameters;
-            const initialID = this.dataSource2[0].deviceid;
+            const initialID = this.dataSource2[0].feederUid;    
             sessionStorage.setItem('reportDevice', initialID);
             this.savedID = sessionStorage.getItem('reportDevice');
             const parametersArray: string[] = Array.isArray(reportParameters) ? reportParameters : [reportParameters];
@@ -88,7 +88,7 @@ export class ReportComponent {
             });
 
             const data = {
-              device_uid: savedID,
+              device_uid: initialID,
               start_time: this.start,
               end_time: this.end,
               parameters: this.revertedArray,
@@ -102,7 +102,7 @@ export class ReportComponent {
                 });
                 this.data=actualData;
                 
-    this.dataSource = new MatTableDataSource(actualData);
+                this.dataSource = new MatTableDataSource(actualData);
                 this.dataSource.paginator = this.paginator;
               },
               (error) => {

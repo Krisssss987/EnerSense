@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="row edit-head mb-2">
+      <div class="col-lg-12 col-md-12 col-sm-12 pt-1">
+        <div class="edit-title">Add Shift</div>
+      </div>
+    </div>
+    <div class="row">
+        
+      <div class="col-12 mt-2">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Shift Name</mat-label>
+          <input matInput placeholder="Shift Name" [formControl]="shiftName" required>
+          <mat-error *ngIf="shiftName.invalid">Enter valid Shift Name</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mt-2">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Start Time</mat-label>
+          <input matInput placeholder="Start Time" [formControl]="startTime" required>
+          <mat-error *ngIf="startTime.invalid">Enter valid Start Time</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mt-2">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>End Time</mat-label>
+          <input matInput placeholder="End Time" [formControl]="endTime" required>
+          <mat-error *ngIf="endTime.invalid">Enter valid End Time</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 justify-content-end d-flex mb-3">
+        <button mat-raised-button (click)="onNoClick()">Close</button>
+      </div>
+      <div class="col-6 mb-3">
+        <button mat-raised-button color="primary" (click)="onSaveClick()">Submit</button>
+      </div>
+    </div>
+</div>
+  

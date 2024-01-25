@@ -55,6 +55,10 @@ export class OverviewComponent  implements OnInit {
   kvarh_led:number=0;
   kvarh_lag:number=0;
   CO2:number=0;
+  kwh_diff:number=0;
+  max_kva:number=0;
+  max_kw:number=0;
+  pf_diff:number=0;
   deviceOptions:any;
   intervalSubscription: Subscription | undefined;
   kvahArray: any[] = [];
@@ -89,11 +93,11 @@ export class OverviewComponent  implements OnInit {
     if (this.CompanyId) {
       this.DashDataService.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
-          this.deviceOptions = devices;
+          this.deviceOptions = devices.getFeederData;
           let id=sessionStorage.getItem('deviceID');
           let interval=sessionStorage.getItem('interval');
-          if(id==null || interval==null){
-            this.DashDataService.setDeviceId(this.deviceOptions[0].deviceid);
+          if(id==null || id=='' ||id==undefined || interval==null){
+            this.DashDataService.setDeviceId(this.deviceOptions[0].feederUid);
             this.DashDataService.setInterval('12hour');
           }
         },
@@ -162,19 +166,15 @@ export class OverviewComponent  implements OnInit {
     if (this.CompanyId) {
       this.DashDataService.barDetails(this.deviceUID, this.interval).subscribe(
         (bardata) => {
-          const new_data = bardata;
+          const new_data = bardata.data;
           this.kvahArray = new_data.map((entry: any) => [
-            new Date(entry.date_time).getTime(),
-            entry.kvah
-          ]);
-          this.kvaArray = new_data.map((entry: any) => [
-            new Date(entry.date_time).getTime(),
-            entry.kva
+            new Date(entry.bucket_date).getTime(),
+            parseFloat(entry.kvah_difference)
           ]);
           this.kwhArray = new_data.map((entry: any) => [
-            new Date(entry.date_time).getTime(),
-            entry.kwh
-          ]);              
+            new Date(entry.bucket_date).getTime(),
+            parseFloat(entry.kwh_difference)
+          ]);          
 
           const BarChartOptions: Highcharts.Options = {
             chart: {
@@ -224,9 +224,14 @@ export class OverviewComponent  implements OnInit {
     if (this.CompanyId) {
       this.DashDataService.feederinterval(this.deviceUID, this.interval).subscribe(
         (data) => {
-          this.kvah=data.kvah;
-          this.kwh=data.kwh;
-          this.kvarh_led=data.kvarh;
+          console.log(data)
+          this.kvah=data.fetchOverview.kvah_difference;
+          this.kvarh_led=data.fetchOverview.kvarh_leading??0;
+          this.kvarh_lag=data.fetchOverview.kvarh_lagging??0;
+          this.kwh_diff=data.fetchOverview.kwh_difference;
+          this.max_kva=data.fetchOverview.max_kva;
+          this.max_kw=data.fetchOverview.max_kw;
+          this.pf_diff=data.fetchOverview.pf_difference;
         },
         (error) => {
         }

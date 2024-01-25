@@ -9,8 +9,8 @@
         <mat-form-field appearance="outline" class="from-field">
           <mat-label>Device Name</mat-label>
           <mat-select [(ngModel)]="selectedDevice" required>
-            <mat-option *ngFor="let device of deviceOptions" [value]="device.deviceid">
-              {{ device.deviceid }}
+            <mat-option *ngFor="let device of deviceOptions" [value]="device.feederUid">
+              {{ device.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>

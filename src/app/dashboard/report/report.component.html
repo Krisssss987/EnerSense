@@ -32,7 +32,7 @@
 					                <mat-form-field appearance="outline" class="form-field">
 					                    <mat-label>Select Device</mat-label>
 					                    <mat-select required [formControl]="device_uid" [ngModel]="savedID">
-											<mat-option *ngFor="let device of dataSource2" [value]="device.deviceid">{{device.deviceid}}</mat-option>
+											<mat-option *ngFor="let device of dataSource2" [value]="device.feederUid">{{device.name}}</mat-option>
 										</mat-select>
 										<mat-error *ngIf = "device_uid.invalid">Device Name is Required*</mat-error>
 					                </mat-form-field>

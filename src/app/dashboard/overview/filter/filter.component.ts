@@ -59,7 +59,7 @@ export class FilterComponent {
     if (this.CompanyId) {
       this.DashDataService.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
-          this.deviceOptions = devices;
+          this.deviceOptions = devices.getFeederData;
         },
         (error) => {
           this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
