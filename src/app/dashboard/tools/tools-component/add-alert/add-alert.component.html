@@ -83,10 +83,10 @@
       <div class="col-6">
         <mat-form-field appearance="outline" class="from-field">
           <mat-label>End Time</mat-label>
-          <input matInput [ngxMatDatetimePicker]="pickerWithActions" placeholder="Choose a date"
-            [formControl]="endTime" [disabled]="disabled">
-          <ngx-mat-datepicker-toggle matSuffix [for]="pickerWithActions"></ngx-mat-datepicker-toggle>
-          <ngx-mat-datetime-picker #pickerWithActions [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+          <input matInput [ngxMatDatetimePicker]="end" placeholder="Choose a date"
+            [formControl]="endTime" [disabled]="disabled" [min]="minEndTime">
+          <ngx-mat-datepicker-toggle matSuffix [for]="end"></ngx-mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #end [showSpinners]="showSpinners" [showSeconds]="showSeconds"
             [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
             [color]="'primary'" [enableMeridian]="enableMeridian" [disableMinute]="disableMinute" [hideTime]="hideTime">
             <ngx-mat-datepicker-actions>

@@ -16,15 +16,21 @@
       <div class="col-12 mt-2">
         <mat-form-field appearance="outline" class="from-field">
           <mat-label>Start Time</mat-label>
-          <input matInput placeholder="Start Time" [formControl]="startTime" required>
+          <input matInput [type]="'time'" [formControl]="startTime" required>
           <mat-error *ngIf="startTime.invalid">Enter valid Start Time</mat-error>
         </mat-form-field>
       </div>
       <div class="col-12 mt-2">
         <mat-form-field appearance="outline" class="from-field">
           <mat-label>End Time</mat-label>
-          <input matInput placeholder="End Time" [formControl]="endTime" required>
+          <input matInput [type]="'time'" [formControl]="endTime" required>
           <mat-error *ngIf="endTime.invalid">Enter valid End Time</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mt-2">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Total Duration</mat-label>
+          <input matInput [(ngModel)]="timeDifference" [disabled]="true" required>
         </mat-form-field>
       </div>
       <div class="col-6 justify-content-end d-flex mb-3">

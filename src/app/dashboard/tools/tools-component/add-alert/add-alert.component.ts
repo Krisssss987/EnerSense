@@ -46,6 +46,16 @@ export class AddAlertComponent {
     this.getUser(); 
   }
 
+  minEndTime!: Date;
+
+  updateEndTimeMin() {
+    const startValue = this.startTime.value;
+
+    if (startValue) {
+      this.minEndTime = new Date(startValue);
+    }
+  }
+
   getFeeder() {
     const CompanyId = this.authService.getCompanyId();
     if (CompanyId) {
@@ -83,7 +93,11 @@ export class AddAlertComponent {
     private authService: AuthService,
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<AddAlertComponent>,
-  ) {}
+  ) {
+    this.startTime.valueChanges.subscribe(() => {
+      this.updateEndTimeMin();
+    });
+  }
 
   
   adjustDialogWidth() {

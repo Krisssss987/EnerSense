@@ -1,1 +1,45 @@
-<p>update-feeder works!</p>
+<div class="container-fluid">
+    <div class="row edit-head mb-2">
+      <div class="col-lg-12 col-md-12 col-sm-12 pt-1">
+        <div class="edit-title">Update Company Feeder</div>
+      </div>
+    </div>
+    <div class="row">
+        
+      <div class="col-12 mt-2">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Feeder UID</mat-label>
+          <input matInput placeholder="Feeder UID" [formControl]="feederUid" required>
+          <mat-error *ngIf="feederUid.invalid">Enter valid Feeder UID</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mt-2">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Feeder Name</mat-label>
+          <input matInput placeholder="Feeder Name" [formControl]="feederName" required>
+          <mat-error *ngIf="feederName.invalid">Enter valid Feeder name</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mt-2">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Location</mat-label>
+          <input matInput placeholder="Location" [formControl]="location" required>
+          <mat-error *ngIf="location.invalid">Enter valid Location</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-12 mt-2">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Threshold Value</mat-label>
+          <input matInput placeholder="Threshold Value" [formControl]="threshold" required>
+          <mat-error *ngIf="threshold.invalid">Enter valid Threshold</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 justify-content-end d-flex mb-3">
+        <button mat-raised-button (click)="onNoClick()">Close</button>
+      </div>
+      <div class="col-6 mb-3">
+        <button mat-raised-button color="primary" (click)="onSaveClick()">Submit</button>
+      </div>
+    </div>
+</div>
+  

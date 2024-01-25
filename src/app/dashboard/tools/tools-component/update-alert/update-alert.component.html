@@ -1,1 +1,115 @@
-<p>update-alert works!</p>
+<div class="container-fluid">
+    <div class="row edit-head mb-2">
+      <div class="col-lg-12 col-md-12 col-sm-12 pt-1">
+        <div class="edit-title">Update Alert</div>
+      </div>
+    </div>
+    <div class="row">
+        
+      <div class="col-12 mt-2">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Alert Name</mat-label>
+          <input matInput placeholder="Alert Name" [formControl]="alertName" required>
+          <mat-error *ngIf="alertName.invalid">Enter valid Alert name</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Feeder Name</mat-label>
+          <mat-select placeholder="Feeder Name" [formControl]="feederName">
+            <mat-option *ngFor="let feeder of feederData" [value]="feeder.name">
+              {{ feeder.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="feederName.invalid">Enter valid Feeder name</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>User Name</mat-label>
+          <mat-select placeholder="User Name" [formControl]="userName">
+            <mat-option *ngFor="let user of userData" [value]="user.userName">
+              {{ user.userName }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="userName.invalid">Enter valid User Name</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Parameter</mat-label>
+          <input matInput placeholder="Parameter" [formControl]="parameter" required>
+          <mat-error *ngIf="parameter.invalid">Enter valid Parameter</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Condition</mat-label>
+          <input matInput placeholder="Condition" [formControl]="condition" required>
+          <mat-error *ngIf="condition.invalid">Enter valid Condition</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Threshold</mat-label>
+          <input matInput placeholder="Threshold" [formControl]="threshold" required>
+          <mat-error *ngIf="threshold.invalid">Enter valid Threshold</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Repeat</mat-label>
+          <input matInput placeholder="Repeat" [formControl]="repeat" required>
+          <mat-error *ngIf="repeat.invalid">Enter valid Repeat</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Start Time</mat-label>
+          <input matInput [ngxMatDatetimePicker]="pickerWithActions" placeholder="Choose a date"
+            [formControl]="startTime" [disabled]="disabled">
+          <ngx-mat-datepicker-toggle matSuffix [for]="pickerWithActions"></ngx-mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #pickerWithActions [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+            [color]="'primary'" [enableMeridian]="enableMeridian" [disableMinute]="disableMinute" [hideTime]="hideTime">
+            <ngx-mat-datepicker-actions>
+              <button mat-button ngxMatDatepickerCancel>Cancel</button>
+              <button mat-raised-button color="primary" ngxMatDatepickerApply [color]="'primary'">Apply</button>
+            </ngx-mat-datepicker-actions>
+          </ngx-mat-datetime-picker>
+          <mat-error *ngIf="startTime.invalid">Enter valid Start Time</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>End Time</mat-label>
+          <input matInput [ngxMatDatetimePicker]="end" placeholder="Choose a date"
+            [formControl]="endTime" [disabled]="disabled" [min]="minEndTime">
+          <ngx-mat-datepicker-toggle matSuffix [for]="end"></ngx-mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #end [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+            [color]="'primary'" [enableMeridian]="enableMeridian" [disableMinute]="disableMinute" [hideTime]="hideTime">
+            <ngx-mat-datepicker-actions>
+              <button mat-button ngxMatDatepickerCancel>Cancel</button>
+              <button mat-raised-button color="primary" ngxMatDatepickerApply [color]="'primary'">Apply</button>
+            </ngx-mat-datepicker-actions>
+          </ngx-mat-datetime-picker>
+          <mat-error *ngIf="endTime.invalid">Enter valid End Time</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="from-field">
+          <mat-label>Message</mat-label>
+          <input matInput placeholder="Message" [formControl]="message" required>
+          <mat-error *ngIf="message.invalid">Enter valid Message</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 justify-content-end d-flex mb-3">
+        <button mat-raised-button (click)="onNoClick()">Close</button>
+      </div>
+      <div class="col-6 mb-3">
+        <button mat-raised-button color="primary" (click)="onSaveClick()">Submit</button>
+      </div>
+    </div>
+</div>
+  
