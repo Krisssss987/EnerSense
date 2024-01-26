@@ -15,6 +15,11 @@ export const navbarData = [
         label: 'Analytics'
     },
     {
+        routeLink: 'profile',
+        icon: 'person',
+        label: 'Profile'
+    },
+    {
         routeLink: 'tools',
         icon: 'people',
         label: 'Tools'

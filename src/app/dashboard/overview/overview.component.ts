@@ -224,7 +224,6 @@ export class OverviewComponent  implements OnInit {
     if (this.CompanyId) {
       this.DashDataService.feederinterval(this.deviceUID, this.interval).subscribe(
         (data) => {
-          console.log(data)
           this.kvah=data.fetchOverview.kvah_difference;
           this.kvarh_led=data.fetchOverview.kvarh_leading??0;
           this.kvarh_lag=data.fetchOverview.kvarh_lagging??0;
@@ -232,6 +231,7 @@ export class OverviewComponent  implements OnInit {
           this.max_kva=data.fetchOverview.max_kva;
           this.max_kw=data.fetchOverview.max_kw;
           this.pf_diff=data.fetchOverview.pf_difference;
+          this.CO2=data.fetchOverview.kwh_difference * 0.82
         },
         (error) => {
         }

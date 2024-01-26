@@ -59,6 +59,7 @@ import { AddShiftComponent } from './tools/tools-component/add-shift/add-shift.c
 import { UpdateShiftComponent } from './tools/tools-component/update-shift/update-shift.component';
 import { UpdateAlertComponent } from './tools/tools-component/update-alert/update-alert.component';
 import { AddAlertComponent } from './tools/tools-component/add-alert/add-alert.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -89,6 +90,7 @@ import { AddAlertComponent } from './tools/tools-component/add-alert/add-alert.c
     UpdateShiftComponent,
     UpdateAlertComponent,
     AddAlertComponent,
+    ProfileComponent,
   ],
   imports: [
     CommonModule,

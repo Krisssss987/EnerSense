@@ -1,6 +1,6 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardService } from 'src/app/dashboard/dash_service/dashboard.service';
 import { AuthService } from 'src/app/login/auth/auth.service';
@@ -11,6 +11,8 @@ import { AuthService } from 'src/app/login/auth/auth.service';
   styleUrls: ['./update-alert.component.css']
 })
 export class UpdateAlertComponent {
+
+  alertData:any;
 
   alertName = new FormControl('', [Validators.required]);
   feederName = new FormControl('', [Validators.required]);
@@ -93,7 +95,10 @@ export class UpdateAlertComponent {
     private authService: AuthService,
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<UpdateAlertComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+      this.alertData = data.alertData;
+      console.log(this.alertData);
     this.startTime.valueChanges.subscribe(() => {
       this.updateEndTimeMin();
     });

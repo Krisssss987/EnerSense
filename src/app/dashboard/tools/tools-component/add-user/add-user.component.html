@@ -50,8 +50,8 @@
       <div class="col-6">
         <mat-form-field appearance="outline" class="from-field">
           <mat-label>Shift</mat-label>
-          <mat-select placeholder="Shift" [formControl]="shift">
-            <mat-option *ngFor="let shift of shiftData" [value]="shift.shiftCode">
+          <mat-select placeholder="Shift" [formControl]="shift" multiple>
+            <mat-option *ngFor="let shift of shiftData" [value]="shift.shiftname">
               {{ shift.shiftname }}
             </mat-option>
           </mat-select>

@@ -14,6 +14,8 @@ import { UpdateShiftComponent } from './tools-component/update-shift/update-shif
 import { UpdateAlertComponent } from './tools-component/update-alert/update-alert.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { DatePipe } from '@angular/common';
+import Swal from 'sweetalert2';
+import { emit } from 'process';
 
 @Component({
   selector: 'app-tools',
@@ -122,8 +124,8 @@ export class ToolsComponent {
       this.DashDataService.alertDetails(this.CompanyId).subscribe(
         (alert: any) => {
           const dataSource2 = alert.getAlerts.map((alert: any) => {
-            alert.formattedStartTime = this.datePipe.transform(alert.startTime, 'yyyy-MM-dd HH:mm:ss');
-            alert.formattedEndTime = this.datePipe.transform(alert.endTime, 'yyyy-MM-dd HH:mm:ss');
+            alert.formattedStartTime = this.datePipe.transform(alert.startTime, 'yyyy-MM-dd HH:mm');
+            alert.formattedEndTime = this.datePipe.transform(alert.endTime, 'yyyy-MM-dd HH:mm');
             return alert;
           });
           
@@ -178,6 +180,7 @@ export class ToolsComponent {
     dialogConfig.width = '600px';
     dialogConfig.height = 'auto';
     dialogConfig.maxWidth = '90vw';
+    dialogConfig.data = {feederData: element};
     const dialogRef = this.dialog.open(UpdateFeederComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(feederAdded => {});
   }
@@ -187,6 +190,7 @@ export class ToolsComponent {
     dialogConfig.width = '600px';
     dialogConfig.height = 'auto';
     dialogConfig.maxWidth = '90vw';
+    dialogConfig.data = {userData: element};
     const dialogRef = this.dialog.open(UpdateUserComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(userAdded => {});
   }
@@ -196,6 +200,7 @@ export class ToolsComponent {
     dialogConfig.width = '600px';
     dialogConfig.height = 'auto';
     dialogConfig.maxWidth = '90vw';
+    dialogConfig.data = {shiftData: element};
     const dialogRef = this.dialog.open(UpdateShiftComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(shiftAdded => {});
   }
@@ -205,8 +210,180 @@ export class ToolsComponent {
     dialogConfig.width = '600px';
     dialogConfig.height = 'auto';
     dialogConfig.maxWidth = '90vw';
+    dialogConfig.data = {alertData: element};
     const dialogRef = this.dialog.open(UpdateAlertComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(alertAdded => {});
+  }
+
+  deleteUser(user: any) {
+    const email = user.personalEmail;
+  
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User clicked 'Yes' in the confirmation dialog
+        this.DashDataService.userDelete(email).subscribe(
+          () => {
+            // User deleted successfully
+            Swal.fire({
+              title: "Deleted!",
+              text: "User has been deleted.",
+              icon: "success",
+              timer: 2000,
+              timerProgressBar: true
+            });
+  
+            this.getUsers();
+          },
+          (error) => {
+            // Error deleting user
+            console.error('Error deleting user:', error);
+            Swal.fire({
+              title: "Error",
+              text: "Error deleting user",
+              icon: "error",
+              timer: 2000,
+              timerProgressBar: true
+            });
+          }
+        );
+      }
+    });
+  }
+
+  deleteDevice(device: any) {
+    const deviceId = device.feederUid;
+  
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.DashDataService.deviceDelete(deviceId).subscribe(
+          () => {
+            // User deleted successfully
+            Swal.fire({
+              title: "Deleted!",
+              text: "Device has been deleted.",
+              icon: "success",
+              timer: 2000,
+              timerProgressBar: true
+            });
+  
+            this.getUserDevices();
+          },
+          (error) => {
+            // Error deleting user
+            console.error('Error deleting device:', error);
+            Swal.fire({
+              title: "Error",
+              text: "Error deleting Device",
+              icon: "error",
+              timer: 2000,
+              timerProgressBar: true
+            });
+          }
+        );
+      }
+    });
+  }
+
+  deleteAlert(alert: any) {
+    const alertId = alert.userId;
+  
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User clicked 'Yes' in the confirmation dialog
+        this.DashDataService.alertDelete(alertId).subscribe(
+          () => {
+            // User deleted successfully
+            Swal.fire({
+              title: "Deleted!",
+              text: "Alert has been deleted.",
+              icon: "success",
+              timer: 2000,
+              timerProgressBar: true
+            });
+  
+            window.location.reload();
+          },
+          (error) => {
+            // Error deleting user
+            console.error('Error deleting Alert:', error);
+            Swal.fire({
+              title: "Error",
+              text: "Error deleting Alert",
+              icon: "error",
+              timer: 2000,
+              timerProgressBar: true
+            });
+          }
+        );
+      }
+    });
+  }
+
+  deleteShift(shift: any) {
+    const shiftId = shift.shiftCode;
+  
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User clicked 'Yes' in the confirmation dialog
+        this.DashDataService.shiftDelete(shiftId).subscribe(
+          () => {
+            // User deleted successfully
+            Swal.fire({
+              title: "Deleted!",
+              text: "Shift has been deleted.",
+              icon: "success",
+              timer: 2000,
+              timerProgressBar: true
+            });
+  
+            this.getShift();
+          },
+          (error) => {
+            // Error deleting user
+            console.error('Error deleting shift:', error);
+            Swal.fire({
+              title: "Error",
+              text: "Error deleting shift",
+              icon: "error",
+              timer: 2000,
+              timerProgressBar: true
+            });
+          }
+        );
+      }
+    });
   }
 }
 

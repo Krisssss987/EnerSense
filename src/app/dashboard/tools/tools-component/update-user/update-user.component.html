@@ -50,7 +50,7 @@
       <div class="col-6">
         <mat-form-field appearance="outline" class="from-field">
           <mat-label>Shift</mat-label>
-          <mat-select placeholder="Shift" [formControl]="shift">
+          <mat-select placeholder="Shift" [formControl]="shift" multiple>
             <mat-option *ngFor="let shift of shiftData" [value]="shift.shiftCode">
               {{ shift.shiftname }}
             </mat-option>
@@ -66,26 +66,6 @@
             <mat-option value="Standard">Standard</mat-option>
           </mat-select>
           <mat-error *ngIf="privileges.invalid">Select valid Privilege</mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-6">
-        <mat-form-field appearance="outline" class="from-field">
-            <mat-label>Enter your password</mat-label>
-            <input matInput [type]="hidePassword ? 'password' : 'text'" [formControl]="password">
-            <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
-            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-          </mat-form-field>
-      </div>
-      <div class="col-6">
-        <mat-form-field appearance="outline" class="from-field">
-            <mat-label>Confirm password</mat-label>
-            <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" [formControl]="confirmPassword">
-            <mat-error *ngIf="confirmPassword.invalid">{{getConfirmPasswordErrorMessage()}}</mat-error>
-            <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
-              <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
         </mat-form-field>
       </div>
       <div class="col-6 justify-content-end d-flex mb-3">

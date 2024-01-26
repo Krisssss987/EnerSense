@@ -60,10 +60,10 @@
               <ng-container matColumnDef="action">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
                   <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button color="dark" style="white-space: nowrap;">
+                    <button mat-icon-button color="dark" style="white-space: nowrap;" (click)="UpdateUserDialog(element)">
                       <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button color="dark" style="white-space: nowrap;">
+                    <button mat-icon-button color="dark" style="white-space: nowrap;" (click)="deleteUser(element)">
                       <mat-icon style="margin-right: 5px;">delete</mat-icon>
                     </button>
                   </td>
@@ -119,10 +119,10 @@
               <ng-container matColumnDef="action">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
                   <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button color="dark" style="white-space: nowrap;">
+                    <button mat-icon-button color="dark" style="white-space: nowrap;" (click)="updateFeederDialog(element)">
                       <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button color="dark" style="white-space: nowrap;">
+                    <button mat-icon-button color="dark" style="white-space: nowrap;" (click)="deleteDevice(element)">
                       <mat-icon style="margin-right: 5px;">delete</mat-icon>
                     </button>
                   </td>
@@ -199,10 +199,10 @@
               <ng-container matColumnDef="action">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
                   <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button color="dark" style="white-space: nowrap;">
+                    <button mat-icon-button color="dark" style="white-space: nowrap;" (click)="updateAlertDialog(element)">
                       <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button color="dark" style="white-space: nowrap;">
+                    <button mat-icon-button color="dark" style="white-space: nowrap;" (click)="deleteAlert(element)">
                       <mat-icon style="margin-right: 5px;">delete</mat-icon>
                     </button>
                   </td>
@@ -249,10 +249,10 @@
                 <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
                     <td mat-cell *matCellDef="let element">
-                      <button mat-icon-button color="dark" style="white-space: nowrap;">
+                      <button mat-icon-button color="dark" style="white-space: nowrap;" (click)="updateShiftDialog(element)">
                         <mat-icon>edit</mat-icon>
                       </button>
-                      <button mat-icon-button color="dark" style="white-space: nowrap;">
+                      <button mat-icon-button color="dark" style="white-space: nowrap;" (click)="deleteShift(element)">
                         <mat-icon style="margin-right: 5px;">delete</mat-icon>
                       </button>
                     </td>

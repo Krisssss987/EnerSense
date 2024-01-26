@@ -1,6 +1,6 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 import { DashboardService } from 'src/app/dashboard/dash_service/dashboard.service';
@@ -18,6 +18,8 @@ export class UpdateShiftComponent implements OnInit,OnDestroy {
   endTime = new FormControl('', [Validators.required]);
   timeDifference: string = '';
 
+  shiftData:any;
+
   private formSubscription!: Subscription;
 
   ngOnDestroy() {
@@ -34,41 +36,38 @@ export class UpdateShiftComponent implements OnInit,OnDestroy {
   calculateTimeDifference() {
     const startTimeValue = this.startTime.value as string;
     const endTimeValue = this.endTime.value as string;
-
-    const startTimeArray = startTimeValue.split(':');
-    const endTimeArray = endTimeValue.split(':');
-
-    const startHours = parseInt(startTimeArray[0]);
-    const startMinutes = parseInt(startTimeArray[1]);
-
-    const endHours = parseInt(endTimeArray[0]);
-    const endMinutes = parseInt(endTimeArray[1]);
-
-    if((startHours>endHours) || (startHours==endHours && startMinutes>endMinutes)){
-      const newStartHr = 24 - startHours;
-      const newStartMin = 60 - startMinutes;
-
-      const differenceInMinutes = (endHours * 60 + endMinutes) + (newStartHr * 60 + newStartMin);
-
-      if (!isNaN(differenceInMinutes)) {
-        const hours = Math.floor(differenceInMinutes / 60);
-        const minutes = differenceInMinutes % 60;
-        this.timeDifference = `${this.padZero(hours)}:${this.padZero(minutes)}`;
+  
+    if (startTimeValue && endTimeValue) {
+      const startTimeArray = startTimeValue.split(':');
+      const endTimeArray = endTimeValue.split(':');
+  
+      const startHours = parseInt(startTimeArray[0]);
+      const startMinutes = parseInt(startTimeArray[1]);
+  
+      const endHours = parseInt(endTimeArray[0]);
+      const endMinutes = parseInt(endTimeArray[1]);
+  
+      if ((startHours > endHours) || (startHours === endHours && startMinutes > endMinutes)) {
+        // Handle case where end time is earlier than start time
+        const differenceInMinutes = (endHours * 60 + endMinutes) + (24 * 60 - (startHours * 60 + startMinutes));
+        this.displayTimeDifference(differenceInMinutes);
       } else {
-        this.timeDifference = 'Invalid time values';
+        const differenceInMinutes = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
+        this.displayTimeDifference(differenceInMinutes);
       }
-
-    }else{
-      const differenceInMinutes = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
-
-      if (!isNaN(differenceInMinutes)) {
-        const hours = Math.floor(differenceInMinutes / 60);
-        const minutes = differenceInMinutes % 60;
-        this.timeDifference = `${this.padZero(hours)}:${this.padZero(minutes)}`;
-      } else {
-        this.timeDifference = 'Invalid time values';
-      }
-    }    
+    } else {
+      this.timeDifference = 'Invalid time values';
+    }
+  }
+  
+  displayTimeDifference(differenceInMinutes: number) {
+    if (!isNaN(differenceInMinutes)) {
+      const hours = Math.floor(differenceInMinutes / 60);
+      const minutes = differenceInMinutes % 60;
+      this.timeDifference = `${this.padZero(hours)} hours ${this.padZero(minutes)} minutes`;
+    } else {
+      this.timeDifference = 'Invalid time values';
+    }
   }
 
   // Helper function to pad a number with a leading zero if needed
@@ -91,7 +90,11 @@ export class UpdateShiftComponent implements OnInit,OnDestroy {
     private authService: AuthService,
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<UpdateShiftComponent>,
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: any
+    ) {
+      this.shiftData = data.shiftData;
+      console.log(this.shiftData);
+  }
 
   
   adjustDialogWidth() {

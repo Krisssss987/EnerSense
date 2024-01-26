@@ -5,6 +5,7 @@ import { FeederComponent } from './feeder/feeder.component';
 import { OverviewComponent } from './overview/overview.component';
 import { ToolsComponent } from './tools/tools.component';
 import { ReportComponent } from './report/report.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: 'analytics', component: AnalyticsComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
   { path: 'tools', component: ToolsComponent},
   { path: 'report', component: ReportComponent},
+  { path: 'profile', component: ProfileComponent},
   { path: '', redirectTo: 'overview', pathMatch: 'full' }
 
 ];

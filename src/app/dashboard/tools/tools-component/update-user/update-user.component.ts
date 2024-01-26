@@ -1,6 +1,6 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardService } from 'src/app/dashboard/dash_service/dashboard.service';
 import { AuthService } from 'src/app/login/auth/auth.service';
@@ -11,6 +11,9 @@ import { AuthService } from 'src/app/login/auth/auth.service';
   styleUrls: ['./update-user.component.css']
 })
 export class UpdateUserComponent {
+
+  userData:any;
+
   firstName = new FormControl('', [Validators.required]);
   lastName = new FormControl('', [Validators.required]);
   personalEmail = new FormControl('', [Validators.required]);
@@ -41,8 +44,15 @@ export class UpdateUserComponent {
     private authService: AuthService,
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<UpdateUserComponent>,
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+      this.userData = data.userData;
+      console.log(this.userData);
+  }
 
+  priviousData(){
+    
+  }
   
   adjustDialogWidth() {
     const screenWidth = window.innerWidth;

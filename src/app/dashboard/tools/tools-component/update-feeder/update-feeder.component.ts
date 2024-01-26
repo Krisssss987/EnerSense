@@ -1,6 +1,6 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardService } from 'src/app/dashboard/dash_service/dashboard.service';
 import { AuthService } from 'src/app/login/auth/auth.service';
@@ -11,6 +11,8 @@ import { AuthService } from 'src/app/login/auth/auth.service';
   styleUrls: ['./update-feeder.component.css']
 })
 export class UpdateFeederComponent {
+
+  feederData: any;
 
   feederName = new FormControl('', [Validators.required]);
   location = new FormControl('', [Validators.required]);
@@ -31,7 +33,11 @@ export class UpdateFeederComponent {
     private authService: AuthService,
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<UpdateFeederComponent>,
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.feederData = data.feederData;
+    console.log(this.feederData);
+  }
 
   
   adjustDialogWidth() {
