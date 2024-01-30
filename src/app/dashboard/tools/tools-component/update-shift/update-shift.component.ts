@@ -2,7 +2,7 @@ import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/cor
 import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, merge } from 'rxjs';
 import { DashboardService } from 'src/app/dashboard/dash_service/dashboard.service';
 import { AuthService } from 'src/app/login/auth/auth.service';
 
@@ -28,8 +28,7 @@ export class UpdateShiftComponent implements OnInit,OnDestroy {
   }
 
   private subscribeToFormChanges() {
-    // CombineLatest allows us to react to changes in both controls
-    return combineLatest([this.startTime.valueChanges, this.endTime.valueChanges])
+    return merge(this.startTime.valueChanges, this.endTime.valueChanges)
       .subscribe(() => this.calculateTimeDifference());
   }
 
@@ -82,6 +81,7 @@ export class UpdateShiftComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
+    this.previousData();
     this.formSubscription = this.subscribeToFormChanges();
   }
 
@@ -93,7 +93,13 @@ export class UpdateShiftComponent implements OnInit,OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any
     ) {
       this.shiftData = data.shiftData;
-      console.log(this.shiftData);
+  }
+
+  previousData(){
+    this.shiftName = new FormControl(`${this.shiftData.shiftName}`, [Validators.required]);
+    this.startTime = new FormControl(`${this.shiftData.startTime}`, [Validators.required]);
+    this.endTime = new FormControl(`${this.shiftData.endTime}`, [Validators.required]);
+    this.calculateTimeDifference();
   }
 
   
@@ -115,26 +121,22 @@ export class UpdateShiftComponent implements OnInit,OnDestroy {
   onSaveClick(){
     if( this.shiftName.valid && this.startTime.valid && this.endTime.valid )
     {
-      const CompanyId = this.authService.getCompanyId();
+      const shiftCode = this.shiftData.shiftCode;
 
       const shiftData = {
-        shiftCode:this.shiftName.value, 
+        shiftName:this.shiftName.value, 
         startTime:this.startTime.value, 
         endTime:this.endTime.value, 
         totalDuration:this.timeDifference,
-        companyId:CompanyId
       }
 
-      console.log(shiftData);
-
-      this.DashDataService.shiftAdd(shiftData).subscribe(
+      this.DashDataService.shiftUpdate(shiftCode,shiftData).subscribe(
         (response) => {
           this.snackBar.open(
-            'Shift Added Successfully.',
+            'Shift Updated Successfully.',
             'Dismiss',
             { duration: 2000 }
           );
-          window.location.reload();
         },
         (error) => {
           this.snackBar.open(

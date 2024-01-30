@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, HostListener, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -46,6 +47,7 @@ export class UpdateAlertComponent {
   ngOnInit(): void {
     this.getFeeder();
     this.getUser(); 
+    this.previousData();
   }
 
   minEndTime!: Date;
@@ -94,6 +96,7 @@ export class UpdateAlertComponent {
     private DashDataService: DashboardService,
     private authService: AuthService,
     public snackBar: MatSnackBar,
+    private datePipe: DatePipe,
     public dialogRef: MatDialogRef<UpdateAlertComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -104,6 +107,25 @@ export class UpdateAlertComponent {
     });
   }
 
+  previousData(){
+    const formattedStartDate = this.datePipe.transform(this.alertData.startTime, 'M/d/yyyy, HH:mm:ss');
+    const formattedEndDate = this.datePipe.transform(this.alertData.endTime, 'M/d/yyyy, HH:mm:ss');
+
+    this.alertName = new FormControl(`${this.alertData.name}`, [Validators.required]);
+    this.feederName = new FormControl(`${this.alertData.feederName}`, [Validators.required]);
+    this.parameter = new FormControl(`${this.alertData.parameter}`, [Validators.required]);
+    this.condition = new FormControl(`${this.alertData.condition}`, [Validators.required]);
+    this.threshold = new FormControl(`${this.alertData.threshold}`, [Validators.required]);
+    this.repeat = new FormControl(`${this.alertData.repeat}`, [Validators.required]);
+    this.startTime = new FormControl(`${formattedStartDate}`, [Validators.required]);
+    this.endTime = new FormControl(`${formattedEndDate}`, [Validators.required]);
+    this.userName = new FormControl(`${this.alertData.userName}`, [Validators.required]);
+    this.message = new FormControl(`${this.alertData.message}`, [Validators.required]);
+
+    this.updateEndTimeMin();
+
+    console.log(this.startTime);
+  }
   
   adjustDialogWidth() {
     const screenWidth = window.innerWidth;
@@ -147,7 +169,6 @@ export class UpdateAlertComponent {
             'Dismiss',
             { duration: 2000 }
           );
-          window.location.reload();
         },
         (error) => {
           this.snackBar.open(

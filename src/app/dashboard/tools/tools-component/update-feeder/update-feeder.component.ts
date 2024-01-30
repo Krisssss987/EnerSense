@@ -25,7 +25,7 @@ export class UpdateFeederComponent {
   }
 
   ngOnInit(): void {
-    
+    this.previousData();
   }
 
   constructor(
@@ -36,9 +36,14 @@ export class UpdateFeederComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.feederData = data.feederData;
-    console.log(this.feederData);
   }
 
+  previousData(){
+    this.feederName = new FormControl(`${this.feederData.name}`, [Validators.required]);
+    this.location = new FormControl(`${this.feederData.location}`, [Validators.required]);
+    this.threshold = new FormControl(`${this.feederData.thresholdValue}`, [Validators.required]);
+    this.feederUid = new FormControl(`${this.feederData.feederUid}`, [Validators.required]);
+  }
   
   adjustDialogWidth() {
     const screenWidth = window.innerWidth;
@@ -58,31 +63,26 @@ export class UpdateFeederComponent {
   onSaveClick(){
     if( this.feederName.valid && this.location.valid && this.threshold.valid && this.feederUid.valid )
     {
-      const CompanyId = this.authService.getCompanyId();
+      const feederId = this.feederData.feederId;
 
       const feederData = {
         feederUid:this.feederUid.value,
         name:this.feederName.value, 
-        location:this.location.value, 
-        groupName:'', 
-        virtualGroupName:'', 
+        location:this.location.value,  
         thresholdValue:this.threshold.value, 
-        action:'', 
-        companyId:CompanyId
       }
 
-      this.DashDataService.deviceAdd(feederData).subscribe(
+      this.DashDataService.deviceUpdate(feederId,feederData).subscribe(
         (response) => {
           this.snackBar.open(
-            'Feeder Added Successfully.',
+            'Feeder Updated Successfully.',
             'Dismiss',
             { duration: 2000 }
           );
-          window.location.reload();
         },
         (error) => {
           this.snackBar.open(
-            error.error.message || 'Registration failed. Please try again.',
+            error.error.message || 'Failed. Please try again.',
             'Dismiss',
             { duration: 2000 }
           );
@@ -96,5 +96,4 @@ export class UpdateFeederComponent {
       });
     }    
   }
-
 }

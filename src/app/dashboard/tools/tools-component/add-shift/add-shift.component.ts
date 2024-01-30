@@ -112,14 +112,12 @@ export class AddShiftComponent implements OnInit,OnDestroy {
       const CompanyId = this.authService.getCompanyId();
 
       const shiftData = {
-        shiftCode:this.shiftName.value, 
+        shiftName:this.shiftName.value, 
         startTime:this.startTime.value, 
         endTime:this.endTime.value, 
         totalDuration:this.timeDifference,
         companyId:CompanyId
       }
-
-      console.log(shiftData);
 
       this.DashDataService.shiftAdd(shiftData).subscribe(
         (response) => {
@@ -128,7 +126,6 @@ export class AddShiftComponent implements OnInit,OnDestroy {
             'Dismiss',
             { duration: 2000 }
           );
-          window.location.reload();
         },
         (error) => {
           this.snackBar.open(

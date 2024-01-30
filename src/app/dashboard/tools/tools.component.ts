@@ -15,7 +15,6 @@ import { UpdateAlertComponent } from './tools-component/update-alert/update-aler
 import { MatPaginator } from '@angular/material/paginator';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
-import { emit } from 'process';
 
 @Component({
   selector: 'app-tools',
@@ -146,7 +145,11 @@ export class ToolsComponent {
     dialogConfig.width = '600px';
     dialogConfig.maxWidth = '90vw';
     const dialogRef = this.dialog.open(AddFeederComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(feederAdded => {});
+    dialogRef.afterClosed().subscribe(feederAdded => {
+      setTimeout(() => {
+        this.getUserDevices();
+      }, 1000);
+    });
   }
 
   openUserDialog(): void {
@@ -154,7 +157,11 @@ export class ToolsComponent {
     dialogConfig.width = '600px';
     dialogConfig.maxWidth = '90vw';
     const dialogRef = this.dialog.open(AddUserComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(userAdded => {});
+    dialogRef.afterClosed().subscribe(userAdded => {
+      setTimeout(() => {
+        this.getUsers();
+      }, 1000);
+    });
   }
 
   openShiftDialog(): void {
@@ -163,7 +170,11 @@ export class ToolsComponent {
     dialogConfig.height = 'auto';
     dialogConfig.maxWidth = '90vw';
     const dialogRef = this.dialog.open(AddShiftComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(shiftAdded => {});
+    dialogRef.afterClosed().subscribe(shiftAdded => {
+      setTimeout(() => {
+        this.getShift();
+      }, 1000);
+    });
   }
 
   openAlertDialog(): void {
@@ -172,7 +183,11 @@ export class ToolsComponent {
     dialogConfig.height = 'auto';
     dialogConfig.maxWidth = '90vw';
     const dialogRef = this.dialog.open(AddAlertComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(alertAdded => {});
+    dialogRef.afterClosed().subscribe(alertAdded => {
+      setTimeout(() => {
+        this.getAlert();
+      }, 1000);
+    });
   }
 
   updateFeederDialog(element:any): void {
@@ -182,7 +197,11 @@ export class ToolsComponent {
     dialogConfig.maxWidth = '90vw';
     dialogConfig.data = {feederData: element};
     const dialogRef = this.dialog.open(UpdateFeederComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(feederAdded => {});
+    dialogRef.afterClosed().subscribe(feederAdded => {
+      setTimeout(() => {
+        this.getUserDevices();
+      }, 1000);
+    });
   }
 
   UpdateUserDialog(element:any): void {
@@ -192,7 +211,11 @@ export class ToolsComponent {
     dialogConfig.maxWidth = '90vw';
     dialogConfig.data = {userData: element};
     const dialogRef = this.dialog.open(UpdateUserComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(userAdded => {});
+    dialogRef.afterClosed().subscribe(userAdded => {
+      setTimeout(() => {
+        this.getUsers();
+      }, 1000);
+    });
   }
 
   updateShiftDialog(element:any): void {
@@ -202,7 +225,11 @@ export class ToolsComponent {
     dialogConfig.maxWidth = '90vw';
     dialogConfig.data = {shiftData: element};
     const dialogRef = this.dialog.open(UpdateShiftComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(shiftAdded => {});
+    dialogRef.afterClosed().subscribe(shiftAdded => {
+      setTimeout(() => {
+        this.getShift();
+      }, 1000);
+    });
   }
 
   updateAlertDialog(element:any): void {
@@ -212,7 +239,11 @@ export class ToolsComponent {
     dialogConfig.maxWidth = '90vw';
     dialogConfig.data = {alertData: element};
     const dialogRef = this.dialog.open(UpdateAlertComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(alertAdded => {});
+    dialogRef.afterClosed().subscribe(alertAdded => {
+      setTimeout(() => {
+        this.getAlert();
+      }, 1000);
+    });
   }
 
   deleteUser(user: any) {
@@ -301,7 +332,7 @@ export class ToolsComponent {
   }
 
   deleteAlert(alert: any) {
-    const alertId = alert.userId;
+    const alertId = alert.alertId;
   
     Swal.fire({
       title: "Are you sure?",
@@ -325,7 +356,7 @@ export class ToolsComponent {
               timerProgressBar: true
             });
   
-            window.location.reload();
+            this.getAlert();
           },
           (error) => {
             // Error deleting user

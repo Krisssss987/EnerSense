@@ -22,8 +22,6 @@ export class UpdateUserComponent {
   plant = new FormControl('', [Validators.required]);
   shift = new FormControl('', [Validators.required]);
   privileges = new FormControl('', [Validators.required]);
-  password = new FormControl('', [Validators.required]);
-  confirmPassword = new FormControl('', [Validators.required]);
   shiftData:any;
   
   hidePassword = true;
@@ -36,6 +34,7 @@ export class UpdateUserComponent {
 
   ngOnInit(): void {
     this.getShift();
+    this.previousData();
     
   }
 
@@ -47,11 +46,17 @@ export class UpdateUserComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
       this.userData = data.userData;
-      console.log(this.userData);
   }
 
-  priviousData(){
-    
+  previousData(){
+    this.firstName = new FormControl(`${this.userData.firstName}`, [Validators.required]);
+    this.lastName = new FormControl(`${this.userData.lastName}`, [Validators.required]);
+    this.personalEmail = new FormControl(`${this.userData.personalEmail}`, [Validators.required]);
+    this.designation = new FormControl(`${this.userData.designation}`, [Validators.required]);
+    this.contact = new FormControl(`${this.userData.contactNo}`, [Validators.required]);
+    this.plant = new FormControl(`${this.userData.plant}`, [Validators.required]);
+    this.shift = new FormControl(`${this.userData.shift}`, [Validators.required]);
+    this.privileges = new FormControl(`${this.userData.privileges}`, [Validators.required]);
   }
   
   adjustDialogWidth() {
@@ -63,28 +68,6 @@ export class UpdateUserComponent {
     } else {
       this.dialogRef.updateSize('400px', '');
     }
-  }
-
-  getPasswordErrorMessage() {
-    if (this.password.hasError('required')) {
-      return 'Password is required';
-    }
-    return this.password.hasError('minlength')
-      ? 'Password should be at least 8 characters long'
-      : '';
-  }
-
-  getConfirmPasswordErrorMessage() {
-    if (this.confirmPassword.hasError('required')) {
-      return 'Password is required';
-    }
-    if (this.confirmPassword.hasError('minlength')) {
-      return 'Password should be at least 8 characters long';
-    }
-    if (this.password.value !== this.confirmPassword.value) {
-      return 'Passwords do not match';
-    }
-    return '';
   }
 
   getShift() {
@@ -108,35 +91,32 @@ export class UpdateUserComponent {
   }
 
   onSaveClick(){
-    if(this.firstName.valid && this.lastName.valid && this.contact.valid && this.shift.valid && this.personalEmail.valid && this.password.valid && this.confirmPassword.valid && this.designation.valid && this.plant.valid && this.privileges.valid)
+    if(this.firstName.valid && this.lastName.valid && this.contact.valid && this.shift.valid && this.personalEmail.valid && this.designation.valid && this.plant.valid && this.privileges.valid)
     {
-      const CompanyName = this.authService.getCompanyName();
+      const personalEmail = this.userData.personalEmail;
 
       const adminData = {
+        userName:this.personalEmail.value,
         firstName:this.firstName.value, 
-        lastName:this.lastName.value, 
-        companyName:CompanyName,
-        contactno:this.contact.value, 
+        lastName:this.lastName.value,
+        contactNo:this.contact.value, 
         shift:this.shift.value, 
-        personalemail:this.personalEmail.value, 
-        password:this.password.value, 
         designation:this.designation.value,  
         plant:this.plant.value, 
         privileges:this.privileges.value
       }
 
-      this.DashDataService.userAdd(adminData).subscribe(
+      this.DashDataService.userUpdate(personalEmail,adminData).subscribe(
         (response) => {
           this.snackBar.open(
-            'User Registered Successfully.',
+            'User data Updated Successfully.',
             'Dismiss',
             { duration: 2000 }
           );
-          window.location.reload();
         },
         (error) => {
           this.snackBar.open(
-            error.error.message || 'Registration failed. Please try again.',
+            error.error.message || 'Failed!. Please try again.',
             'Dismiss',
             { duration: 2000 }
           );

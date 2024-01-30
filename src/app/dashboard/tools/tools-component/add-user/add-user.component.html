@@ -51,8 +51,8 @@
         <mat-form-field appearance="outline" class="from-field">
           <mat-label>Shift</mat-label>
           <mat-select placeholder="Shift" [formControl]="shift" multiple>
-            <mat-option *ngFor="let shift of shiftData" [value]="shift.shiftname">
-              {{ shift.shiftname }}
+            <mat-option *ngFor="let shift of shiftData" [value]="shift.shiftName">
+              {{ shift.shiftName }}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="shift.invalid">Select valid Shift</mat-error>

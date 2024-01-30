@@ -142,7 +142,6 @@ export class AddAlertComponent {
             'Dismiss',
             { duration: 2000 }
           );
-          window.location.reload();
         },
         (error) => {
           this.snackBar.open(

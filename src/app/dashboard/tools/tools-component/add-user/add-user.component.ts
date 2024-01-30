@@ -34,7 +34,6 @@ export class AddUserComponent {
 
   ngOnInit(): void {
     this.getShift();
-    
   }
 
   constructor(
@@ -123,7 +122,6 @@ export class AddUserComponent {
             'Dismiss',
             { duration: 2000 }
           );
-          window.location.reload();
         },
         (error) => {
           this.snackBar.open(

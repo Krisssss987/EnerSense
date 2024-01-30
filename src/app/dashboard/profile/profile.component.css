@@ -1,0 +1,159 @@
+.title-card {
+  border-left: 20px solid #673ab7;
+  backdrop-filter: blur(5px);
+  height: 75%;
+  font-weight: 600;
+}
+
+
+.prs-card{
+	border-bottom: 20px solid #673ab7;
+	height: auto;
+	width: 100%;
+  	backdrop-filter: blur(5px);
+}
+
+.cmn-card{
+	height: auto;
+	width: 100%;
+  	backdrop-filter: blur(5px);
+}
+.cmn-card-left{
+	border-left: 20px solid #673ab7;
+}
+
+.cmn-card-right{
+	border-right: 20px solid #673ab7;
+}
+
+.profile{
+  padding-top: 20vh;
+  padding-bottom: 5vh;
+}
+
+.user-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: whitesmoke;
+  overflow: hidden;
+}
+
+.circle-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form-field{
+	width: 100%;
+}
+
+.profile-title{
+	color: #673ab7;
+	font-size: 20px;
+}
+
+.profile-info{
+	font-size: 16px;
+	font-weight: 550;
+	color: grey;
+}
+
+.minimized-button {
+	width: 30px;
+	height: 30px;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+}
+
+.minimized-button .mat-button-wrapper {
+	line-height: 30px;
+}
+
+.minimized-button .mat-icon {
+	font-size: 20px;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px; /* Adjust the width as needed */
+    height: 150px; /* Adjust the height as needed */
+    border-radius: 50%; /* To make the image round */
+    overflow: hidden; /* To hide any overflowing parts of the image */
+    margin-bottom: 20px; /* Adjust the margin as needed */
+  }
+
+  .avatar img {
+    width: 100%;
+    height: auto;
+  }
+  
+@media(max-width:425px){
+	.profile{
+		padding-top: 75px;
+		padding-bottom: 20px;
+	}
+	.title-card-head{
+		font-size: 13px;
+	}
+	.user-container {
+	  width: 100px;
+	  height: 100px;
+	}
+}
+
+@media(min-width:425px) and (max-width:576px){
+	.profile{
+		padding-top: 75px;
+		padding-bottom: 20px;
+	}
+	.title-card-head{
+		font-size: 15px;
+	}
+	.user-container {
+	  width: 125px;
+	  height: 125px;
+	}
+}
+
+@media(min-width:576px) and (max-width:1024px){
+	.profile{
+		padding-top: 75px;
+		padding-bottom: 20px;
+	}
+	.title-card-head{
+		font-size: 15px;
+	}
+}
+
+@media(min-width:1024px) and (max-width:1440px){
+	.profile{
+		padding-top: 75px;
+		padding-bottom: 20px;
+	}
+	.title-card-head{
+		font-size: 15px;
+	}
+}
+
+/* avatar css */
+
+  .avatar-container {
+	position: absolute;
+	top: 0;
+    right: 0;
+	margin-right: 40px ;
+	margin-top: 30px;
+	
+  }
+  
+  .avatar-image {
+	width: 160px;
+	height: 160px;
+	border-radius: 50%;
+  }
+  

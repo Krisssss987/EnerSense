@@ -146,9 +146,9 @@ export class OverviewComponent  implements OnInit {
       this.DashDataService.pieDetails(this.CompanyId, this.selectedDuration).subscribe(
         (piedata) => {
           this.pieChartData.length = 0;
-          Array.prototype.push.apply(this.pieChartData, piedata.map((entry: { device: any; data: { kvah_diff: any; }; }) => ({
-            name: entry.device,
-            y: entry.data.kvah_diff
+          Array.prototype.push.apply(this.pieChartData, piedata.data.map((entry: { device_uid: any; kva_difference: any; }) => ({
+            name: entry.device_uid,
+            y: parseFloat(entry.kva_difference)
           })));
   
           Highcharts.chart('PieChart', this.PieChart);
@@ -232,7 +232,7 @@ export class OverviewComponent  implements OnInit {
           this.max_kva=data.fetchOverview.max_kva;
           this.max_kw=data.fetchOverview.max_kw;
           this.pf_diff=data.fetchOverview.pf_difference;
-          this.CO2=data.fetchOverview.kwh_difference * 0.82
+          this.CO2=parseFloat((data.fetchOverview.kwh_difference * 0.82).toFixed(2))
           }else{
             this.kvah=0;
             this.kvarh_led=0;
@@ -403,7 +403,7 @@ export class OverviewComponent  implements OnInit {
     },
     series: [{
       type: 'pie',
-      name: 'Data',
+      name: 'KVA',
       data: this.pieChartData
     }],
     exporting: {
