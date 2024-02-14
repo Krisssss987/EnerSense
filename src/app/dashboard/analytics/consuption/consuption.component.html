@@ -1,82 +1,74 @@
-<div class="container-fluid">
-  <div class="row col-lg-12 col-md-12 col-sm-12">
-    <div class="col-lg-4 col-md-4 col-sm-12 px-2">
-      <div class="row d-flex justify-content-center">intervals</div>
-      <div class="row">
+<div class="container-fluid mt-2">
+  <div class="row">
+
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+      <div class="row d-flex justify-content-center">DEVICES</div>
+      <mat-form-field>
+        <mat-label>Select Device</mat-label>
+        <mat-select [(ngModel)]="selectedDevice" required>
+          <mat-option *ngFor="let device of deviceOptions" [value]="device.feederUid">
+            {{ device.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+      <div class="row d-flex justify-content-center">INTERVALS</div>
         <mat-form-field>
           <mat-label>Select Interval</mat-label>
           <mat-select [(ngModel)]="selectedIntervals">
-            <mat-option
-              *ngFor="let interval of intervals"
-              [value]="interval.value">
-              {{ interval.label }}
-            </mat-option>
+            <mat-option value="12hour">12 hours</mat-option>
+            <mat-option value="day">This Day</mat-option>
+            <mat-option value="week">This Week</mat-option>
+            <mat-option value="month">This Month</mat-option>
+            <mat-option value="custom">Custom</mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
-    </div>
-
-    <div class="col-lg-4 col-md-4 col-sm-12">
-      <div class="row d-flex justify-content-center">Devices</div>
-      <mat-form-field>
-        <mat-label>Select Device</mat-label>
-        <mat-select [(ngModel)]="selecteddevice">
-          <mat-option
-            *ngFor="let device of devices"
-            [value]="device.value">
-            {{ device.label }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    </div>  
     
-
-    <div class="col-lg-4 col-md-4 col-sm-12">
-      <div class="row d-flex justify-content-center">SHIFTS</div>
-      <mat-form-field>
-        <mat-label>Select Interval</mat-label>
-        <mat-select [(ngModel)]="selectedshift" >
-          <mat-option
-            *ngFor="let shift of shifts"
-            [value]="shift.value">
-            {{ shift.label }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-
-
-    <div class="col-lg-4 col-md-4 col-sm-12 px-2">
-      <div class="row d-flex justify-content-center">Date and Time</div>
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12" *ngIf="selectedIntervals==='custom'">
+      <div class="row d-flex justify-content-center">DATE</div>
       <mat-form-field>
         <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate placeholder="Start date" />
-          <input matEndDate placeholder="End date" />
+        <mat-date-range-input [max]="currentDate"  [rangePicker]="picker">
+          <input matStartDate [formControl]="startDate" placeholder="Start date" />
+          <input matEndDate [formControl]="endDate" placeholder="End date" />
         </mat-date-range-input>
-        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle
           matIconSuffix
           [for]="picker"
         ></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
+    </div>  
+
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+      <div class="row d-flex justify-content-center">SHIFTS</div>
+      <mat-form-field>
+        <mat-label>Select Shift</mat-label>
+        <mat-select placeholder="Shift" [(ngModel)]="selectedShift" required>
+          <mat-option *ngFor="let shift of shiftData" [value]="shift.shiftName">
+            {{ shift.shiftName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
   </div>
 
   <div class="row">
-    <div class="row d-flex justify-content-center mt-3">
+    <div class="d-flex justify-content-center mt-2">
       <button
         mat-raised-button
         color="primary"
         style="width: 150px"
-        (click)="generateGraph()">
+        (click)="fetchdata()">
         Generate
       </button>
     </div>
 
-    <div class="row mt-3 mx-auto">
+    <div class="row mt-4 mx-auto">
       <mat-card>
         <div #chart2></div>
       </mat-card>

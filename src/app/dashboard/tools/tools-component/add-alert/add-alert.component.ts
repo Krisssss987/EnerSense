@@ -131,8 +131,7 @@ export class AddAlertComponent {
         endTime: this.endTime.value, 
         message :this.message.value, 
         userName :this.userName.value,
-        companyId:CompanyId , 
-        action:''
+        companyId:CompanyId
       }
 
       this.DashDataService.alertAdd(alertData).subscribe(

@@ -3,6 +3,9 @@ import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import { DashboardService } from '../../dash_service/dashboard.service';
 import { MatSelectChange } from '@angular/material/select';
+import { AuthService } from 'src/app/login/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl, Validators } from '@angular/forms';
 
 HighchartsMore(Highcharts);
 
@@ -11,32 +14,17 @@ HighchartsMore(Highcharts);
   templateUrl: './consuption.component.html',
   styleUrls: ['./consuption.component.css']
 })
-export class ConsuptionComponent implements OnInit, AfterViewInit {
-
-  intervals = [
-    { value: '15min', label: '15 min' },
-    { value: '30min', label: '30 min' },
-    { value: '1hour', label: '1 hour' },
-  ];
-
-  shifts = [
-    { value: 'ShiftA', label: 'ShiftA' },
-    { value: 'ShiftB', label: 'ShiftB' },
-  ];
-
-  devices = [
-    { value: 'slqoqo', label: 'slqoqo' },
-    { value: 'slqoqo1', label: 'slqoqo1' },
-  ];
-
-  selectedIntervals: string = '1hour';
-  selecteddevice: string = '';
-  selectedshift: string = '';
+export class ConsuptionComponent implements OnInit {
+  selectedIntervals: string = '';
+  selectedDevice: string = '';
+  selectedShift: string = '';
+  startDate = new FormControl('', [Validators.required]);
+  endDate = new FormControl('', [Validators.required]);
 
   @ViewChild('chart2', { static: false }) chart2Container!: ElementRef;
 
-  data: any;
-  devicedata: any;
+  CompanyId!: string | null;
+  deviceOptions: any[] = [];
   devicenames: string[] = [];
   kvah: number[] = [];
   kwh: number[] = [];
@@ -44,64 +32,55 @@ export class ConsuptionComponent implements OnInit, AfterViewInit {
   exp_kvarh: number[] = [];
   kvarh: number[] = [];
   date_time: number[] = [];
+  shiftData: any;
+  
+  currentDate: Date = new Date();
 
-  constructor(private service: DashboardService) {}
+  constructor(
+    private authService: AuthService,
+    private service: DashboardService,
+    public snackBar: MatSnackBar,
+    ) {}
 
   ngOnInit(): void {
     this.fetchdata();
-    this.fetchdevicedata();
+    this.getUserDevices();
+    this.getShift();
   }
 
-  ngAfterViewInit() {
-    this.fetchdata();
-    this.fetchdevicedata();
+  getUserDevices() {
+    this.CompanyId = this.authService.getCompanyId();
+    if (this.CompanyId) {
+      this.service.deviceDetails(this.CompanyId).subscribe(
+        (devices: any) => {
+          this.deviceOptions = devices.getFeederData;
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
+
+  getShift() {
+    const CompanyId = this.authService.getCompanyId();
+    if (CompanyId) {
+      this.service.shiftDetails(CompanyId).subscribe(
+        (shift: any) => {
+          this.shiftData = shift.getDay_Shift;
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching Shifts Data!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
   }
 
   fetchdata(): void {
-    this.service.getConsuptiondata(this.selectedIntervals, this.selectedshift).subscribe((result) => {
-      this.data = result;
-
-      // Clear existing arrays
-      this.kvah = [];
-      this.kwh = [];
-      this.imp_kvarh = [];
-      this.exp_kvarh = [];
-      this.kvarh = [];
-      this.date_time = [];
-
-      // Extract and store values from the 'data' array
-      this.data.forEach((item: any) => {
-        // Assuming 'data' is an array of objects with a 'data' property
-        item.data.forEach((dataItem: any) => {
-          const datetime = new Date(dataItem.date_time).getTime(); // Convert to timestamp
-
-          this.kvah.push(dataItem.kvah);
-          this.kwh.push(dataItem.kwh);
-          this.imp_kvarh.push(dataItem.imp_kvarh);
-          this.exp_kvarh.push(dataItem.exp_kvarh);
-          this.kvarh.push(dataItem.kvarh);
-          this.date_time.push(datetime);
-        });
-      });
-
-      // Map the values to the Highcharts graph
-      this.consumptionGraph();
-    });
-  }
-
-  fetchdevicedata(): void {
-    this.service.getdevicename().subscribe((result) => {
-      this.devicedata = result;
-
-      // Assuming that each item in the result array has a 'device' property
-      this.devices = this.devicedata.map((item: any) => ({
-        value: item.device,
-        label: item.device,
-      }));
-      this.devicenames = this.devicedata.map((item: any) => item.device);
-
-      // console.log(this.devicenames);
-    });
   }
 
   consumptionGraph(): void {
@@ -142,9 +121,5 @@ export class ConsuptionComponent implements OnInit, AfterViewInit {
         { name: 'Kvarh', data: this.kvarh.map((value, index) => [this.date_time[index], value]) },
       ] as any
     });
-  }
-
-  generateGraph(): void {
-    this.fetchdata();
   }
 }

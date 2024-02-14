@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SummaryComponent } from '../overview/summary/summary.component';
 import * as Highcharts from 'highcharts';
-import { AleartsComponent } from './alearts/alearts.component';
+import { FormControl, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/login/auth/auth.service';
+import { DashboardService } from '../dash_service/dashboard.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-feeder',
@@ -10,10 +13,33 @@ import { AleartsComponent } from './alearts/alearts.component';
   styleUrls: ['./feeder.component.css']
 })
 export class FeederComponent {
-  ngAfterViewInit() {
-    Highcharts.chart('chartContainer', this.chartOptions);
 
-    
+  selectedFeed:string='feeder';
+  CompanyEmail!: string | null;
+  selectedDevice!: string;
+  selectedGroup!: string;
+  selectedFeederInterval: string ='';
+  selectedGroupInterval: string ='';
+  selectedVirtualGroupInterval: string ='';
+  deviceOptions: any[] = [];
+  groupOptions: any[] = [];
+  CompanyId!: string | null;
+  feederStartDate = new FormControl('', [Validators.required]);
+  feederEndDate = new FormControl('', [Validators.required]);
+  groupStartDate = new FormControl('', [Validators.required]);
+  groupEndDate = new FormControl('', [Validators.required]);
+  virtualStartDate = new FormControl('', [Validators.required]);
+  virtualEndDate = new FormControl('', [Validators.required]);
+  dataPayload:any;
+
+  ngOnInit(): void {
+    this.getUserDevices();
+    this.getgroupDevices();
+    this.lastEntry();
+  }
+
+  ngAfterViewInit() {
+    Highcharts.chart('chartContainer', this.chartOptions);    
     Highcharts.chart('KVAYguage', this.KVAguage);
     Highcharts.chart('KWYguage', this.KWguage);
     Highcharts.chart('KVRYguage', this.KVRguage);
@@ -21,15 +47,113 @@ export class FeederComponent {
   }
 
   constructor(
-    public dialog: MatDialog,
+    private authService: AuthService,
+    private service: DashboardService,
+    public snackBar: MatSnackBar,
   ){}
-  openAleartsDialog(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '500px';
-    dialogConfig.height = 'auto';
-    dialogConfig.maxWidth = '90vw';
 
-    const dialogRef = this.dialog.open(AleartsComponent, dialogConfig);
+  lastEntry() {
+    if (this.CompanyId) {
+      this.service.fetchLatestEntry(this.selectedDevice).subscribe(
+        (data) => {
+          const newData = data.data[0];
+          this.dataPayload = Object.fromEntries(
+            Object.entries(newData).map(([key, value]) => [key, +String(value)])
+          );
+          console.log(this.dataPayload);
+        },
+        (error) =>{
+          this.snackBar.open('Error while fetching bar data!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  } 
+  
+  getUserDevices() {
+    this.CompanyId = this.authService.getCompanyId();
+    if (this.CompanyId) {
+      this.service.deviceDetails(this.CompanyId).subscribe(
+        (devices: any) => {
+          this.deviceOptions = devices.getFeederData;
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
+
+  getgroupDevices() {
+    this.CompanyId = this.authService.getCompanyId();
+    if (this.CompanyId) {
+      this.service.groupDetails(this.CompanyId).subscribe(
+        (group: any) => {
+          this.groupOptions = group.getFeederGroupData;
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching devices Groups!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
+
+  currentoperations() {
+    if (this.selectedDevice) {
+      this.service.currentoperations(this.selectedDevice).subscribe(
+        (data: any) => {
+          console.log(data);
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching Data!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
+
+  voltageoperations() {
+    if (this.selectedDevice) {
+      this.service.voltageoperations(this.selectedDevice).subscribe(
+        (data: any) => {
+          console.log(data);
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching Data!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
+
+  phasevolt() {
+    if (this.selectedDevice) {
+      this.service.phasevolt(this.selectedDevice).subscribe(
+        (data: any) => {
+          console.log(data);
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching Data!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
+
+  updateData(){
+    if(this.selectedDevice && this.selectedFeederInterval){
+      this.currentoperations();
+      this.phasevolt();
+      this.voltageoperations();
+    }
   }
  
   chartOptions: Highcharts.Options = {
@@ -469,20 +593,4 @@ export class FeederComponent {
     enabled: false // Disable the options button
   }
   };
-
-  intervals = [
-    { value: 'Yesterday', label: 'Yesterday' },
-    { value: 'This Month', label: 'This Month' },
-    { value: 'Last Month', label: 'Last Month' },
-    { value: 'Date', label: 'Date' },
-    { value: 'Date&Time', label:'Date&Time' },
-  ]
-
-  openSummary(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '800px';
-    dialogConfig.height = 'auto';
-    dialogConfig.maxWidth = '90vw';
-    const dialogRef = this.dialog.open(SummaryComponent, dialogConfig);
-  }
 }

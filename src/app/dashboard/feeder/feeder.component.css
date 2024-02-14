@@ -1,18 +1,12 @@
-.card-heading2{
+.form-field{
+    width: 100%;
+}
+.card-heading{
     color: rgb(78, 78, 255);
     padding-top: 2px;
     margin-left: 4px;
     font-size: 20px;
     margin-bottom: 2px;
-}
-
-.card-heading{
-
-    color: green;
-    margin-top: 4px;
-    margin-left: 9px;
-    margin-bottom: 2px;
-    font-size: 16px;
 }
 
 .numbers{
@@ -30,10 +24,6 @@
     padding-left: 35px;
     padding-right: 35px;
 }
-.card{
-    max-height: fit-content;
-    min-height: 310px;
-}
 .vline{
     border: 5px solid rgb(158, 158, 158);
 }
@@ -42,22 +32,23 @@
  display: flex;
  justify-content: space-between;
 }
-/* .meter-container{
-
-} */
 .meter-lables{
     color: gray;
     font-size: small;
     display: flex;
     justify-content: space-between;
-   }
-   
+} 
 
 .chart{
-   max-height: 27vh; /* 40% of viewport height remove it in small screen  */
+    max-height: 27vh;
     width:100%;
     min-height: 310px;
+}
 
+.chart2{
+    max-height: 27vh;
+    width:100%;
+    min-height: 310px;
 }
 
 .demandChart{
@@ -120,9 +111,6 @@
         margin-bottom: 20px;
         padding-top: 5px;
     }
-    .card{
-        min-height: 250px;
-    }
     .numbers{
         font-size: 18px;
         color: rgb(158, 158, 158);
@@ -135,15 +123,13 @@
         margin-bottom: 20px;
         padding-top: 5px;
     }
-    .card{
-        min-height: 250px;
-    }
     .numbers{
         font-size: 18px;
         color: rgb(158, 158, 158);
     }    
 }
-
-/* #KWguage, #KVRguage, #KVAguage, #PFguage{
-    height: 20vh;
-} */
+@media (max-width:998px) {
+    .chart{
+        max-height: none;
+    }
+}

@@ -38,6 +38,8 @@ export class UpdateAlertComponent {
   public stepSecond = 1;
   public disableMinute = false;
   public hideTime = false;
+  prevStart!: string | null;
+  prevEnd!: string | null;
 
   @HostListener('window:resize')
   onWindowResize() {
@@ -108,8 +110,8 @@ export class UpdateAlertComponent {
   }
 
   previousData(){
-    const formattedStartDate = this.datePipe.transform(this.alertData.startTime, 'M/d/yyyy, HH:mm:ss');
-    const formattedEndDate = this.datePipe.transform(this.alertData.endTime, 'M/d/yyyy, HH:mm:ss');
+    this.prevStart = this.datePipe.transform(this.alertData.startTime, 'M/d/yyyy, HH:mm:ss');
+    this.prevEnd = this.datePipe.transform(this.alertData.endTime, 'M/d/yyyy, HH:mm:ss');
 
     this.alertName = new FormControl(`${this.alertData.name}`, [Validators.required]);
     this.feederName = new FormControl(`${this.alertData.feederName}`, [Validators.required]);
@@ -117,8 +119,8 @@ export class UpdateAlertComponent {
     this.condition = new FormControl(`${this.alertData.condition}`, [Validators.required]);
     this.threshold = new FormControl(`${this.alertData.threshold}`, [Validators.required]);
     this.repeat = new FormControl(`${this.alertData.repeat}`, [Validators.required]);
-    this.startTime = new FormControl(`${formattedStartDate}`, [Validators.required]);
-    this.endTime = new FormControl(`${formattedEndDate}`, [Validators.required]);
+    this.startTime = new FormControl(`${this.prevStart}`, [Validators.required]);
+    this.endTime = new FormControl(`${this.prevEnd}`, [Validators.required]);
     this.userName = new FormControl(`${this.alertData.userName}`, [Validators.required]);
     this.message = new FormControl(`${this.alertData.message}`, [Validators.required]);
 
@@ -158,8 +160,7 @@ export class UpdateAlertComponent {
         endTime: this.endTime.value, 
         message :this.message.value, 
         userName :this.userName.value,
-        companyId:CompanyId , 
-        action:''
+        companyId:CompanyId
       }
 
       this.DashDataService.alertAdd(alertData).subscribe(

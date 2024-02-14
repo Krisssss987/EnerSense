@@ -2,6 +2,9 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import { DashboardService } from '../../dash_service/dashboard.service';
+import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/login/auth/auth.service';
 
 HighchartsMore(Highcharts);
 
@@ -12,20 +15,14 @@ HighchartsMore(Highcharts);
 })
 export class HarmonicComponent implements OnInit, AfterViewInit {
 
-  intervals = [
-    { value: '15min', label: '15 min' },
-    { value: '30min', label: '30 min' },
-    { value: '1hour', label: '1 hour' },
-  ];
-
-  shifts = [
-    { value: 'Shift A', label: 'Shift A' },
-    { value: 'Shift B', label: 'Shift B' },
-  ];
-
-  selectedIntervals: string = '1hour';
-  selectedDevice: string = '';
-  selectedshift: string = 'ShiftA';
+  selectedIntervals: string = '1hour'; 
+  selectedDevice: string ='';
+  startDate = new FormControl('', [Validators.required]);
+  endDate = new FormControl('', [Validators.required]);
+  CompanyId!: string | null;
+  deviceOptions: any[] = [];
+  
+  currentDate: Date = new Date();
 
   @ViewChild('chart2', { static: false }) chart2Container!: ElementRef;
   data: any;
@@ -41,14 +38,33 @@ export class HarmonicComponent implements OnInit, AfterViewInit {
   thd_i3: number[] = [];
   date_time: number[] = [];
 
-  constructor(private service: DashboardService) { }
+  constructor(private service: DashboardService,
+    public snackBar: MatSnackBar,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     this.fetchdata();
+    this.getUserDevices();
   }
 
   ngAfterViewInit() {
     this.fetchdata();
+  }
+
+  getUserDevices() {
+    this.CompanyId = this.authService.getCompanyId();
+    if (this.CompanyId) {
+      this.service.deviceDetails(this.CompanyId).subscribe(
+        (devices: any) => {
+          this.deviceOptions = devices.getFeederData;
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
   }
 
   fetchdata(): void {
@@ -57,7 +73,6 @@ export class HarmonicComponent implements OnInit, AfterViewInit {
 
       const istOffset = 5.5 * 60 * 60 * 1000;
 
-      // Clear existing arrays
       this.thd_v1n = [];
       this.thd_v2n = [];
       this.thd_v3n = [];
@@ -71,7 +86,6 @@ export class HarmonicComponent implements OnInit, AfterViewInit {
 
       // Extract and store values from the 'data' array
       this.data.forEach((item: any) => {
-        // Assuming 'data' is an array of objects with a 'data' property
         item.data.forEach((dataItem: any) => {
           const datetime = new Date(dataItem.date_time).getTime() + istOffset; // Convert to timestamp
 
@@ -87,8 +101,6 @@ export class HarmonicComponent implements OnInit, AfterViewInit {
           this.date_time.push(datetime);
         });
       });
-
-      // Map the values to the Highcharts graph
       this.HarmonicGraph();
     });
   }
@@ -134,14 +146,5 @@ export class HarmonicComponent implements OnInit, AfterViewInit {
         { name: 'THD I3', data: this.thd_i3.map((value, index) => [this.date_time[index], value]) },
       ] as any,
     });
-  }
-
-  onIntervalChange(event: any): void {
-    // Log the selected interval value
-    // console.log('Selected Interval:', this.selectedIntervals);
-  }
-
-  generateGraph(): void {
-    this.fetchdata();
   }
 }

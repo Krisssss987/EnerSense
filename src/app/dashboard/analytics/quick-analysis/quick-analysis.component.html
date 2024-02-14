@@ -1,34 +1,23 @@
-
-<div class="container-fluid">
-   <div class="row mt-2">
-   <!-- Add this section to your HTML file -->
-<mat-chip-listbox #chipList aria-label="Parameter selection" class="d-flex justify-content-center">
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#Higest Energy Consuption</mat-chip-option>
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#LOW PF</mat-chip-option>
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#HIGEST IN Current HARMONICS</mat-chip-option>
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#HIGEST IN Voltage Harmonics</mat-chip-option>
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#Current Imbalancing</mat-chip-option>
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#Voltage Imbalancing</mat-chip-option>
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#Higest </mat-chip-option>
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#Voltage Imbalancing</mat-chip-option>
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#Higest Demand</mat-chip-option>
-  <mat-chip-option (selectionChange)="onParameterSelected($event)">#Max RMH</mat-chip-option>
-</mat-chip-listbox>
-
+<div class="container-fluid mt-4">
+   <div class="row">
+    <mat-chip-listbox #chipList aria-label="Parameter selection" class="d-flex justify-content-center">
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#Higest Energy Consuption</mat-chip-option>
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#LOW PF</mat-chip-option>
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#HIGEST IN Current HARMONICS</mat-chip-option>
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#HIGEST IN Voltage Harmonics</mat-chip-option>
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#Current Imbalancing</mat-chip-option>
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#Voltage Imbalancing</mat-chip-option>
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#Higest </mat-chip-option>
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#Voltage Imbalancing</mat-chip-option>
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#Higest Demand</mat-chip-option>
+      <mat-chip-option (selectionChange)="onParameterSelected($event)">#Max RMH</mat-chip-option>
+    </mat-chip-listbox>
    </div>
 
-   <!-- <div class="row d-flex justify-content-center mt-3">
-    <button mat-raised-button color="primary" style="width: 150px;">Generate</button>
-  </div>
-     -->
-
-
   <div class="row mt-5 mx-auto">
-
     <mat-card>
       <div #chart2></div>
     </mat-card>
-   
   </div>
 
- </div>
+</div>

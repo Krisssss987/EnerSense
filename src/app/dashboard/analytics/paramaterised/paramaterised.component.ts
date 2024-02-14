@@ -2,6 +2,9 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import { DashboardService } from '../../dash_service/dashboard.service';
+import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/login/auth/auth.service';
 HighchartsMore(Highcharts);
 
 @Component({
@@ -9,22 +12,14 @@ HighchartsMore(Highcharts);
   templateUrl: './paramaterised.component.html',
   styleUrls: ['./paramaterised.component.css']
 })
-export class ParamaterisedComponent implements OnInit, AfterViewInit {
- 
-
-  intervals = [
-    { value: '15min', label: '15 min' },
-    { value: '30min', label: '30 min' },
-    { value: '1hour', label: '1 hour' },
-  ];
-  shifts = [
-    { value: 'Shift A', label: 'Shift A' },
-    { value: 'Shift B', label: 'Shift B' },
-  ];
+export class ParamaterisedComponent implements OnInit{
 
   selectedIntervals: string = '1hour'; 
   selectedDevice: string ='';
-  selectedshift:string='ShiftA';
+  startDate = new FormControl('', [Validators.required]);
+  endDate = new FormControl('', [Validators.required]);
+  
+  currentDate: Date = new Date();
 
   @ViewChild('chart2', { static: false }) chart2Container!: ElementRef;
   data: any;
@@ -36,15 +31,33 @@ export class ParamaterisedComponent implements OnInit, AfterViewInit {
   voltage_n: number[] = [];
   current: number[] = [];
   date_time: string[] = [];
+  CompanyId!: string | null;
+  deviceOptions: any[] = [];
 
-  constructor(private service: DashboardService) {}
+  constructor(
+    private service: DashboardService,
+    public snackBar: MatSnackBar,
+    private authService: AuthService) {}
 
   ngOnInit(): void {
     this.fetchdata();
+    this.getUserDevices();
   }
 
-  ngAfterViewInit() {
-    this.fetchdata();
+  getUserDevices() {
+    this.CompanyId = this.authService.getCompanyId();
+    if (this.CompanyId) {
+      this.service.deviceDetails(this.CompanyId).subscribe(
+        (devices: any) => {
+          this.deviceOptions = devices.getFeederData;
+        },
+        (error) => {
+          this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
   }
 
   fetchdata(): void {

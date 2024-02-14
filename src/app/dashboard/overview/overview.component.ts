@@ -120,6 +120,7 @@ export class OverviewComponent  implements OnInit {
       this.barData();
       this.feederinterval();
       this.subscribeToTopics();
+      this.lastEntry();
     });
   }
 
@@ -146,9 +147,9 @@ export class OverviewComponent  implements OnInit {
       this.DashDataService.pieDetails(this.CompanyId, this.selectedDuration).subscribe(
         (piedata) => {
           this.pieChartData.length = 0;
-          Array.prototype.push.apply(this.pieChartData, piedata.data.map((entry: { device_uid: any; kva_difference: any; }) => ({
+          Array.prototype.push.apply(this.pieChartData, piedata.data.map((entry: { device_uid: any; max: any; }) => ({
             name: entry.device_uid,
-            y: parseFloat(entry.kva_difference)
+            y: parseFloat(entry.max)
           })));
   
           Highcharts.chart('PieChart', this.PieChart);
@@ -276,94 +277,113 @@ export class OverviewComponent  implements OnInit {
   }
 
   subscribeToTopics() {
-      const dataTopic = `ems_live/${this.deviceUID}`;
-  
-      const dataSubscription = this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
-        const dataPayload = JSON.parse(dataMessage.payload.toString());
+    const dataTopic = `ems_live/${this.deviceUID}`;
 
-        Object.keys(dataPayload).forEach(key => {
-          if (typeof dataPayload[key] === 'number' && dataPayload[key] < 0) {
-              dataPayload[key] = Math.abs(dataPayload[key]);
-          }
-        });
+    const dataSubscription = this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
+      const dataPayload = JSON.parse(dataMessage.payload.toString());
 
-        console.log(dataPayload)
-        this.kva=dataPayload.kva;
-        this.kw=dataPayload.kw;
-        this.kvr=dataPayload.kvar;
-        this.voltage=dataPayload.voltage_n;
-        this.current=dataPayload.current;
-        this.pf=dataPayload.pf;
+      Object.keys(dataPayload).forEach(key => {
+        if (typeof dataPayload[key] === 'number' && dataPayload[key] < 0) {
+            dataPayload[key] = Math.abs(dataPayload[key]);
+        }
+      });
 
-        const kvachart = Highcharts.charts[0]; // Assuming the gauge chart is the first chart on the page
+      this.kva=dataPayload.kva;
+      this.kw=dataPayload.kw;
+      this.kvr=dataPayload.kvar;
+      this.voltage=dataPayload.voltage_n;
+      this.current=dataPayload.current;
+      this.pf=dataPayload.pf;
 
-        kvachart?.series[0].update({ 
-          type: 'gauge',
-          data: [this.kva]
-        });
+      const kvachart = Highcharts.charts[0]; // Assuming the gauge chart is the first chart on the page
 
-        kvachart?.yAxis[0].update({
-          max: this.kva < 200 ? 200 : undefined
-        });
+      kvachart?.series[0].update({ 
+        type: 'gauge',
+        data: [this.kva]
+      });
 
-        const kwchart = Highcharts.charts[1]; // Assuming the gauge chart is the first chart on the page
+      kvachart?.yAxis[0].update({
+        max: this.kva < 200 ? 200 : undefined
+      });
 
-        kwchart?.series[0].update({ 
-          type: 'gauge',
-          data: [this.kw]
-        });
+      const kwchart = Highcharts.charts[1]; // Assuming the gauge chart is the first chart on the page
 
-        kwchart?.yAxis[0].update({
-          max: this.kw < 200 ? 200 : undefined
-        });
+      kwchart?.series[0].update({ 
+        type: 'gauge',
+        data: [this.kw]
+      });
 
-        const kvrchart = Highcharts.charts[2]; // Assuming the gauge chart is the first chart on the page
+      kwchart?.yAxis[0].update({
+        max: this.kw < 200 ? 200 : undefined
+      });
 
-        kvrchart?.series[0].update({ 
-          type: 'gauge',
-          data: [this.kvr]
-        });
+      const kvrchart = Highcharts.charts[2]; // Assuming the gauge chart is the first chart on the page
 
-        kvrchart?.yAxis[0].update({
-          max: this.kvr < 200 ? 200 : undefined
-        });
+      kvrchart?.series[0].update({ 
+        type: 'gauge',
+        data: [this.kvr]
+      });
 
-        const pfchart = Highcharts.charts[3]; // Assuming the gauge chart is the first chart on the page
+      kvrchart?.yAxis[0].update({
+        max: this.kvr < 200 ? 200 : undefined
+      });
 
-        pfchart?.series[0].update({ 
-          type: 'gauge',
-          data: [this.pf]
-        });
+      const pfchart = Highcharts.charts[3]; // Assuming the gauge chart is the first chart on the page
 
-        pfchart?.yAxis[0].update({
-          max: this.pf < 2 ? 2 : undefined
-        });
+      pfchart?.series[0].update({ 
+        type: 'gauge',
+        data: [this.pf]
+      });
 
-        const currentchart = Highcharts.charts[4]; // Assuming the gauge chart is the first chart on the page
+      pfchart?.yAxis[0].update({
+        max: this.pf < 2 ? 2 : undefined
+      });
 
-        currentchart?.series[0].update({ 
-          type: 'gauge',
-          data: [this.current]
-        });
+      const currentchart = Highcharts.charts[4]; // Assuming the gauge chart is the first chart on the page
 
-        currentchart?.yAxis[0].update({
-          max: this.current < 200 ? 200 : undefined
-        });
-  
-      this.mqttSubscriptions.push(dataSubscription);
+      currentchart?.series[0].update({ 
+        type: 'gauge',
+        data: [this.current]
+      });
 
-        const voltagechart = Highcharts.charts[5]; // Assuming the gauge chart is the first chart on the page
+      currentchart?.yAxis[0].update({
+        max: this.current < 200 ? 200 : undefined
+      });
 
-        voltagechart?.series[0].update({ 
-          type: 'gauge',
-          data: [this.voltage]
-        });
+    this.mqttSubscriptions.push(dataSubscription);
 
-        voltagechart?.yAxis[0].update({
-          max: this.voltage < 200 ? 200 : undefined
-        });
-      });      
+      const voltagechart = Highcharts.charts[5]; // Assuming the gauge chart is the first chart on the page
+
+      voltagechart?.series[0].update({ 
+        type: 'gauge',
+        data: [this.voltage]
+      });
+
+      voltagechart?.yAxis[0].update({
+        max: this.voltage < 200 ? 200 : undefined
+      });
+    });      
   }
+
+  lastEntry() {
+    if (this.CompanyId) {
+      this.DashDataService.fetchLatestEntry(this.deviceUID).subscribe(
+        (data) => {
+          const newData = data.data[0];
+          const dataPayload = Object.fromEntries(
+            Object.entries(newData).map(([key, value]) => [key, +String(value)])
+          );
+          console.log(dataPayload);
+        },
+        (error) =>{
+          this.snackBar.open('Error while fetching bar data!', 'Dismiss', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
+  
 
   PieChart: Highcharts.Options = {
     chart: {

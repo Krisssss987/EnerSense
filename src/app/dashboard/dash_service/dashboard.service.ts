@@ -57,6 +57,22 @@ export class DashboardService {
     return this.http.put(`${this.API_URL}/editfeeders/${feederId}`,newData);
   }
 
+  groupDetails(CompanyId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/getFeederGroup/${CompanyId}`);
+  }
+
+  groupAdd(groupDetails: any):Observable<any> {
+    return this.http.post(`${this.API_URL}/insertFeederGroup`,groupDetails);
+  }
+
+  groupDelete(groupId: string):Observable<any> {
+    return this.http.delete(`${this.API_URL}/deleteQuery/${groupId}`);
+  }
+
+  groupUpdate(groupId: string,newData: any):Observable<any> {
+    return this.http.put(`${this.API_URL}/updateFeederGroup/${groupId}`,newData);
+  }
+
   userDetails(CompanyId: string):Observable<any> {
     return this.http.get(`${this.API_URL}/getUser_Data/${CompanyId}`);
   }
@@ -184,8 +200,28 @@ getLowPF() :Observable <any>{
   barDetails(DeviceId: string,interval: string):Observable<any> {
     return this.http.get(`${this.API_URL}/overviewBargraph/${DeviceId}/${interval}`);
   }
+
+  fetchLatestEntry(DeviceId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/fetchLatestEntry/${DeviceId}`);
+  }
   
   feederinterval(DeviceId: string,interval: string):Observable<any> {
     return this.http.get(`${this.API_URL}/fetchOverview/${DeviceId}/${interval}`);
+  }
+
+  currentoperations(feederId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/currentoperations/${feederId}`);
+  }
+
+  voltageoperations(feederId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/voltageoperations/${feederId}`);
+  }
+
+  phasevolt(feederId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/phasevolt/${feederId}`);
+  }
+
+  overviewSummary(companyId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/overviewSummary/${companyId}`);
   }
 }

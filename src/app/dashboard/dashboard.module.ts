@@ -50,7 +50,6 @@ import { ParamaterisedComponent } from './analytics/paramaterised/paramaterised.
 import {MatChipsModule} from '@angular/material/chips';
 import { ReportComponent } from './report/report.component';
 import { FilterComponent } from './overview/filter/filter.component';
-import { AleartsComponent } from './feeder/alearts/alearts.component';
 import { AddFeederComponent } from './tools/tools-component/add-feeder/add-feeder.component';
 import { UpdateFeederComponent } from './tools/tools-component/update-feeder/update-feeder.component';
 import { UpdateUserComponent } from './tools/tools-component/update-user/update-user.component';
@@ -81,7 +80,6 @@ import { ProfileComponent } from './profile/profile.component';
     ParamaterisedComponent,
     ReportComponent,
     FilterComponent,
-    AleartsComponent,
     AddFeederComponent,
     UpdateFeederComponent,
     UpdateUserComponent,

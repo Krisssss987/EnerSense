@@ -6,17 +6,7 @@
         			<mat-card-content>
 		        		<div class="container-fluid">
 					    	<div class="row">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-									<!-- <h2>Device Status : 
-										<div *ngIf="actualStatus === '0'" class="online">
-											Online
-										</div>
-										<div *ngIf="actualStatus === '1'" class="offline">
-											Offline
-										</div>
-									</h2> -->
-								</div>
-					    		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+					    		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4 mt-1">
 					    			<div>Download Report</div>
 					        		<mat-button-toggle-group name="fontStyle" class="button-group" aria-label="Font Style">
 										<mat-button-toggle class="button-group" value="bold" (click)="downloadCSV()">CSV</mat-button-toggle>
@@ -82,9 +72,9 @@
 					<div class="table-container" style="overflow: auto; max-height: 70vh;">
 					  <table mat-table [dataSource]="dataSource" matSort class="custom-theme-table mat-table" *ngIf="dataSource.data.length > 0; else noData">
 			  
-						<ng-container *ngFor="let column of revertedArray" [matColumnDef]="column">
-						  <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ transformString(column) }}</th>
-						  <td mat-cell  *matCellDef="let element">{{ element[column] }}</td>
+						<ng-container *ngFor="let column of revertedArray; let i = index" [matColumnDef]="column">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header [class.sticky]="i < 2">{{ transformString(column) }}</th>
+							<td mat-cell *matCellDef="let element" [class.sticky]="i < 2">{{ element[column] }}</td>
 						</ng-container>
 			  
 						<tr mat-header-row *matHeaderRowDef="revertedArray"></tr>
