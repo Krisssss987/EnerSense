@@ -22,6 +22,9 @@
             <mat-option value="day">This Day</mat-option>
             <mat-option value="week">This Week</mat-option>
             <mat-option value="month">This Month</mat-option>
+            <mat-option value="6months">Half Year</mat-option>
+            <mat-option value="1year">Year</mat-option>
+            <mat-option value="2year">Two Years</mat-option>
             <mat-option value="custom">Custom</mat-option>
           </mat-select>
         </mat-form-field>
@@ -52,7 +55,7 @@
         mat-raised-button
         color="primary"
         style="width: 150px"
-        (click)="generateGraph()"
+        (click)="fetchdata()"
       >
         Generate
       </button>

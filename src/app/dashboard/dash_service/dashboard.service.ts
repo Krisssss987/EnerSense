@@ -145,10 +145,6 @@ getreport(data:any): Observable<any> {
   return this.http.post(`${this.API_URL}/getReportData`,data)
 }
 
-getParamaterisedData(interval:string){
-  return this.http.get(`${this.API_URL}/feederParametrised/SenseLive?TimeInterval=${interval}`)
-}
-
 getharmonicdata(interval:string): Observable<any>{
   return this.http.get(`http://localhost:3000/feederharmonic/SenseLive?TimeInterval=${interval}`);
 }
@@ -223,5 +219,23 @@ getLowPF() :Observable <any>{
 
   overviewSummary(companyId: string):Observable<any> {
     return this.http.get(`${this.API_URL}/overviewSummary/${companyId}`);
+  }
+
+  parametersbyinterval(DeviceId: string,interval: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/parametersbyinterval/${DeviceId}/${interval}`);
+  }
+
+  parametersbydate(DeviceId: string,start: string, end:string):Observable<any> {
+    const params = { startdate: start, enddate: end };
+    return this.http.get(`${this.API_URL}/parametersbydate/${DeviceId}`, { params });
+  }
+
+  harmonicsbyinterval(DeviceId: string,interval: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/harmonicsbyinterval/${DeviceId}/${interval}`);
+  }
+
+  harmonicsbydate(DeviceId: string,start: string, end:string):Observable<any> {
+    const params = { startdate: start, enddate: end };
+    return this.http.get(`${this.API_URL}/harmonicsbydate/${DeviceId}`, { params });
   }
 }

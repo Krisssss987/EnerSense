@@ -5,6 +5,7 @@ import { DashboardService } from '../../dash_service/dashboard.service';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/login/auth/auth.service';
+import { DatePipe } from '@angular/common';
 
 HighchartsMore(Highcharts);
 
@@ -13,14 +14,12 @@ HighchartsMore(Highcharts);
   templateUrl: './harmonic.component.html',
   styleUrls: ['./harmonic.component.css']
 })
-export class HarmonicComponent implements OnInit, AfterViewInit {
+export class HarmonicComponent implements OnInit {
 
-  selectedIntervals: string = '1hour'; 
+  selectedIntervals: string =''; 
   selectedDevice: string ='';
   startDate = new FormControl('', [Validators.required]);
   endDate = new FormControl('', [Validators.required]);
-  CompanyId!: string | null;
-  deviceOptions: any[] = [];
   
   currentDate: Date = new Date();
 
@@ -36,19 +35,80 @@ export class HarmonicComponent implements OnInit, AfterViewInit {
   thd_i1: number[] = [];
   thd_i2: number[] = [];
   thd_i3: number[] = [];
-  date_time: number[] = [];
+  date_time: string[] = [];
+  CompanyId!: string | null;
+  initialDevice!: string | null;
+  deviceOptions: any[] = [];
 
-  constructor(private service: DashboardService,
+  constructor(
+    private service: DashboardService,
     public snackBar: MatSnackBar,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private datePipe: DatePipe,) {}
 
   ngOnInit(): void {
-    this.fetchdata();
     this.getUserDevices();
   }
 
-  ngAfterViewInit() {
-    this.fetchdata();
+  showingData(){
+    const device = sessionStorage.getItem('harmonicsDevice');
+    const interval = sessionStorage.getItem('harmonicsInterval');
+    const start = sessionStorage.getItem('harmonicsStartDate');
+    const forStart = this.datePipe.transform(start, 'yyyy-MM-dd')??'';
+    const end = sessionStorage.getItem('harmonicsEndDate');
+    const forEnd = this.datePipe.transform(end, 'yyyy-MM-dd')??'';
+
+    if(interval == 'custom'){
+      this.selectedIntervals=interval!; 
+      this.selectedDevice=device!;
+      this.startDate = new FormControl(forStart, [Validators.required]);
+      this.endDate = new FormControl(forEnd, [Validators.required]);   
+    }else{
+      console.log(device,interval)
+      this.selectedIntervals=interval!; 
+      this.selectedDevice=device!;
+    }
+  }
+
+  previousData(){
+    const device = sessionStorage.getItem('harmonicsDevice');
+    const interval = sessionStorage.getItem('harmonicsInterval');
+
+    if(interval == 'custom' && device!=null && device!=undefined){
+      const start = sessionStorage.getItem('harmonicsStartDate');
+      const end = sessionStorage.getItem('harmonicsEndDate');
+
+      if(start && end){
+        this.service.harmonicsbydate(device,start,end).subscribe((result) => {
+          this.data = result;
+          this.processingData();
+        });
+      }
+      else{
+        sessionStorage.setItem('harmonicsDevice', device);
+        sessionStorage.setItem('harmonicsInterval', '12hour');
+  
+        this.service.harmonicsbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
+          this.data = result;
+          this.processingData();
+        });
+      }
+    }
+    else if(device && device!=null && device!=undefined && interval!=null && interval!=undefined && interval!='custom'){
+      this.service.harmonicsbyinterval(device,interval).subscribe((result) => {
+        this.data = result;
+        this.processingData();
+      });
+    }
+    else{
+      sessionStorage.setItem('harmonicsDevice', this.initialDevice!);
+      sessionStorage.setItem('harmonicsInterval', '12hour');
+
+      this.service.harmonicsbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
+        this.data = result;
+        this.processingData();
+      });
+    }
   }
 
   getUserDevices() {
@@ -57,6 +117,9 @@ export class HarmonicComponent implements OnInit, AfterViewInit {
       this.service.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
+          this.initialDevice = this.deviceOptions[0].feederUid;
+          this.previousData();
+          this.showingData()
         },
         (error) => {
           this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
@@ -67,42 +130,105 @@ export class HarmonicComponent implements OnInit, AfterViewInit {
     }
   }
 
-  fetchdata(): void {
-    this.service.getharmonicdata(this.selectedIntervals).subscribe((result) => {
-      this.data = result;
+  processingData(){
+    this.thd_v1n = [];
+    this.thd_v2n = [];
+    this.thd_v3n = [];
+    this.thd_v12 = [];
+    this.thd_v23 = [];
+    this.thd_v31 = [];
+    this.thd_i1 = [];
+    this.thd_i2 = [];
+    this.thd_i3 = [];
+    this.date_time = [];
 
-      const istOffset = 5.5 * 60 * 60 * 1000;
-
-      this.thd_v1n = [];
-      this.thd_v2n = [];
-      this.thd_v3n = [];
-      this.thd_v12 = [];
-      this.thd_v23 = [];
-      this.thd_v31 = [];
-      this.thd_i1 = [];
-      this.thd_i2 = [];
-      this.thd_i3 = [];
-      this.date_time = [];
-
-      // Extract and store values from the 'data' array
-      this.data.forEach((item: any) => {
-        item.data.forEach((dataItem: any) => {
-          const datetime = new Date(dataItem.date_time).getTime() + istOffset; // Convert to timestamp
-
-          this.thd_v1n.push(dataItem.thd_v1n);
-          this.thd_v2n.push(dataItem.thd_v2n);
-          this.thd_v3n.push(dataItem.thd_v3n);
-          this.thd_v12.push(dataItem.thd_v12);
-          this.thd_v23.push(dataItem.thd_v23);
-          this.thd_v31.push(dataItem.thd_v31);
-          this.thd_i1.push(dataItem.thd_i1);
-          this.thd_i2.push(dataItem.thd_i2);
-          this.thd_i3.push(dataItem.thd_i3);
-          this.date_time.push(datetime);
-        });
-      });
-      this.HarmonicGraph();
+    this.thd_v1n = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v1n: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_thd_v1n = Number(entry.avg_thd_v1n);
+      return [timestamp, avg_thd_v1n];
     });
+    
+    this.thd_v2n = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v2n: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_thd_v2n = Number(entry.avg_thd_v2n);
+      return [timestamp, avg_thd_v2n];
+    });
+    
+    this.thd_v3n = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v3n: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_thd_v3n = Number(entry.avg_thd_v3n);
+      return [timestamp, avg_thd_v3n];
+    });
+    
+    this.thd_v12 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v12: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_thd_v12 = Number(entry.avg_thd_v12);
+      return [timestamp, avg_thd_v12];
+    });
+    
+    this.thd_v23 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v23: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_thd_v23 = Number(entry.avg_thd_v23);
+      return [timestamp, avg_thd_v23];
+    });
+    
+    this.thd_v31 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v31: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_thd_v31 = Number(entry.avg_thd_v31);
+      return [timestamp, avg_thd_v31];
+    }); 
+    
+    this.thd_i1 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_i1: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_thd_i1 = Number(entry.avg_thd_i1);
+      return [timestamp, avg_thd_i1];
+    });
+    
+    this.thd_i2 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_i2: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_thd_i2 = Number(entry.avg_thd_i2);
+      return [timestamp, avg_thd_i2];
+    });
+    
+    this.thd_i3 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_i3: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_thd_i3 = Number(entry.avg_thd_i3);
+      return [timestamp, avg_thd_i3];
+    });        
+
+    this.HarmonicGraph();
+  }
+
+  fetchdata(): void {
+    if (this.selectedIntervals == 'custom' && this.selectedDevice && this.startDate.valid && this.endDate.valid) {
+      sessionStorage.setItem('harmonicsDevice', this.selectedDevice);
+      sessionStorage.setItem('harmonicsInterval', this.selectedIntervals);
+      sessionStorage.setItem('harmonicsStartDate', this.startDate.value!);
+      sessionStorage.setItem('harmonicsEndDate', this.endDate.value!);
+
+      this.service.harmonicsbydate(this.selectedDevice, this.startDate.value!, this.endDate.value!).subscribe((result) => {
+        this.data = result;
+        this.processingData();
+      });
+
+      this.showingData()
+    }
+    else if(this.selectedDevice && this.selectedIntervals && this.selectedIntervals != null && this.selectedIntervals != undefined && this.selectedIntervals!='custom'){
+      sessionStorage.setItem('harmonicsDevice', this.selectedDevice);
+      sessionStorage.setItem('harmonicsInterval', this.selectedIntervals);
+
+      this.service.harmonicsbyinterval(this.selectedDevice,this.selectedIntervals).subscribe((result) => {
+        this.data = result;
+        this.processingData();
+      });
+
+      this.showingData()
+    }
+    else{
+      this.snackBar.open('Select appropriate parameters!', 'Dismiss', {
+        duration: 2000
+      });
+    }
   }
 
   HarmonicGraph(): void {
@@ -111,40 +237,45 @@ export class HarmonicComponent implements OnInit, AfterViewInit {
         type: 'spline',
         plotBorderWidth: 0,
       },
+      credits: {
+        enabled: false
+      },
       title: {
         text: 'Harmonic Chart',
       },
       xAxis: {
         type: 'datetime',
-        labels: {
-          formatter: function () {
-            return Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', (this.value as number));
-          },
-        },
       },
       yAxis: {
         title: {
           text: 'Values',
         },
         min: 0,
-        max: 400,
+        max: undefined,
         gridLineWidth: 0,
       },
       legend: {
         symbolRadius: 0,
         verticalAlign: 'top',
       },
+      plotOptions: {
+        spline: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
       series: [
-        { name: 'THD V1N', data: this.thd_v1n.map((value, index) => [this.date_time[index], value]) },
-        { name: 'THD V2N', data: this.thd_v2n.map((value, index) => [this.date_time[index], value]) },
-        { name: 'THD V3N', data: this.thd_v3n.map((value, index) => [this.date_time[index], value]) },
-        { name: 'THD V12', data: this.thd_v12.map((value, index) => [this.date_time[index], value]) },
-        { name: 'THD V23', data: this.thd_v23.map((value, index) => [this.date_time[index], value]) },
-        { name: 'THD V31', data: this.thd_v31.map((value, index) => [this.date_time[index], value]) },
-        { name: 'THD I1', data: this.thd_i1.map((value, index) => [this.date_time[index], value]) },
-        { name: 'THD I2', data: this.thd_i2.map((value, index) => [this.date_time[index], value]) },
-        { name: 'THD I3', data: this.thd_i3.map((value, index) => [this.date_time[index], value]) },
-      ] as any,
+        { type: 'spline',name: 'THD V1N', data: this.thd_v1n },
+        { type: 'spline',name: 'THD V2N', data: this.thd_v2n },
+        { type: 'spline',name: 'THD V3N', data: this.thd_v3n },
+        { type: 'spline',name: 'THD V12', data: this.thd_v12 },
+        { type: 'spline',name: 'THD V23', data: this.thd_v23 },
+        { type: 'spline',name: 'THD V31', data: this.thd_v31 },
+        { type: 'spline',name: 'THD I1', data: this.thd_i1 },
+        { type: 'spline',name: 'THD I2', data: this.thd_i2 },
+        { type: 'spline',name: 'THD I3', data: this.thd_i3 },
+      ],
     });
   }
 }

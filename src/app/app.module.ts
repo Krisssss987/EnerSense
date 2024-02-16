@@ -9,7 +9,7 @@ import { MqttModule, IMqttServiceOptions } from 'ngx-mqtt';
 
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'dashboard.senselive.in',
-  port: 9001,
+  port: 8884,
   protocol: 'ws',
   username: 'Sense2023',
   password: 'sense123'

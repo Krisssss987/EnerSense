@@ -5,6 +5,7 @@ import { DashboardService } from '../../dash_service/dashboard.service';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/login/auth/auth.service';
+import { DatePipe } from '@angular/common';
 HighchartsMore(Highcharts);
 
 @Component({
@@ -14,7 +15,7 @@ HighchartsMore(Highcharts);
 })
 export class ParamaterisedComponent implements OnInit{
 
-  selectedIntervals: string = '1hour'; 
+  selectedIntervals: string =''; 
   selectedDevice: string ='';
   startDate = new FormControl('', [Validators.required]);
   endDate = new FormControl('', [Validators.required]);
@@ -32,16 +33,78 @@ export class ParamaterisedComponent implements OnInit{
   current: number[] = [];
   date_time: string[] = [];
   CompanyId!: string | null;
+  initialDevice!: string | null;
   deviceOptions: any[] = [];
 
   constructor(
     private service: DashboardService,
     public snackBar: MatSnackBar,
-    private authService: AuthService) {}
+    private authService: AuthService,
+    private datePipe: DatePipe,) {}
 
   ngOnInit(): void {
-    this.fetchdata();
     this.getUserDevices();
+  }
+
+  showingData(){
+    const device = sessionStorage.getItem('parameterisedDevice');
+    const interval = sessionStorage.getItem('parameterisedInterval');
+    const start = sessionStorage.getItem('parameterisedStartDate');
+    const forStart = this.datePipe.transform(start, 'yyyy-MM-dd')??'';
+    const end = sessionStorage.getItem('parameterisedEndDate');
+    const forEnd = this.datePipe.transform(end, 'yyyy-MM-dd')??'';
+
+    if(interval == 'custom'){
+      this.selectedIntervals=interval!; 
+      this.selectedDevice=device!;
+      this.startDate = new FormControl(forStart, [Validators.required]);
+      this.endDate = new FormControl(forEnd, [Validators.required]);   
+    }else{
+      console.log(device,interval)
+      this.selectedIntervals=interval!; 
+      this.selectedDevice=device!;
+    }
+  }
+
+  previousData(){
+    const device = sessionStorage.getItem('parameterisedDevice');
+    const interval = sessionStorage.getItem('parameterisedInterval');
+
+    if(interval == 'custom' && device!=null && device!=undefined){
+      const start = sessionStorage.getItem('parameterisedStartDate');
+      const end = sessionStorage.getItem('parameterisedEndDate');
+
+      if(start && end){
+        this.service.parametersbydate(device,start,end).subscribe((result) => {
+          this.data = result;
+          this.processingData();
+        });
+      }
+      else{
+        sessionStorage.setItem('parameterisedDevice', device);
+        sessionStorage.setItem('parameterisedInterval', '12hour');
+  
+        this.service.parametersbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
+          this.data = result;
+          this.processingData();
+        });
+      }
+    }
+    else if(device && device!=null && device!=undefined && interval!=null && interval!=undefined && interval!='custom'){
+      this.service.parametersbyinterval(device,interval).subscribe((result) => {
+        this.data = result;
+        this.processingData();
+      });
+    }
+    else{
+      sessionStorage.setItem('parameterisedDevice', this.initialDevice!);
+      sessionStorage.setItem('parameterisedInterval', '12hour');
+
+      this.service.parametersbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
+        this.data = result;
+        this.processingData();
+      });
+    }
   }
 
   getUserDevices() {
@@ -50,6 +113,9 @@ export class ParamaterisedComponent implements OnInit{
       this.service.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
+          this.initialDevice = this.deviceOptions[0].feederUid;
+          this.previousData();
+          this.showingData()
         },
         (error) => {
           this.snackBar.open('Error while fetching user devices!', 'Dismiss', {
@@ -60,122 +126,146 @@ export class ParamaterisedComponent implements OnInit{
     }
   }
 
-  fetchdata(): void {
-    this.service.getParamaterisedData(this.selectedIntervals).subscribe((result) => {
-      this.data = result;
-      
+  processingData(){
+    this.kvavalue = [];
+    this.kw = [];
+    this.kvar = [];
+    this.voltage_l = [];
+    this.voltage_n = [];
+    this.current = [];
+    this.date_time = [];
 
-      // Clear existing arrays
-      this.kvavalue = [];
-      this.kw = [];
-      this.kvar = [];
-      this.voltage_l = [];
-      this.voltage_n = [];
-      this.current = [];
-      this.date_time = [];
-
-      // Extract and store values from the 'data' array
-      this.data.forEach((item: any) => {
-        // Assuming 'data' is an array of objects with a 'data' property
-        item.data.forEach((dataItem: any) => {
-          this.kvavalue.push(dataItem.kva);
-          this.kw.push(dataItem.kw);
-          this.kvar.push(dataItem.kvar);
-          this.voltage_l.push(dataItem.voltage_l);
-          this.voltage_n.push(dataItem.voltage_n);
-          this.current.push(dataItem.current);
-          this.date_time.push(dataItem.date_time);
-        });
-      });
-
-      // Map the values to the Highcharts graph
-      this.parametrisedGraph();
+    this.kvavalue = this.data.map((entry: { bucket_start: string | number | Date; avg_kva: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_kva = Number(entry.avg_kva);
+      return [timestamp, avg_kva];
     });
+    
+    this.kw = this.data.map((entry: { bucket_start: string | number | Date; avg_kw: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_kw = Number(entry.avg_kw);
+      return [timestamp, avg_kw];
+    });
+    
+    this.kvar = this.data.map((entry: { bucket_start: string | number | Date; avg_kvar: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_kvar = Number(entry.avg_kvar);
+      return [timestamp, avg_kvar];
+    });
+    
+    this.voltage_l = this.data.map((entry: { bucket_start: string | number | Date; avg_vl: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_vl = Number(entry.avg_vl);
+      return [timestamp, avg_vl];
+    });
+    
+    this.voltage_n = this.data.map((entry: { bucket_start: string | number | Date; avg_vn: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_vn = Number(entry.avg_vn);
+      return [timestamp, avg_vn];
+    });
+    
+    this.current = this.data.map((entry: { bucket_start: string | number | Date; avg_c: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_c = Number(entry.avg_c);
+      return [timestamp, avg_c];
+    });        
+
+    this.parametrisedGraph();
   }
 
+  fetchdata(): void {
+    if (this.selectedIntervals == 'custom' && this.selectedDevice && this.startDate.valid && this.endDate.valid) {
+      sessionStorage.setItem('parameterisedDevice', this.selectedDevice);
+      sessionStorage.setItem('parameterisedInterval', this.selectedIntervals);
+      sessionStorage.setItem('parameterisedStartDate', this.startDate.value!);
+      sessionStorage.setItem('parameterisedEndDate', this.endDate.value!);
+
+      this.service.parametersbydate(this.selectedDevice, this.startDate.value!, this.endDate.value!).subscribe((result) => {
+        this.data = result;
+        this.processingData();
+      });
+
+      this.showingData()
+    }
+    else if(this.selectedDevice && this.selectedIntervals && this.selectedIntervals != null && this.selectedIntervals != undefined && this.selectedIntervals!='custom'){
+      sessionStorage.setItem('parameterisedDevice', this.selectedDevice);
+      sessionStorage.setItem('parameterisedInterval', this.selectedIntervals);
+
+      this.service.parametersbyinterval(this.selectedDevice,this.selectedIntervals).subscribe((result) => {
+        this.data = result;
+        this.processingData();
+      });
+
+      this.showingData()
+    }
+    else{
+      this.snackBar.open('Select appropriate parameters!', 'Dismiss', {
+        duration: 2000
+      });
+    }
+  }
 
   parametrisedGraph(): void {
-    const seriesData: any[] = [];
-  
-    // Iterate over each device and create a series for it
-    this.data.forEach((item: any, index: number) => {
-      const deviceData = item.data;
-  
-      // Create series for each parameter
-      const kvASeries = {
-        name: `Device ${index + 1} - ${item.device} - KvA`,
-        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.kva]),
-      };
-  
-      const kwSeries = {
-        name: `Device ${index + 1} - ${item.device} - KW`,
-        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.kw]),
-      };
-  
-      const kvarSeries = {
-        name: `Device ${index + 1} - ${item.device} - Kvar`,
-        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.kvar]),
-      };
-  
-      const voltageLSeries = {
-        name: `Device ${index + 1} - ${item.device} - Voltage L`,
-        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.voltage_l]),
-      };
-  
-      const currentSeries = {
-        name: `Device ${index + 1} - ${item.device} - Current`,
-        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.current]),
-      };
-  
-      const voltageNSeries = {
-        name: `Device ${index + 1} - ${item.device} - Voltage N`,
-        data: deviceData.map((dataItem: any) => [new Date(dataItem.date_time).getTime(), dataItem.voltage_n]),
-      };
-  
-      // Add series to the array
-      seriesData.push(kvASeries, kwSeries, kvarSeries, voltageLSeries, currentSeries, voltageNSeries);
-    });
-  
     Highcharts.chart(this.chart2Container.nativeElement, {
       chart: {
         type: 'spline',
         plotBorderWidth: 0,
+      },
+      credits: {
+        enabled: false
       },
       title: {
         text: 'Parametrised Chart',
       },
       xAxis: {
         type: 'datetime',
-        labels: {
-          formatter: function () {
-            return Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', (this.value as number));
-          },
-        },
       },
       yAxis: {
         title: {
           text: 'Values',
         },
         min: 0,
-        max: 500, // Adjust the max value as needed
+        max: undefined,
         gridLineWidth: 0,
       },
       legend: {
         symbolRadius: 0,
         verticalAlign: 'top',
       },
-      series: seriesData as any,
+      plotOptions: {
+        spline: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
+      series: [{
+        type: 'spline',
+        name: 'KVA',
+        data: this.kvavalue
+      }, {
+        type: 'spline',
+        name: 'KW',
+        data: this.kw
+      },{
+        type: 'spline',
+        name: 'KVAR',
+        data: this.kvar
+      }, {
+        type: 'spline',
+        name: 'Voltage L',
+        data: this.voltage_l
+      },{
+        type: 'spline',
+        name: 'Voltage N',
+        data: this.voltage_n
+      }, {
+        type: 'spline',
+        name: 'Current',
+        data: this.current
+      }
+    ],
     });
-  }
-  
-
-  onIntervalChange(event: any): void {
-    // Log the selected interval value
-    // console.log('Selected Interval:', this.selectedIntervals);
-  }
-
-
-  generateGraph(): void {
-    this.fetchdata();
   }
 }

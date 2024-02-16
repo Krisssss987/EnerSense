@@ -277,23 +277,27 @@ export class OverviewComponent  implements OnInit {
   }
 
   subscribeToTopics() {
-    const dataTopic = `ems_live/${this.deviceUID}`;
+    const dataTopic = `Energy/Sense/Live/${this.deviceUID}/1`;
 
     const dataSubscription = this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
-      const dataPayload = JSON.parse(dataMessage.payload.toString());
+      // const dataPayload = JSON.parse(dataMessage.payload.toString());
 
-      Object.keys(dataPayload).forEach(key => {
-        if (typeof dataPayload[key] === 'number' && dataPayload[key] < 0) {
-            dataPayload[key] = Math.abs(dataPayload[key]);
-        }
-      });
+      const dataPayload = dataMessage;
 
-      this.kva=dataPayload.kva;
-      this.kw=dataPayload.kw;
-      this.kvr=dataPayload.kvar;
-      this.voltage=dataPayload.voltage_n;
-      this.current=dataPayload.current;
-      this.pf=dataPayload.pf;
+      // Object.keys(dataPayload).forEach(key => {
+      //   if (typeof dataPayload[key] === 'number' && dataPayload[key] < 0) {
+      //       dataPayload[key] = Math.abs(dataPayload[key]);
+      //   }
+      // });
+
+      console.log(dataPayload);
+
+      // this.kva=dataPayload.kva;
+      // this.kw=dataPayload.kw;
+      // this.kvr=dataPayload.kvar;
+      // this.voltage=dataPayload.voltage_n;
+      // this.current=dataPayload.current;
+      // this.pf=dataPayload.pf;
 
       const kvachart = Highcharts.charts[0]; // Assuming the gauge chart is the first chart on the page
 
@@ -305,6 +309,8 @@ export class OverviewComponent  implements OnInit {
       kvachart?.yAxis[0].update({
         max: this.kva < 200 ? 200 : undefined
       });
+      
+      kvachart?.redraw();
 
       const kwchart = Highcharts.charts[1]; // Assuming the gauge chart is the first chart on the page
 
@@ -373,7 +379,7 @@ export class OverviewComponent  implements OnInit {
           const dataPayload = Object.fromEntries(
             Object.entries(newData).map(([key, value]) => [key, +String(value)])
           );
-          console.log(dataPayload);
+          console.log(dataPayload); 
         },
         (error) =>{
           this.snackBar.open('Error while fetching bar data!', 'Dismiss', {

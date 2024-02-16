@@ -92,7 +92,7 @@ export class FeederComponent {
     if (this.CompanyId) {
       this.service.groupDetails(this.CompanyId).subscribe(
         (group: any) => {
-          this.groupOptions = group.getFeederGroupData;
+          this.groupOptions = group.data;
         },
         (error) => {
           this.snackBar.open('Error while fetching devices Groups!', 'Dismiss', {
