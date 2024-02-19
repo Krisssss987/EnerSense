@@ -238,4 +238,25 @@ getLowPF() :Observable <any>{
     const params = { startdate: start, enddate: end };
     return this.http.get(`${this.API_URL}/harmonicsbydate/${DeviceId}`, { params });
   }
+
+  consumptionWithIntervals(DeviceId: string,interval: string,shift_id: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/consumptionWithIntervals/${DeviceId}/${interval}/${shift_id}`);
+  }
+
+  consumptionWithCustomIntervals(DeviceId: string,shift_id: string,start: string, end:string):Observable<any> {
+    const params = { startdate: start, enddate: end };
+    return this.http.get(`${this.API_URL}/consumptionWithCustomIntervals/${DeviceId}/${shift_id}`, { params });
+  }
+
+  getUserById(userId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/getUserById/${userId}`);
+  }
+
+  updatePassword(personalEmail: string,data: any):Observable<any> {
+    return this.http.put(`${this.API_URL}/updatePassword/${personalEmail}`,data);
+  }
+  
+  updateCompany(companyId: string,data: any):Observable<any> {
+    return this.http.put(`${this.API_URL}/updateCompany/${companyId}`,data);
+  }
 }

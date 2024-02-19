@@ -40,9 +40,9 @@
 } 
 
 .chart{
-    max-height: 27vh;
+    max-height: 35vh;
     width:100%;
-    min-height: 310px;
+    min-height: 35vh;
 }
 
 .chart2{
@@ -130,6 +130,10 @@
 }
 @media (max-width:998px) {
     .chart{
+        max-height: none;
+    }
+    
+    .chart2{
         max-height: none;
     }
 }

@@ -216,7 +216,7 @@ export class ParamaterisedComponent implements OnInit{
         enabled: false
       },
       title: {
-        text: 'Parametrised Chart',
+        text: 'Parameterised Chart',
       },
       xAxis: {
         type: 'datetime',

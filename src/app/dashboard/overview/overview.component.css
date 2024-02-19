@@ -58,11 +58,11 @@
 
 
 #BarChart {
-    height: 405px; /* Set the desired height */
+    height: 404px; /* Set the desired height */
 }
 
 #PieChart{
-    height: 335.5px; /* Set the desired height */
+    height: 333px; /* Set the desired height */
 }
 
 .allCard{
@@ -79,6 +79,10 @@
 @media (max-width:998px) {
     .firstcard{
         margin-bottom: 1vh;
+    }
+    .allCard{
+        margin-left: 0vh;
+        margin-right: 0vh;
     }
 }
 
@@ -108,7 +112,7 @@
 #PFguage,
 #Currentguage,
 #Voltageguage {
-    height: 192px; /* Set default width */
+    height: 190px; /* Set default width */
 }
 
 .card-heading2-container {

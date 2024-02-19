@@ -16,30 +16,30 @@
 			  	<div class="row">
 			  		<div class="col-lg-12 d-flex mb-3">
 					  <h6 class="me-auto profile-title">Company Details</h6>
-						<button mat-icon-button class="minimized-button ms-auto" color="{{ cancelCompany ? 'accent' : 'warn' }}" aria-label="edit" (click)="toggleCompany()">
-							<mat-icon>{{ cancelCompany ? 'cancel' : 'edit' }}</mat-icon>
-						</button>
+					  <button *ngIf="userType=='Admin'" mat-icon-button class="minimized-button ms-auto" color="{{ companyName.disabled ? 'warn' : 'accent' }}" aria-label="edit" (click)="toggleCompany()">
+						<mat-icon>{{ companyName.disabled ? 'edit' : 'cancel' }}</mat-icon>
+					  </button>
 					</div>
 			  	</div>
 			    <div class="row">
 			    	<div class="col-lg-4 col-md-4 col-sm-12">
 			      	<div class="avatar">
-				        <img src="../../../../assets/img/profile.gif" alt="Avatar">
+				        <img src="../../../../assets/img/profile.png" alt="Avatar">
 				      </div>
 			      </div>
 			      <div class="col-lg-8 col-md-8 col-sm-12">
 			      	<div class="row">
 			      		<div class="col-lg-12">
-			      			<mat-form-field appearance="outline" class="form-field">
-				                <mat-label>Company Name</mat-label>
-				                <input matInput [(ngModel)]="companyName" required disabled>
-				            </mat-form-field>      			
+							<mat-form-field appearance="outline" class="form-field">
+								<mat-label>Company Name</mat-label>
+								<input matInput [formControl]="companyName" required>
+							</mat-form-field>   			
 			      		</div>
 			      		<div class="col-lg-12">
-			      			<mat-form-field appearance="outline" class="form-field">
-				                <mat-label>Company Email</mat-label>
-				                <input matInput [(ngModel)]="companyEmail" disabled>
-				            </mat-form-field>      			
+							<mat-form-field appearance="outline" class="form-field">
+							  <mat-label>Company Email</mat-label>
+							  <input matInput [formControl]="companyEmail" required>
+							</mat-form-field>   			
 			      		</div>
 			      	</div>
 			      </div>
@@ -47,20 +47,74 @@
 			    <div class="row">
 		      		<div class="col-lg-6">
 		      			<mat-form-field appearance="outline" class="form-field">
-			                <mat-label>Contact No</mat-label>
-			                <input matInput [(ngModel)]="contactNo" required [disabled]="!cancelCompany">
+			                <mat-label>Location</mat-label>
+			                <input matInput [formControl]="companyLocation" required>
+							<mat-error *ngIf="companyLocation.invalid">Select Company Location</mat-error>
 			            </mat-form-field>      			
 		      		</div>
 		      		<div class="col-lg-6">
 		      			<mat-form-field appearance="outline" class="form-field">
-			                <mat-label>Location</mat-label>
-			                <input matInput [(ngModel)]="location" required [disabled]="!cancelCompany">
+			                <mat-label>Energy Consumer</mat-label>
+							<mat-select placeholder="Energy Detail" [formControl]="energy">
+							  <mat-option value="lt">LT</mat-option>
+							  <mat-option value="ht">HT</mat-option>
+							</mat-select>
+							<mat-error *ngIf="energy.invalid">Select Appropriate Consumer</mat-error>
 			            </mat-form-field>      			
 		      		</div>
+					<div class="col-lg-6">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Sanctioned Load KW</mat-label>
+						  <input matInput [formControl]="sanctionedKW" required>
+						  <mat-error *ngIf="sanctionedKW.invalid">Enter Sanctined Load</mat-error>
+					  </mat-form-field>      			
+					</div>
+					<div class="col-lg-6">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Connected Load KW</mat-label>
+						  <input matInput [formControl]="connectedKW" required>
+						  <mat-error *ngIf="connectedKW.invalid">Enter Connected Load</mat-error>
+					  </mat-form-field>      			
+					</div>
+					<div class="col-lg-6">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Contract Demand KVA</mat-label>
+						  <input matInput [formControl]="contractKVA" required>
+						  <mat-error *ngIf="contractKVA.invalid">Enter Contract Demand</mat-error>
+					  </mat-form-field>      			
+					</div>
+					<div class="col-lg-6">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Tariff</mat-label>
+						  <input matInput [formControl]="tariff" required>
+						  <mat-error *ngIf="tariff.invalid">Enter Tariff</mat-error>
+					  </mat-form-field>      			
+					</div>
 		      		<div class="col-lg-12">
 		      			<mat-form-field appearance="outline" class="form-field">
-			                <mat-label>Designation</mat-label>
-			                <input matInput [(ngModel)]="designation" [disabled]="!cancelCompany">
+			                <mat-label>Electricity Bill</mat-label>
+			                <input matInput [formControl]="electricity">
+			            </mat-form-field>      			
+		      		</div>
+					  <div class="col-lg-4">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>% of Contract Demand</mat-label>
+						  <input matInput placeholder="Contract Demand" [formControl]="percent_demand">
+					  </mat-form-field>      			
+					</div>
+					<div class="col-lg-4">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Energy Detail</mat-label>
+                          <mat-select placeholder="Energy Detail" [formControl]="energy_detail">
+                            <mat-option value="solar">Solar</mat-option>
+                            <mat-option value="digi">Digi</mat-option>
+                          </mat-select>
+					  </mat-form-field>      			
+					</div>
+		      		<div class="col-lg-4">
+		      			<mat-form-field appearance="outline" class="form-field">
+			                <mat-label>Energy Value</mat-label>
+			                <input matInput [formControl]="energy_value">
 			            </mat-form-field>      			
 		      		</div>
 		      		<div class="col-lg-12 text-center" *ngIf="cancelCompany">
@@ -85,21 +139,66 @@
 		      		<div class="col-lg-6">
 		      			<mat-form-field appearance="outline" class="form-field">
 			                <mat-label>First name</mat-label>
-			                <input matInput [(ngModel)]="fname" required [disabled]="!cancelPersonal">
+			                <input matInput [formControl]="firstName" required>
+							<mat-error *ngIf="firstName.invalid">Enter First Name</mat-error>
 			            </mat-form-field>      			
 		      		</div>
 		      		<div class="col-lg-6">
 		      			<mat-form-field appearance="outline" class="form-field">
 			                <mat-label>Last Name</mat-label>
-			                <input matInput [(ngModel)]="lname" required [disabled]="!cancelPersonal">
+			                <input matInput [formControl]="lastName" required>
+							<mat-error *ngIf="lastName.invalid">Enter Last Name</mat-error>
 			            </mat-form-field>      			
 		      		</div>
 		      		<div class="col-lg-12">
 		      			<mat-form-field appearance="outline" class="form-field">
 			                <mat-label>Personal Email</mat-label>
-			                <input matInput [(ngModel)]="personalEmail" disabled>
+			                <input matInput [formControl]="personalEmail">
+							<mat-error *ngIf="personalEmail.invalid">Enter Valid Personal Email</mat-error>
 			            </mat-form-field>      			
 		      		</div>
+					  <div class="col-lg-6">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Contact No.</mat-label>
+						  <input matInput [formControl]="contact" required>
+						  <mat-error *ngIf="contact.invalid">Enter Contact Number</mat-error>
+					  </mat-form-field>      			
+					</div>
+					<div class="col-lg-6">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Shift</mat-label>
+						  <mat-select placeholder="Shift" [formControl]="shift">
+							<mat-option *ngFor="let shift of shiftData" [value]="shift.shiftName">
+							  {{ shift.shiftName }}
+							</mat-option>
+						  </mat-select>
+						  <mat-error *ngIf="shift.invalid">Enter Shift</mat-error>
+					  </mat-form-field>      			
+					</div>
+					<div class="col-lg-6">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Designation</mat-label>
+						  <input matInput [formControl]="designation">
+						  <mat-error *ngIf="designation.invalid">Enter Designation</mat-error>
+					  </mat-form-field>      			
+					</div>
+					<div class="col-lg-6">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Plant</mat-label>
+						  <input matInput [formControl]="plant" required>
+						  <mat-error *ngIf="plant.invalid">Enter Plant Name</mat-error>
+					  </mat-form-field>      			
+					</div>
+					<div class="col-lg-12">
+						<mat-form-field appearance="outline" class="form-field">
+						  <mat-label>Priviledges</mat-label>
+						  <mat-select placeholder="Privileges" [formControl]="priviledges">
+							<mat-option value="Admin">Admin</mat-option>
+							<mat-option value="Standard">Standard</mat-option>
+						  </mat-select>
+						  <mat-error *ngIf="priviledges.invalid">Enter Priviledges</mat-error>
+					  </mat-form-field>      			
+					</div>
 		      		<div class="col-lg-12 text-center" *ngIf="cancelPersonal">
 		      			<button mat-raised-button color="primary" (click)="updatePersonal()">Update</button>
 		      		</div>
@@ -120,19 +219,21 @@
 		      		<div class="col-lg-6">
 		      			<mat-form-field appearance="outline" style="width: 100%;">
 		                <mat-label>New Password</mat-label>
-		                <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" [disabled]="!cancelPassword">
+		                <input matInput [type]="hidePassword ? 'password' : 'text'" [formControl]="password">
 		                <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
 		                  <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
 		                </button>
+						<mat-error *ngIf="password.invalid">Enter Password</mat-error>
 		              	</mat-form-field>			
 		      		</div>
 		      		<div class="col-lg-6">
 		      			<mat-form-field appearance="outline" style="width: 100%;">
 		                <mat-label>Confirm password</mat-label>
-		                <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" [(ngModel)]="CPassword" [disabled]="!cancelPassword">
+		                <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" [formControl]="confirmPassword">
 		                <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
 		                  <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
 		                </button>
+						<mat-error *ngIf="confirmPassword.invalid">Rewrite Password</mat-error>
 		              	</mat-form-field>     			
 		      		</div>
 		      		<div class="col-lg-12 text-center" *ngIf="cancelPassword">

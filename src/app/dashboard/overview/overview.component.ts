@@ -274,101 +274,132 @@ export class OverviewComponent  implements OnInit {
 
   ngOnDestroy() {
     this.unsubscribeFromTopics();
+    Highcharts.chart('KVAguage', this.KVAguage).destroy();
+    Highcharts.chart('KWguage', this.KWguage).destroy();
+    Highcharts.chart('KVRguage', this.KVRguage).destroy();
+    Highcharts.chart('PFguage', this.PFguage).destroy();
+    Highcharts.chart('Currentguage', this.Currentguage).destroy();
+    Highcharts.chart('Voltageguage', this.Voltageguage).destroy();
+  }
+  
+  guageChange(){
+    const kvachart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KVAguage');
+
+    kvachart?.series[0].update({ 
+      type: 'gauge',
+      data: [this.kva]
+    });
+
+    kvachart?.yAxis[0].update({
+      max: this.kva < 200 ? 200 : undefined
+    });
+    
+    kvachart?.redraw();
+
+    const kwchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KWguage');
+
+    kwchart?.series[0].update({ 
+      type: 'gauge',
+      data: [this.kw]
+    });
+
+    kwchart?.yAxis[0].update({
+      max: this.kw < 200 ? 200 : undefined
+    });
+
+    const kvrchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KVRguage');
+
+    kvrchart?.series[0].update({ 
+      type: 'gauge',
+      data: [this.kvr]
+    });
+
+    kvrchart?.yAxis[0].update({
+      max: this.kvr < 200 ? 200 : undefined
+    });
+
+    const pfchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'PFguage');
+
+    pfchart?.series[0].update({ 
+      type: 'gauge',
+      data: [this.pf]
+    });
+
+    pfchart?.yAxis[0].update({
+      max: this.pf < 1 ? 1 : undefined
+    });
+
+    const currentchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'Currentguage');
+
+    currentchart?.series[0].update({ 
+      type: 'gauge',
+      data: [this.current]
+    });
+
+    currentchart?.yAxis[0].update({
+      max: this.current < 200 ? 200 : undefined
+    });
+
+
+    const voltagechart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'Voltageguage');
+
+    voltagechart?.series[0].update({ 
+      type: 'gauge',
+      data: [this.voltage]
+    });
+
+    voltagechart?.yAxis[0].update({
+      max: this.voltage < 200 ? 200 : undefined
+    });
   }
 
   subscribeToTopics() {
-    const dataTopic = `Energy/Sense/Live/${this.deviceUID}/1`;
+    const dataTopic = `Energy/Sense/Live/${this.deviceUID}/7`;
+    console.log(dataTopic);
 
-    const dataSubscription = this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
-      // const dataPayload = JSON.parse(dataMessage.payload.toString());
-
-      const dataPayload = dataMessage;
-
-      // Object.keys(dataPayload).forEach(key => {
-      //   if (typeof dataPayload[key] === 'number' && dataPayload[key] < 0) {
-      //       dataPayload[key] = Math.abs(dataPayload[key]);
-      //   }
-      // });
-
+    this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
+      const dataPayload = JSON.parse(dataMessage.payload.toString());
       console.log(dataPayload);
 
-      // this.kva=dataPayload.kva;
-      // this.kw=dataPayload.kw;
-      // this.kvr=dataPayload.kvar;
-      // this.voltage=dataPayload.voltage_n;
-      // this.current=dataPayload.current;
-      // this.pf=dataPayload.pf;
+      this.kw=parseFloat(dataPayload.kw);
+      this.kvr=parseFloat(dataPayload.kvar);
+      this.pf=parseFloat(dataPayload.pf);
 
-      const kvachart = Highcharts.charts[0]; // Assuming the gauge chart is the first chart on the page
+    this.guageChange();
+    }); 
+    
+    const kvaTopic = `Energy/Sense/Live/${this.deviceUID}/8`;
 
-      kvachart?.series[0].update({ 
-        type: 'gauge',
-        data: [this.kva]
-      });
+    this.mqttService.observe(kvaTopic).subscribe((dataMessage: IMqttMessage) => {
+      const dataPayload = JSON.parse(dataMessage.payload.toString());
+      console.log(dataPayload);
 
-      kvachart?.yAxis[0].update({
-        max: this.kva < 200 ? 200 : undefined
-      });
-      
-      kvachart?.redraw();
+      this.kva=parseFloat(dataPayload.kva);
 
-      const kwchart = Highcharts.charts[1]; // Assuming the gauge chart is the first chart on the page
+    this.guageChange();
+    }); 
 
-      kwchart?.series[0].update({ 
-        type: 'gauge',
-        data: [this.kw]
-      });
+    const voltageTopic = `Energy/Sense/Live/${this.deviceUID}/1`;
 
-      kwchart?.yAxis[0].update({
-        max: this.kw < 200 ? 200 : undefined
-      });
+    this.mqttService.observe(voltageTopic).subscribe((dataMessage: IMqttMessage) => {
+      const dataPayload = JSON.parse(dataMessage.payload.toString());
+      console.log(dataPayload);
 
-      const kvrchart = Highcharts.charts[2]; // Assuming the gauge chart is the first chart on the page
+      this.voltage=parseFloat(dataPayload.V_N);
 
-      kvrchart?.series[0].update({ 
-        type: 'gauge',
-        data: [this.kvr]
-      });
+    this.guageChange();
+    }); 
+    
+    const currentTopic = `Energy/Sense/Live/${this.deviceUID}/3`;
 
-      kvrchart?.yAxis[0].update({
-        max: this.kvr < 200 ? 200 : undefined
-      });
+    this.mqttService.observe(currentTopic).subscribe((dataMessage: IMqttMessage) => {
+      const dataPayload = JSON.parse(dataMessage.payload.toString());
+      console.log(dataPayload);
 
-      const pfchart = Highcharts.charts[3]; // Assuming the gauge chart is the first chart on the page
+      this.current=parseFloat(dataPayload.I);
 
-      pfchart?.series[0].update({ 
-        type: 'gauge',
-        data: [this.pf]
-      });
-
-      pfchart?.yAxis[0].update({
-        max: this.pf < 2 ? 2 : undefined
-      });
-
-      const currentchart = Highcharts.charts[4]; // Assuming the gauge chart is the first chart on the page
-
-      currentchart?.series[0].update({ 
-        type: 'gauge',
-        data: [this.current]
-      });
-
-      currentchart?.yAxis[0].update({
-        max: this.current < 200 ? 200 : undefined
-      });
-
-    this.mqttSubscriptions.push(dataSubscription);
-
-      const voltagechart = Highcharts.charts[5]; // Assuming the gauge chart is the first chart on the page
-
-      voltagechart?.series[0].update({ 
-        type: 'gauge',
-        data: [this.voltage]
-      });
-
-      voltagechart?.yAxis[0].update({
-        max: this.voltage < 200 ? 200 : undefined
-      });
-    });      
+    this.guageChange();
+    }); 
   }
 
   lastEntry() {
@@ -376,10 +407,22 @@ export class OverviewComponent  implements OnInit {
       this.DashDataService.fetchLatestEntry(this.deviceUID).subscribe(
         (data) => {
           const newData = data.data[0];
-          const dataPayload = Object.fromEntries(
-            Object.entries(newData).map(([key, value]) => [key, +String(value)])
-          );
-          console.log(dataPayload); 
+          
+          this.kw=0;
+          this.kvr=0;
+          this.pf=0;
+          this.kva=0;
+          this.voltage=0;
+          this.current=0;
+          
+          this.kw=parseFloat(newData.kw);
+          this.kvr=parseFloat(newData.kvar);
+          this.pf=parseFloat(newData.pf);
+          this.kva=parseFloat(newData.kva);
+          this.voltage=parseFloat(newData.voltage_n);
+          this.current=parseFloat(newData.current);
+
+          this.guageChange();
         },
         (error) =>{
           this.snackBar.open('Error while fetching bar data!', 'Dismiss', {
@@ -388,8 +431,7 @@ export class OverviewComponent  implements OnInit {
         }
       );
     }
-  }
-  
+  }  
 
   PieChart: Highcharts.Options = {
     chart: {
@@ -406,25 +448,6 @@ export class OverviewComponent  implements OnInit {
         dataLabels: {
           enabled: true
         },
-        // colors: [{
-        //   radialGradient: { cx: 0.5, cy: 0.5, r: 0.5 },
-        //   stops: [
-        //     [0, 'rgba(255, 0, 0, 0.5)'],
-        //     [1, 'rgba(255, 0, 0, 1)']
-        //   ]
-        // }, {
-        //   radialGradient: { cx: 0.5, cy: 0.5, r: 0.5 },
-        //   stops: [
-        //     [0, 'rgba(0, 255, 0, 0.5)'],
-        //     [1, 'rgba(0, 255, 0, 1)']
-        //   ]
-        // }, {
-        //   radialGradient: { cx: 0.5, cy: 0.5, r: 0.5 },
-        //   stops: [
-        //     [0, 'rgba(0, 0, 255, 0.5)'],
-        //     [1, 'rgba(0, 0, 255, 1)']
-        //   ]
-        // }]
       }
     },
     series: [{
@@ -746,7 +769,7 @@ export class OverviewComponent  implements OnInit {
     },
     yAxis: {
       min: 0,
-      max:this.pf < 2 ? 2 : undefined,
+      max:this.pf < 1 ? 1 : undefined,
       tickPixelInterval: 72,
       tickPosition: 'inside',
       tickColor: 'white',

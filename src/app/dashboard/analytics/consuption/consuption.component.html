@@ -49,7 +49,7 @@
       <mat-form-field>
         <mat-label>Select Shift</mat-label>
         <mat-select placeholder="Shift" [(ngModel)]="selectedShift" required>
-          <mat-option *ngFor="let shift of shiftData" [value]="shift.shiftName">
+          <mat-option *ngFor="let shift of shiftData" [value]="shift.shiftCode">
             {{ shift.shiftName }}
           </mat-option>
         </mat-select>

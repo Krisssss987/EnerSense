@@ -14,7 +14,7 @@ export class AddUserComponent {
 
   firstName = new FormControl('', [Validators.required]);
   lastName = new FormControl('', [Validators.required]);
-  personalEmail = new FormControl('', [Validators.required]);
+  personalEmail = new FormControl('', [Validators.required, Validators.email]);
   designation = new FormControl('', [Validators.required]);
   contact = new FormControl('', [Validators.required]);
   plant = new FormControl('', [Validators.required]);
