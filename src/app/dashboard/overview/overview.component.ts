@@ -112,16 +112,18 @@ export class OverviewComponent  implements OnInit {
 
   retrievingValues(){
     zip(this.DashDataService.deviceID$, this.DashDataService.interval$)
-    .pipe(distinctUntilChanged())
     .subscribe(([deviceID, interval]) => {
       this.deviceUID = deviceID ?? '';
       this.interval = interval ?? '';
-
-      this.barData();
-      this.feederinterval();
-      this.subscribeToTopics();
-      this.lastEntry();
+      this.functionsToCall();      
     });
+  }
+
+  functionsToCall(){
+    this.barData();
+    this.feederinterval();
+    this.subscribeToTopics();
+    this.lastEntry();
   }
 
   piedataRetrieve(){
@@ -357,7 +359,7 @@ export class OverviewComponent  implements OnInit {
     const dataTopic = `Energy/Sense/Live/${this.deviceUID}/7`;
     console.log(dataTopic);
 
-    this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
+    const dataSubscription = this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
       const dataPayload = JSON.parse(dataMessage.payload.toString());
       console.log(dataPayload);
 
@@ -367,10 +369,11 @@ export class OverviewComponent  implements OnInit {
 
     this.guageChange();
     }); 
+    this.mqttSubscriptions.push(dataSubscription);
     
     const kvaTopic = `Energy/Sense/Live/${this.deviceUID}/8`;
 
-    this.mqttService.observe(kvaTopic).subscribe((dataMessage: IMqttMessage) => {
+    const kvaSubscription = this.mqttService.observe(kvaTopic).subscribe((dataMessage: IMqttMessage) => {
       const dataPayload = JSON.parse(dataMessage.payload.toString());
       console.log(dataPayload);
 
@@ -378,10 +381,11 @@ export class OverviewComponent  implements OnInit {
 
     this.guageChange();
     }); 
+    this.mqttSubscriptions.push(kvaSubscription);
 
     const voltageTopic = `Energy/Sense/Live/${this.deviceUID}/1`;
 
-    this.mqttService.observe(voltageTopic).subscribe((dataMessage: IMqttMessage) => {
+    const voltageSubscription = this.mqttService.observe(voltageTopic).subscribe((dataMessage: IMqttMessage) => {
       const dataPayload = JSON.parse(dataMessage.payload.toString());
       console.log(dataPayload);
 
@@ -389,10 +393,11 @@ export class OverviewComponent  implements OnInit {
 
     this.guageChange();
     }); 
+    this.mqttSubscriptions.push(voltageSubscription);
     
     const currentTopic = `Energy/Sense/Live/${this.deviceUID}/3`;
 
-    this.mqttService.observe(currentTopic).subscribe((dataMessage: IMqttMessage) => {
+    const currentSubscription = this.mqttService.observe(currentTopic).subscribe((dataMessage: IMqttMessage) => {
       const dataPayload = JSON.parse(dataMessage.payload.toString());
       console.log(dataPayload);
 
@@ -400,6 +405,7 @@ export class OverviewComponent  implements OnInit {
 
     this.guageChange();
     }); 
+    this.mqttSubscriptions.push(currentSubscription);
   }
 
   lastEntry() {

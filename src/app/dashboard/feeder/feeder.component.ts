@@ -18,6 +18,7 @@ export class FeederComponent {
   CompanyEmail!: string | null;
   selectedDevice!: string;
   selectedGroup!: string;
+  selectedMultipleDevices:any;
   selectedFeederInterval: string ='';
   selectedGroupInterval: string ='';
   selectedVirtualGroupInterval: string ='';
@@ -31,19 +32,17 @@ export class FeederComponent {
   virtualStartDate = new FormControl('', [Validators.required]);
   virtualEndDate = new FormControl('', [Validators.required]);
   dataPayload:any;
+  alertData:any;
 
   ngOnInit(): void {
-    this.getUserDevices();
-    this.getgroupDevices();
-    this.lastEntry();
-  }
-
-  ngAfterViewInit() {
     Highcharts.chart('chartContainer', this.chartOptions);    
     Highcharts.chart('KVAYguage', this.KVAguage);
     Highcharts.chart('KWYguage', this.KWguage);
     Highcharts.chart('KVRYguage', this.KVRguage);
     Highcharts.chart('PFYguage', this.PFguage);
+    this.getUserDevices();
+    this.getgroupDevices();
+    this.lastEntry();
   }
 
   constructor(
@@ -63,7 +62,7 @@ export class FeederComponent {
           console.log(this.dataPayload);
         },
         (error) =>{
-          this.snackBar.open('Error while fetching bar data!', 'Dismiss', {
+          this.snackBar.open('Error while fetching data!', 'Dismiss', {
             duration: 2000
           });
         }
@@ -118,29 +117,15 @@ export class FeederComponent {
     }
   }
 
-  voltageoperations() {
-    if (this.selectedDevice) {
-      this.service.voltageoperations(this.selectedDevice).subscribe(
+  getAlertsByFeederId(feederId:any) {
+    if (feederId) {
+      this.service.getAlertsByFeederId(feederId).subscribe(
         (data: any) => {
-          console.log(data);
+          this.alertData=data.getAlerts;
+          console.log(this.alertData);
         },
         (error) => {
-          this.snackBar.open('Error while fetching Data!', 'Dismiss', {
-            duration: 2000
-          });
-        }
-      );
-    }
-  }
-
-  phasevolt() {
-    if (this.selectedDevice) {
-      this.service.phasevolt(this.selectedDevice).subscribe(
-        (data: any) => {
-          console.log(data);
-        },
-        (error) => {
-          this.snackBar.open('Error while fetching Data!', 'Dismiss', {
+          this.snackBar.open('Error while fetching Alerts Data!', 'Dismiss', {
             duration: 2000
           });
         }
@@ -149,13 +134,16 @@ export class FeederComponent {
   }
 
   updateData(){
-    if(this.selectedDevice && this.selectedFeederInterval){
-      this.currentoperations();
-      this.phasevolt();
-      this.voltageoperations();
-    }
+    if(this.selectedFeed=='feeder'){
+      if(this.selectedDevice && this.selectedFeederInterval){
+        this.currentoperations();
+        this.getAlertsByFeederId(this.selectedDevice);
+      }
+    }else if(this.selectedFeed=='vgroup'){
+      this.getAlertsByFeederId(this.selectedMultipleDevices);
+    }    
   }
- 
+
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'line'

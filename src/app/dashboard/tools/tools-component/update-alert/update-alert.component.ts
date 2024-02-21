@@ -110,23 +110,18 @@ export class UpdateAlertComponent {
   }
 
   previousData(){
-    this.prevStart = this.datePipe.transform(this.alertData.startTime, 'M/d/yyyy, HH:mm:ss');
-    this.prevEnd = this.datePipe.transform(this.alertData.endTime, 'M/d/yyyy, HH:mm:ss');
-
     this.alertName = new FormControl(`${this.alertData.name}`, [Validators.required]);
     this.feederName = new FormControl(`${this.alertData.feederName}`, [Validators.required]);
     this.parameter = new FormControl(`${this.alertData.parameter}`, [Validators.required]);
     this.condition = new FormControl(`${this.alertData.condition}`, [Validators.required]);
     this.threshold = new FormControl(`${this.alertData.threshold}`, [Validators.required]);
     this.repeat = new FormControl(`${this.alertData.repeat}`, [Validators.required]);
-    this.startTime = new FormControl(`${this.prevStart}`, [Validators.required]);
-    this.endTime = new FormControl(`${this.prevEnd}`, [Validators.required]);
+    this.startTime = new FormControl(`${this.alertData.startTime}`, [Validators.required]);
+    this.endTime = new FormControl(`${this.alertData.endTime}`, [Validators.required]);
     this.userName = new FormControl(`${this.alertData.userName}`, [Validators.required]);
     this.message = new FormControl(`${this.alertData.message}`, [Validators.required]);
 
     this.updateEndTimeMin();
-
-    console.log(this.startTime);
   }
   
   adjustDialogWidth() {
@@ -145,8 +140,10 @@ export class UpdateAlertComponent {
   }
 
   onSaveClick(){
-    if( this.feederName.valid && this.alertName.valid && this.parameter.valid && this.condition.valid && this.threshold.valid && this.repeat.valid && this.startTime.valid && this.endTime.valid && this.userName.valid && this.message.valid )
+    if( this.feederName.valid && this.alertName.valid && this.parameter.valid && this.condition.valid && this.threshold.valid && this.repeat.valid && this.userName.valid && this.message.valid )
     {
+      const alertId = this.alertData.alertId;
+
       const CompanyId = this.authService.getCompanyId();
 
       const alertData = {
@@ -163,10 +160,10 @@ export class UpdateAlertComponent {
         companyId:CompanyId
       }
 
-      this.DashDataService.alertAdd(alertData).subscribe(
+      this.DashDataService.alertUpdate(alertId,alertData).subscribe(
         (response) => {
           this.snackBar.open(
-            'Alert Added Successfully.',
+            'Alert Updated Successfully.',
             'Dismiss',
             { duration: 2000 }
           );
@@ -182,7 +179,7 @@ export class UpdateAlertComponent {
 
     this.dialogRef.close();
     }else{
-      this.snackBar.open('Error sending Feeder Data!', 'Dismiss', {
+      this.snackBar.open('Error sending Data!', 'Dismiss', {
         duration: 2000
       });
     }    

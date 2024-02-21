@@ -1,6 +1,6 @@
 <div class="container-fluid mt-2">
   <div class="row">
-    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
       <div class="row d-flex justify-content-center">DEVICES</div>
       <mat-form-field>
         <mat-label>Select Device</mat-label>
@@ -12,7 +12,7 @@
       </mat-form-field>
     </div>
 
-    <div class="col-lg-4 col-md-4 col-sm-12">
+    <div class="col-lg-3 col-md-3 col-sm-12">
       <div class="row d-flex justify-content-center">INTERVALS</div>
       <div class="row">
         <mat-form-field>
@@ -23,15 +23,15 @@
             <mat-option value="week">This Week</mat-option>
             <mat-option value="month">This Month</mat-option>
             <mat-option value="6months">Half Year</mat-option>
-            <mat-option value="1year">Year</mat-option>
-            <mat-option value="2year">Two Years</mat-option>
+            <mat-option value="1year">This Year</mat-option>
+            <!-- <mat-option value="2year">Two Years</mat-option> -->
             <mat-option value="custom">Custom</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
 
-    <div class="col-lg-4 col-md-4 col-sm-12" *ngIf="selectedIntervals==='custom'">
+    <div class="col-lg-3 col-md-3 col-sm-12" *ngIf="selectedIntervals==='custom'">
       <div class="row d-flex justify-content-center">DATE</div>
       <mat-form-field>
         <mat-label>Enter a date range</mat-label>
@@ -46,6 +46,22 @@
         ></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-12">
+      <div class="row d-flex justify-content-center">PARAMETER</div>
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Select Parameter</mat-label>
+          <mat-select [(ngModel)]="selectedParameter">
+            <mat-option value="power">Power</mat-option>
+            <mat-option value="pf">Power Factor</mat-option>
+            <mat-option value="current">Current</mat-option>
+            <mat-option value="voltage_l">Line Voltage</mat-option>
+            <mat-option value="voltage_n">Neutral Voltage</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
   </div>
 

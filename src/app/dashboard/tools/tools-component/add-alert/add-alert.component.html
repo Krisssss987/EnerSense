@@ -17,7 +17,7 @@
         <mat-form-field appearance="outline" class="from-field">
           <mat-label>Feeder Name</mat-label>
           <mat-select placeholder="Feeder Name" [formControl]="feederName">
-            <mat-option *ngFor="let feeder of feederData" [value]="feeder.name">
+            <mat-option *ngFor="let feeder of feederData" [value]="feeder.feederUid">
               {{ feeder.name }}
             </mat-option>
           </mat-select>

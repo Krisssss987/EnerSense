@@ -26,39 +26,9 @@ export class QuickAnalysisComponent implements OnInit, AfterViewInit {
   constructor(private service: DashboardService) { }
 
   ngOnInit(): void {
-    this.fetchHigestEnergyConsuption();
   }
 
   ngAfterViewInit() {
-    this.fetchHigestEnergyConsuption();
-  }
-
-  fetchHigestEnergyConsuption(): void {
-    this.service.getHigestEnergyConsuptionArea().subscribe((result) => {
-      console.log(result);
-      this.data = result;
-
-      // Reset arrays before updating them
-      this.Deviceid = [];
-      this.kvaSeriesData = [];
-
-      // Extract and store values from the 'data' object
-      Object.keys(this.data).forEach((deviceId: string, index: number) => {
-        const deviceData = this.data[deviceId];
-
-        this.Deviceid.push(deviceId);
-
-        const series = {
-          name: `Device ${index + 1} - ${deviceId}`,
-          data: deviceData.kva.map((kva: any, kvaIndex: string | number) => [new Date(deviceData.timestamp[kvaIndex]).getTime(), kva]),
-        };
-
-        this.kvaSeriesData.push(series);
-      });
-
-      // Call the method to generate the graph after updating the arrays
-      this.parametrisedGraph();
-    });
   }
 
   parametrisedGraph(): void {
@@ -115,7 +85,6 @@ export class QuickAnalysisComponent implements OnInit, AfterViewInit {
   }
 
   generateGraph(): void {
-    this.fetchHigestEnergyConsuption();
   }
 
   onParameterSelected(event: MatChipSelectionChange): void {

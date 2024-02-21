@@ -149,10 +149,6 @@ getharmonicdata(interval:string): Observable<any>{
   return this.http.get(`http://localhost:3000/feederharmonic/SenseLive?TimeInterval=${interval}`);
 }
 
-getHigestEnergyConsuptionArea(): Observable<any>{
-return this.http.get(`${this.API_URL}/fetchHighestKva/SenseLive/1hour`);
-}
-
 getLowPF() :Observable <any>{
   return this.http.get(`${this.API_URL}/fetchLowestPF/SenseLive/1hour`);
 }
@@ -209,14 +205,6 @@ getLowPF() :Observable <any>{
     return this.http.get(`${this.API_URL}/currentoperations/${feederId}`);
   }
 
-  voltageoperations(feederId: string):Observable<any> {
-    return this.http.get(`${this.API_URL}/voltageoperations/${feederId}`);
-  }
-
-  phasevolt(feederId: string):Observable<any> {
-    return this.http.get(`${this.API_URL}/phasevolt/${feederId}`);
-  }
-
   overviewSummary(companyId: string):Observable<any> {
     return this.http.get(`${this.API_URL}/overviewSummary/${companyId}`);
   }
@@ -258,5 +246,9 @@ getLowPF() :Observable <any>{
   
   updateCompany(companyId: string,data: any):Observable<any> {
     return this.http.put(`${this.API_URL}/updateCompany/${companyId}`,data);
+  }
+  
+  getAlertsByFeederId(feederId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/getAlertsByFeederId/${feederId}`);
   }
 }

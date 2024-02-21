@@ -138,7 +138,8 @@ import { ProfileComponent } from './profile/profile.component';
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
-    MatDividerModule
+    MatDividerModule,
+    MatExpansionModule
   ],
   providers: [DatePipe],
 })

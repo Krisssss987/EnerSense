@@ -1,6 +1,7 @@
 .form-field{
     width: 100%;
 }
+
 .card-heading{
     color: rgb(78, 78, 255);
     padding-top: 2px;
@@ -24,6 +25,7 @@
     padding-left: 35px;
     padding-right: 35px;
 }
+
 .vline{
     border: 5px solid rgb(158, 158, 158);
 }
@@ -32,6 +34,7 @@
  display: flex;
  justify-content: space-between;
 }
+
 .meter-lables{
     color: gray;
     font-size: small;
@@ -54,6 +57,7 @@
 .demandChart{
     height: 40vh;
 }
+
 .lineChart{
     height: 40vh;
 }
@@ -131,9 +135,11 @@
 @media (max-width:998px) {
     .chart{
         max-height: none;
+        min-height: 0px;
     }
     
     .chart2{
         max-height: none;
+        min-height: 0px;
     }
 }

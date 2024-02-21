@@ -81,7 +81,7 @@ export class HarmonicComponent implements OnInit {
       if(start && end){
         this.service.harmonicsbydate(device,start,end).subscribe((result) => {
           this.data = result;
-          this.processingData();
+          this.processingData(this.data);
         });
       }
       else{
@@ -90,14 +90,14 @@ export class HarmonicComponent implements OnInit {
   
         this.service.harmonicsbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
           this.data = result;
-          this.processingData();
+          this.processingData(this.data);
         });
       }
     }
     else if(device && device!=null && device!=undefined && interval!=null && interval!=undefined && interval!='custom'){
       this.service.harmonicsbyinterval(device,interval).subscribe((result) => {
         this.data = result;
-        this.processingData();
+        this.processingData(this.data);
       });
     }
     else{
@@ -106,7 +106,7 @@ export class HarmonicComponent implements OnInit {
 
       this.service.harmonicsbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
         this.data = result;
-        this.processingData();
+        this.processingData(this.data);
       });
     }
   }
@@ -130,7 +130,7 @@ export class HarmonicComponent implements OnInit {
     }
   }
 
-  processingData(){
+  processingData(data:any){
     this.thd_v1n = [];
     this.thd_v2n = [];
     this.thd_v3n = [];
@@ -140,57 +140,65 @@ export class HarmonicComponent implements OnInit {
     this.thd_i1 = [];
     this.thd_i2 = [];
     this.thd_i3 = [];
-    this.date_time = [];
 
-    this.thd_v1n = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v1n: any; }) => {
+    for (let i = 0; i < data.length; i++) {
+      const date = new Date(data[i].bucket_start);
+    
+      date.setHours(date.getHours() + 5);
+      date.setMinutes(date.getMinutes() + 30);
+    
+      data[i].bucket_start = date.toISOString();
+    }
+
+    this.thd_v1n = data.map((entry: { bucket_start: string | number | Date; avg_thd_v1n: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_thd_v1n = Number(entry.avg_thd_v1n);
       return [timestamp, avg_thd_v1n];
     });
     
-    this.thd_v2n = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v2n: any; }) => {
+    this.thd_v2n = data.map((entry: { bucket_start: string | number | Date; avg_thd_v2n: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_thd_v2n = Number(entry.avg_thd_v2n);
       return [timestamp, avg_thd_v2n];
     });
     
-    this.thd_v3n = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v3n: any; }) => {
+    this.thd_v3n = data.map((entry: { bucket_start: string | number | Date; avg_thd_v3n: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_thd_v3n = Number(entry.avg_thd_v3n);
       return [timestamp, avg_thd_v3n];
     });
     
-    this.thd_v12 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v12: any; }) => {
+    this.thd_v12 = data.map((entry: { bucket_start: string | number | Date; avg_thd_v12: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_thd_v12 = Number(entry.avg_thd_v12);
       return [timestamp, avg_thd_v12];
     });
     
-    this.thd_v23 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v23: any; }) => {
+    this.thd_v23 = data.map((entry: { bucket_start: string | number | Date; avg_thd_v23: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_thd_v23 = Number(entry.avg_thd_v23);
       return [timestamp, avg_thd_v23];
     });
     
-    this.thd_v31 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_v31: any; }) => {
+    this.thd_v31 = data.map((entry: { bucket_start: string | number | Date; avg_thd_v31: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_thd_v31 = Number(entry.avg_thd_v31);
       return [timestamp, avg_thd_v31];
     }); 
     
-    this.thd_i1 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_i1: any; }) => {
+    this.thd_i1 = data.map((entry: { bucket_start: string | number | Date; avg_thd_i1: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_thd_i1 = Number(entry.avg_thd_i1);
       return [timestamp, avg_thd_i1];
     });
     
-    this.thd_i2 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_i2: any; }) => {
+    this.thd_i2 = data.map((entry: { bucket_start: string | number | Date; avg_thd_i2: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_thd_i2 = Number(entry.avg_thd_i2);
       return [timestamp, avg_thd_i2];
     });
     
-    this.thd_i3 = this.data.map((entry: { bucket_start: string | number | Date; avg_thd_i3: any; }) => {
+    this.thd_i3 = data.map((entry: { bucket_start: string | number | Date; avg_thd_i3: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_thd_i3 = Number(entry.avg_thd_i3);
       return [timestamp, avg_thd_i3];
@@ -208,7 +216,7 @@ export class HarmonicComponent implements OnInit {
 
       this.service.harmonicsbydate(this.selectedDevice, this.startDate.value!, this.endDate.value!).subscribe((result) => {
         this.data = result;
-        this.processingData();
+        this.processingData(this.data);
       });
 
       this.showingData()
@@ -219,7 +227,7 @@ export class HarmonicComponent implements OnInit {
 
       this.service.harmonicsbyinterval(this.selectedDevice,this.selectedIntervals).subscribe((result) => {
         this.data = result;
-        this.processingData();
+        this.processingData(this.data);
       });
 
       this.showingData()
@@ -250,9 +258,6 @@ export class HarmonicComponent implements OnInit {
         title: {
           text: 'Values',
         },
-        min: 0,
-        max: undefined,
-        gridLineWidth: 0,
       },
       legend: {
         symbolRadius: 0,

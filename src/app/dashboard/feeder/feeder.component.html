@@ -79,7 +79,7 @@
                     <div class="col-12 col-lg-4 col-xl-4 col-md-4" *ngIf="selectedFeed=='vgroup'">
                         <mat-form-field appearance="outline" class="form-field">
                           <mat-label>Select Devices</mat-label>
-                          <mat-select [(ngModel)]="selectedGroup" required multiple>
+                          <mat-select [(ngModel)]="selectedMultipleDevices" required multiple>
                             <mat-option *ngFor="let device of deviceOptions" [value]="device.feederUid">
                               {{ device.name }}
                             </mat-option>
@@ -131,9 +131,9 @@
         </div>
         <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
             <div class="card chart">
-                <p class="card-heading text-center mt-1">POWER Parametres </p>
+                <p class="card-heading text-center mt-1">POWER Parameters </p>
                 <div class="row mt-3">
-                    <div class="col-md-3 mx-auto">
+                    <div class="col-md-3 col-sm-6 mx-auto">
                         <div class="px-2 ">
                             <div class="meter-container">
                                 <div class="meter">
@@ -156,7 +156,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 mx-auto">
+                    <div class="col-md-3 col-sm-6 mx-auto">
                         <div class="px-2">
                             <div class="meter-container">
                                 <div class="meter">
@@ -178,7 +178,7 @@
 
                         </div>
                     </div>
-                    <div class="col-md-3 mx-auto">
+                    <div class="col-md-3 col-sm-6 mx-auto">
                         <div class="px-2">
                             <div class="meter-container">
                                 <div class="meter">
@@ -199,17 +199,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 mx-auto">
+                    <div class="col-md-3 col-sm-6 mx-auto">
                         <div class="px-2">
                             <div class="meter-container">
                                 <div class="meter">
-
                                     <div id="PFYguage"></div>
-
                                 </div>
                             </div>
                             <div>
-
                             </div>
                             <div class="meter-lables">
                                 <p>Min</p>
@@ -223,11 +220,9 @@
                                 <p>Avg</p>
                                 <p>412.7</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -276,41 +271,51 @@
         <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
             <div class="card chart2">
                 <p class="card-heading mt-1 text-center">Alerts & Events</p>
-                <div class="px-2 mt-3">
-                    <mat-form-field class="w-100" appearance="outline">
-                        <mat-select placeholder="Select Feeder">
-                            <mat-option value="option1">Option 1</mat-option>
-                            <mat-option value="option2">Option 2</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="card-heading text-center">Set aleart value</p>
-                        <div class="p-2 mx-auto" style="text-align: center;">
-                            <mat-form-field class="w-100" appearance="outline">
-                                <mat-label>Value at which alerts are shown</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="card-heading text-center">Set max value</p>
-                        <div class="p-2 mx-auto" style="text-align: center;">
-                            <mat-form-field class="w-100" appearance="outline">
-                                <mat-label>Max value for feeder</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center mb-2">
-                        <button mat-raised-button color="primary" style="width: 150px;">Add Aleart</button>
-                    </div>
+                <div class="mx-2 mb-3 mt-2 mat-elevation-z2" style="overflow-y: scroll;">
+                    <mat-accordion>
+                        <mat-expansion-panel *ngFor="let alert of alertData" class="mt-1" style="color: whitesmoke;background-color: #8b6792;">
+                          <mat-expansion-panel-header style="background-color: #a5aad9;">
+                            <mat-panel-title style="color: black;">
+                              <div style="font-size: 17px;">Alert Name: {{ alert.name }}</div>
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <div class="row mt-2">
+                            <div class="col-md-12">
+                              <div style="font-size: 15px;">Feeder Name: {{ alert.feederName }}</div>
+                            </div>
+                            <div class="col-md-6">
+                              <div style="font-size: 15px;">Parameter: {{ alert.parameter }}</div>
+                            </div>
+                            <div class="col-md-6">
+                              <div style="font-size: 15px;">Threshold: {{ alert.threshold }}</div>
+                            </div>
+                            <div class="col-md-6">
+                              <div style="font-size: 15px;">Condition: {{ alert.condition }}</div>
+                            </div>
+                            <div class="col-md-6">
+                              <div style="font-size: 15px;">Repeat: {{ alert.repeat }}</div>
+                            </div>
+                            <div class="col-md-6">
+                              <div style="font-size: 15px;">Start Time: {{ alert.startTime }}</div>
+                            </div>
+                            <div class="col-md-6">
+                              <div style="font-size: 15px;">End Time: {{ alert.endTime }}</div>
+                            </div>
+                            <div class="col-md-12">
+                              <div style="font-size: 15px;">Message: {{ alert.message }}</div>
+                            </div>
+                            <div class="col-md-12">
+                              <div style="font-size: 15px;">User Name: {{ alert.userName }}</div>
+                            </div>
+                          </div>
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                      
                 </div>
             </div>
         </div>
     </div>
-    <div class="card mt-2">
+    <div class="card mt-2 mb-2">
         <p class="card-heading text-center mt-1">Instantaneous Feeder data</p>
         <div class="d-flex flex-wrap">
             <div class="p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">

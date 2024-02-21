@@ -17,6 +17,7 @@ export class ParamaterisedComponent implements OnInit{
 
   selectedIntervals: string =''; 
   selectedDevice: string ='';
+  selectedParameter: string ='';
   startDate = new FormControl('', [Validators.required]);
   endDate = new FormControl('', [Validators.required]);
   
@@ -25,16 +26,10 @@ export class ParamaterisedComponent implements OnInit{
   @ViewChild('chart2', { static: false }) chart2Container!: ElementRef;
   data: any;
 
-  kvavalue: number[] = [];
-  kw: number[] = [];
-  kvar: number[] = [];
-  voltage_l: number[] = [];
-  voltage_n: number[] = [];
-  current: number[] = [];
-  date_time: string[] = [];
   CompanyId!: string | null;
   initialDevice!: string | null;
   deviceOptions: any[] = [];
+  graphdata:any;
 
   constructor(
     private service: DashboardService,
@@ -49,6 +44,7 @@ export class ParamaterisedComponent implements OnInit{
   showingData(){
     const device = sessionStorage.getItem('parameterisedDevice');
     const interval = sessionStorage.getItem('parameterisedInterval');
+    const parameter = sessionStorage.getItem('parameterisedParameter');
     const start = sessionStorage.getItem('parameterisedStartDate');
     const forStart = this.datePipe.transform(start, 'yyyy-MM-dd')??'';
     const end = sessionStorage.getItem('parameterisedEndDate');
@@ -57,27 +53,30 @@ export class ParamaterisedComponent implements OnInit{
     if(interval == 'custom'){
       this.selectedIntervals=interval!; 
       this.selectedDevice=device!;
+      this.selectedParameter=parameter!;
       this.startDate = new FormControl(forStart, [Validators.required]);
       this.endDate = new FormControl(forEnd, [Validators.required]);   
     }else{
       console.log(device,interval)
       this.selectedIntervals=interval!; 
       this.selectedDevice=device!;
+      this.selectedParameter=parameter!;
     }
   }
 
   previousData(){
     const device = sessionStorage.getItem('parameterisedDevice');
     const interval = sessionStorage.getItem('parameterisedInterval');
+    const parameter = sessionStorage.getItem('parameterisedParameter');
 
-    if(interval == 'custom' && device!=null && device!=undefined){
+    if(interval == 'custom' && device!=null && device!=undefined && parameter!=null && parameter!=undefined){
       const start = sessionStorage.getItem('parameterisedStartDate');
       const end = sessionStorage.getItem('parameterisedEndDate');
 
       if(start && end){
         this.service.parametersbydate(device,start,end).subscribe((result) => {
           this.data = result;
-          this.processingData();
+          this.processingData(this.data,parameter!);
         });
       }
       else{
@@ -86,23 +85,24 @@ export class ParamaterisedComponent implements OnInit{
   
         this.service.parametersbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
           this.data = result;
-          this.processingData();
+          this.processingData(this.data,parameter);
         });
       }
     }
-    else if(device && device!=null && device!=undefined && interval!=null && interval!=undefined && interval!='custom'){
+    else if(device && device!=null && device!=undefined && parameter && parameter!=null && parameter!=undefined && interval!=null && interval!=undefined && interval!='custom'){
       this.service.parametersbyinterval(device,interval).subscribe((result) => {
         this.data = result;
-        this.processingData();
+        this.processingData(this.data,parameter);
       });
     }
     else{
       sessionStorage.setItem('parameterisedDevice', this.initialDevice!);
       sessionStorage.setItem('parameterisedInterval', '12hour');
+      sessionStorage.setItem('parameterisedParameter', 'power');
 
       this.service.parametersbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
         this.data = result;
-        this.processingData();
+        this.processingData(this.data,'power');
       });
     }
   }
@@ -126,75 +126,231 @@ export class ParamaterisedComponent implements OnInit{
     }
   }
 
-  processingData(){
-    this.kvavalue = [];
-    this.kw = [];
-    this.kvar = [];
-    this.voltage_l = [];
-    this.voltage_n = [];
-    this.current = [];
-    this.date_time = [];
+  processingData(data:any,parameter:string){
+    let kvavalue = [];
+    let kw = [];
+    let kvar = [];
+    let pf = [];
+    let current = [];
+    let current_1 = [];
+    let current_2 = [];
+    let current_3 = [];
+    let voltage_n = [];
+    let voltage_1n = [];
+    let voltage_2n = [];
+    let voltage_3n = [];
+    let voltage_l = [];
+    let voltage_31 = [];
+    let voltage_23 = [];
+    let voltage_12 = [];
+    
+    for (let i = 0; i < data.length; i++) {
+      const date = new Date(data[i].bucket_start);
+    
+      date.setHours(date.getHours() + 5);
+      date.setMinutes(date.getMinutes() + 30);
+    
+      data[i].bucket_start = date.toISOString();
+    }
 
-    this.kvavalue = this.data.map((entry: { bucket_start: string | number | Date; avg_kva: any; }) => {
+    kvavalue = data.map((entry: { bucket_start: string | number | Date; avg_kva: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_kva = Number(entry.avg_kva);
       return [timestamp, avg_kva];
     });
     
-    this.kw = this.data.map((entry: { bucket_start: string | number | Date; avg_kw: any; }) => {
+    kw = data.map((entry: { bucket_start: string | number | Date; avg_kw: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_kw = Number(entry.avg_kw);
       return [timestamp, avg_kw];
     });
     
-    this.kvar = this.data.map((entry: { bucket_start: string | number | Date; avg_kvar: any; }) => {
+    kvar = data.map((entry: { bucket_start: string | number | Date; avg_kvar: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_kvar = Number(entry.avg_kvar);
       return [timestamp, avg_kvar];
     });
-    
-    this.voltage_l = this.data.map((entry: { bucket_start: string | number | Date; avg_vl: any; }) => {
+
+    pf = data.map((entry: { bucket_start: string | number | Date; avg_pf: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
-      const avg_vl = Number(entry.avg_vl);
-      return [timestamp, avg_vl];
+      const avg_pf = Number(entry.avg_pf);
+      return [timestamp, avg_pf];
     });
     
-    this.voltage_n = this.data.map((entry: { bucket_start: string | number | Date; avg_vn: any; }) => {
-      const timestamp = new Date(entry.bucket_start).getTime();
-      const avg_vn = Number(entry.avg_vn);
-      return [timestamp, avg_vn];
-    });
-    
-    this.current = this.data.map((entry: { bucket_start: string | number | Date; avg_c: any; }) => {
+    current = data.map((entry: { bucket_start: string | number | Date; avg_c: any; }) => {
       const timestamp = new Date(entry.bucket_start).getTime();
       const avg_c = Number(entry.avg_c);
       return [timestamp, avg_c];
-    });        
+    }); 
+    
+    current_1 = data.map((entry: { bucket_start: string | number | Date; avg_current_1: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_current_1 = Number(entry.avg_current_1);
+      return [timestamp, avg_current_1];
+    });
+    
+    current_2 = data.map((entry: { bucket_start: string | number | Date; avg_current_2: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_current_2 = Number(entry.avg_current_2);
+      return [timestamp, avg_current_2];
+    });
+    
+    current_3 = data.map((entry: { bucket_start: string | number | Date; avg_current_3: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_current_3 = Number(entry.avg_current_3);
+      return [timestamp, avg_current_3];
+    });  
+    
+    voltage_n = data.map((entry: { bucket_start: string | number | Date; avg_vn: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_vn = Number(entry.avg_vn);
+      return [timestamp, avg_vn];
+    }); 
+    
+    voltage_1n = data.map((entry: { bucket_start: string | number | Date; avg_voltage_1n: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_voltage_1n = Number(entry.avg_voltage_1n);
+      return [timestamp, avg_voltage_1n];
+    }); 
+    
+    voltage_2n = data.map((entry: { bucket_start: string | number | Date; avg_voltage_2n: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_voltage_2n = Number(entry.avg_voltage_2n);
+      return [timestamp, avg_voltage_2n];
+    }); 
+    
+    voltage_3n = data.map((entry: { bucket_start: string | number | Date; avg_voltage_3n: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_voltage_3n = Number(entry.avg_voltage_3n);
+      return [timestamp, avg_voltage_3n];
+    }); 
+    
+    voltage_l = data.map((entry: { bucket_start: string | number | Date; avg_vl: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_vl = Number(entry.avg_vl);
+      return [timestamp, avg_vl];
+    });  
+    
+    voltage_31 = data.map((entry: { bucket_start: string | number | Date; avg_voltage_12: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_voltage_12 = Number(entry.avg_voltage_12);
+      return [timestamp, avg_voltage_12];
+    }); 
+    
+    voltage_23 = data.map((entry: { bucket_start: string | number | Date; avg_voltage_23: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_voltage_23 = Number(entry.avg_voltage_23);
+      return [timestamp, avg_voltage_23];
+    }); 
+    
+    voltage_12 = data.map((entry: { bucket_start: string | number | Date; avg_voltage_31: any; }) => {
+      const timestamp = new Date(entry.bucket_start).getTime();
+      const avg_voltage_31 = Number(entry.avg_voltage_31);
+      return [timestamp, avg_voltage_31];
+    }); 
+
+    if(parameter=='power'){ 
+      this.graphdata=[{
+        type: 'spline',
+        name: 'KVA',
+        data: kvavalue
+      }, {
+        type: 'spline',
+        name: 'KW',
+        data: kw
+      },{
+        type: 'spline',
+        name: 'KVAR',
+        data: kvar
+      }]
+    } else if(parameter=='pf'){ 
+      this.graphdata=[{
+        type: 'spline',
+        name: 'PF',
+        data: pf
+      }]
+    } else if(parameter=='current'){ 
+      this.graphdata=[{
+        type: 'spline',
+        name: 'Current',
+        data: current
+      }, {
+        type: 'spline',
+        name: 'Current 1',
+        data: current_1
+      },{
+        type: 'spline',
+        name: 'Current 2',
+        data: current_2
+      },{
+        type: 'spline',
+        name: 'Current 3',
+        data: current_3
+      }]
+    } else if(parameter=='voltage_l'){ 
+      this.graphdata=[{
+        type: 'spline',
+        name: 'Voltage L',
+        data: voltage_l
+      }, {
+        type: 'spline',
+        name: 'Voltage 31',
+        data: voltage_31
+      },{
+        type: 'spline',
+        name: 'Voltage 23',
+        data: voltage_23
+      },{
+        type: 'spline',
+        name: 'Voltage 12',
+        data: voltage_12
+      }]
+    } else if(parameter=='voltage_n'){ 
+      this.graphdata=[{
+        type: 'spline',
+        name: 'Voltage N',
+        data: voltage_n
+      }, {
+        type: 'spline',
+        name: 'Voltage 1N',
+        data: voltage_1n
+      },{
+        type: 'spline',
+        name: 'Voltage 2N',
+        data: voltage_2n
+      },{
+        type: 'spline',
+        name: 'Voltage 3N',
+        data: voltage_3n
+      }]
+    }
 
     this.parametrisedGraph();
   }
 
   fetchdata(): void {
-    if (this.selectedIntervals == 'custom' && this.selectedDevice && this.startDate.valid && this.endDate.valid) {
+    if (this.selectedIntervals == 'custom' && this.selectedDevice && this.selectedParameter && this.startDate.valid && this.endDate.valid) {
       sessionStorage.setItem('parameterisedDevice', this.selectedDevice);
       sessionStorage.setItem('parameterisedInterval', this.selectedIntervals);
       sessionStorage.setItem('parameterisedStartDate', this.startDate.value!);
       sessionStorage.setItem('parameterisedEndDate', this.endDate.value!);
+      sessionStorage.setItem('parameterisedParameter', this.selectedParameter);
 
       this.service.parametersbydate(this.selectedDevice, this.startDate.value!, this.endDate.value!).subscribe((result) => {
         this.data = result;
-        this.processingData();
+        this.processingData(this.data,this.selectedParameter);
       });
 
       this.showingData()
     }
-    else if(this.selectedDevice && this.selectedIntervals && this.selectedIntervals != null && this.selectedIntervals != undefined && this.selectedIntervals!='custom'){
+    else if(this.selectedDevice && this.selectedParameter && this.selectedIntervals && this.selectedIntervals != null && this.selectedIntervals != undefined && this.selectedIntervals!='custom'){
       sessionStorage.setItem('parameterisedDevice', this.selectedDevice);
       sessionStorage.setItem('parameterisedInterval', this.selectedIntervals);
+      sessionStorage.setItem('parameterisedParameter', this.selectedParameter);
 
       this.service.parametersbyinterval(this.selectedDevice,this.selectedIntervals).subscribe((result) => {
         this.data = result;
-        this.processingData();
+        this.processingData(this.data,this.selectedParameter);
       });
 
       this.showingData()
@@ -225,9 +381,6 @@ export class ParamaterisedComponent implements OnInit{
         title: {
           text: 'Values',
         },
-        min: 0,
-        max: undefined,
-        gridLineWidth: 0,
       },
       legend: {
         symbolRadius: 0,
@@ -240,32 +393,8 @@ export class ParamaterisedComponent implements OnInit{
           }
         }
       },
-      series: [{
-        type: 'spline',
-        name: 'KVA',
-        data: this.kvavalue
-      }, {
-        type: 'spline',
-        name: 'KW',
-        data: this.kw
-      },{
-        type: 'spline',
-        name: 'KVAR',
-        data: this.kvar
-      }, {
-        type: 'spline',
-        name: 'Voltage L',
-        data: this.voltage_l
-      },{
-        type: 'spline',
-        name: 'Voltage N',
-        data: this.voltage_n
-      }, {
-        type: 'spline',
-        name: 'Current',
-        data: this.current
-      }
-    ],
+      series: this.graphdata
+    ,
     });
   }
 }
