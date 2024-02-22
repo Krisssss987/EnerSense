@@ -53,9 +53,9 @@ export class ConsuptionComponent implements OnInit {
     const device = sessionStorage.getItem('consumptionDevice');
     const interval = sessionStorage.getItem('consumptionInterval');
     const shift = sessionStorage.getItem('consumptionShift');
-    const start = sessionStorage.getItem('harmonicsStartDate');
+    const start = sessionStorage.getItem('consumptionStartDate');
     const forStart = this.datePipe.transform(start, 'yyyy-MM-dd')??'';
-    const end = sessionStorage.getItem('harmonicsEndDate');
+    const end = sessionStorage.getItem('consumptionEndDate');
     const forEnd = this.datePipe.transform(end, 'yyyy-MM-dd')??'';
 
     if(interval == 'custom'){
@@ -77,8 +77,8 @@ export class ConsuptionComponent implements OnInit {
     const shift = sessionStorage.getItem('consumptionShift');
 
     if(interval == 'custom' && device!=null && device!=undefined && shift!=null && shift!=undefined){
-      const start = sessionStorage.getItem('harmonicsStartDate');
-      const end = sessionStorage.getItem('harmonicsEndDate');
+      const start = sessionStorage.getItem('consumptionStartDate');
+      const end = sessionStorage.getItem('consumptionEndDate');
 
       if(start && end){
         this.service.consumptionWithCustomIntervals(device,shift,start,end).subscribe((result) => {
@@ -89,9 +89,9 @@ export class ConsuptionComponent implements OnInit {
       else{
         sessionStorage.setItem('consumptionDevice', this.initialDevice!);
         sessionStorage.setItem('consumptionShift', this.initialShift!);
-        sessionStorage.setItem('consumptionInterval', '12hour');
+        sessionStorage.setItem('consumptionInterval', 'day');
   
-        this.service.consumptionWithIntervals(this.initialDevice!,'12hour',this.initialShift!).subscribe((result) => {
+        this.service.consumptionWithIntervals(this.initialDevice!,'day',this.initialShift!).subscribe((result) => {
           this.data = result.data;
           this.processingData();
         });
@@ -101,14 +101,15 @@ export class ConsuptionComponent implements OnInit {
       this.service.consumptionWithIntervals(device,interval,shift).subscribe((result) => {
         this.data = result.data;
         this.processingData();
+        console.log(this.data);
       });
     }
     else if(device==null || device==undefined || shift==null || shift==undefined){
       sessionStorage.setItem('consumptionDevice', this.initialDevice!);
       sessionStorage.setItem('consumptionShift', this.initialShift!);
-      sessionStorage.setItem('consumptionInterval', '12hour');
+      sessionStorage.setItem('consumptionInterval', 'day');
 
-      this.service.consumptionWithIntervals(this.initialDevice!,'12hour',this.initialShift!).subscribe((result) => {
+      this.service.consumptionWithIntervals(this.initialDevice!,'day',this.initialShift!).subscribe((result) => {
         this.data = result.data;
         this.processingData();
       });
@@ -155,33 +156,33 @@ export class ConsuptionComponent implements OnInit {
     this.imp_kvarh = [];
     this.exp_kvarh = [];
     this.kvarh = [];
-
-    this.kvah = this.data.map((entry: { bucket_start_time: string | number | Date; kvah: any; }) => {
-      const timestamp = new Date(entry.bucket_start_time).getTime();
+    
+    this.kvah = this.data.map((entry: { bucket_start_date: string | number | Date; kvah: any; }) => {
+      const timestamp = new Date(entry.bucket_start_date).getTime();
       const kvah = Number(entry.kvah);
       return [timestamp, kvah];
     });
     
-    this.kwh = this.data.map((entry: { bucket_start_time: string | number | Date; kwh: any; }) => {
-      const timestamp = new Date(entry.bucket_start_time).getTime();
+    this.kwh = this.data.map((entry: { bucket_start_date: string | number | Date; kwh: any; }) => {
+      const timestamp = new Date(entry.bucket_start_date).getTime();
       const kwh = Number(entry.kwh);
       return [timestamp, kwh];
     });
     
-    this.imp_kvarh = this.data.map((entry: { bucket_start_time: string | number | Date; imp_kvarh: any; }) => {
-      const timestamp = new Date(entry.bucket_start_time).getTime();
+    this.imp_kvarh = this.data.map((entry: { bucket_start_date: string | number | Date; imp_kvarh: any; }) => {
+      const timestamp = new Date(entry.bucket_start_date).getTime();
       const imp_kvarh = Number(entry.imp_kvarh);
       return [timestamp, imp_kvarh];
     });
     
-    this.exp_kvarh = this.data.map((entry: { bucket_start_time: string | number | Date; exp_kvarh: any; }) => {
-      const timestamp = new Date(entry.bucket_start_time).getTime();
+    this.exp_kvarh = this.data.map((entry: { bucket_start_date: string | number | Date; exp_kvarh: any; }) => {
+      const timestamp = new Date(entry.bucket_start_date).getTime();
       const exp_kvarh = Number(entry.exp_kvarh);
       return [timestamp, exp_kvarh];
     });
     
-    this.kvarh = this.data.map((entry: { bucket_start_time: string | number | Date; kvarh: any; }) => {
-      const timestamp = new Date(entry.bucket_start_time).getTime();
+    this.kvarh = this.data.map((entry: { bucket_start_date: string | number | Date; kvarh: any; }) => {
+      const timestamp = new Date(entry.bucket_start_date).getTime();
       const kvarh = Number(entry.kvarh);
       return [timestamp, kvarh];
     });     
@@ -194,8 +195,8 @@ export class ConsuptionComponent implements OnInit {
       sessionStorage.setItem('consumptionDevice', this.selectedDevice);
       sessionStorage.setItem('consumptionInterval', this.selectedIntervals);
       sessionStorage.setItem('consumptionShift', this.selectedShift);
-      sessionStorage.setItem('harmonicsStartDate', this.startDate.value!);
-      sessionStorage.setItem('harmonicsEndDate', this.endDate.value!);
+      sessionStorage.setItem('consumptionStartDate', this.startDate.value!);
+      sessionStorage.setItem('consumptionEndDate', this.endDate.value!);
 
       this.service.consumptionWithCustomIntervals(this.selectedDevice,this.selectedShift, this.startDate.value!, this.endDate.value!).subscribe((result) => {
         this.data = result.data;

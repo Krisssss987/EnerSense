@@ -251,4 +251,56 @@ getLowPF() :Observable <any>{
   getAlertsByFeederId(feederId: string):Observable<any> {
     return this.http.get(`${this.API_URL}/getAlertsByFeederId/${feederId}`);
   }
+  
+  fetchMaxDemand(companyId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/fetchMaxDemand/${companyId}`);
+  }
+
+  feederGetDemandBarGraphByInterval(DeviceId: string,interval: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederGetDemandBarGraphByInterval/${DeviceId}/${interval}`);
+  }
+
+  feederGetDemandBarGraphByDate(DeviceId: string,start: string, end:string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederGetDemandBarGraphByDate/${DeviceId}/${start}/${end}`);
+  }
+  
+  feederGetKWHByInterval(DeviceId: string,interval: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederGetKWHByInterval/${DeviceId}/${interval}`);
+  }
+
+  feederGetKWHByDate(DeviceId: string,start: string, end:string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederGetKWHByDate/${DeviceId}/${start}/${end}`);
+  }
+  
+  feederGetKVAHByInterval(DeviceId: string,interval: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederGetKVAHByInterval/${DeviceId}/${interval}`);
+  }
+
+  feederGetKVAHByDate(DeviceId: string,start: string, end:string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederGetKVAHByDate/${DeviceId}/${start}/${end}`);
+  }
+  
+  feederGetKVARHByInterval(DeviceId: string,interval: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederGetKVARHByInterval/${DeviceId}/${interval}`);
+  }
+
+  feederGetKVARHByDate(DeviceId: string,start: string, end:string):Observable<any> {
+    return this.http.get(`${this.API_URL}/feederGetKVARHByDate/${DeviceId}/${start}/${end}`);
+  }
+
+  getTodayKWHForFeeders(deviceId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/getTodayKWHForFeeders/${deviceId}`);
+  }
+
+  getYesterdayKWHForFeeders(deviceId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/getYesterdayKWHForFeeders/${deviceId}`);
+  }
+
+  getThisMonthKWHForFeeders(deviceId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/getThisMonthKWHForFeeders/${deviceId}`);
+  }
+
+  getPowerParamtersFeeders(deviceId: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/getPowerParamtersFeeders/${deviceId}`);
+  }
 }

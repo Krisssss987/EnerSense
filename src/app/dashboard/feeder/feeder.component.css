@@ -71,6 +71,14 @@
     margin-top: -5px;
 }
 
+
+#KVAYguage,
+#KWYguage,
+#KVRYguage,
+#PFYguage{
+    height: 185px;
+}
+
 @media (max-width:1200px) {
     .incard{
         margin-left: 0px;

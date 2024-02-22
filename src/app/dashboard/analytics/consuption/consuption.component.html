@@ -18,10 +18,11 @@
         <mat-form-field>
           <mat-label>Select Interval</mat-label>
           <mat-select [(ngModel)]="selectedIntervals">
-            <mat-option value="12hour">12 hours</mat-option>
             <mat-option value="day">This Day</mat-option>
             <mat-option value="week">This Week</mat-option>
             <mat-option value="month">This Month</mat-option>
+            <mat-option value="6month">Half Year</mat-option>
+            <mat-option value="year">This Year</mat-option>
             <mat-option value="custom">Custom</mat-option>
           </mat-select>
         </mat-form-field>

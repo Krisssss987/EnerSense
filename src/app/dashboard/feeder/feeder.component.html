@@ -4,7 +4,7 @@
             <div class="row">
                 <mat-radio-group class="d-flex mt-1" [(ngModel)]="selectedFeed">
                     <mat-radio-button value="feeder">Feeder</mat-radio-button>
-                    <mat-radio-button value="group">Group</mat-radio-button>
+                    <!-- <mat-radio-button value="group">Group</mat-radio-button> -->
                     <mat-radio-button value="vgroup">Virtual Group</mat-radio-button>
                 </mat-radio-group>
             </div>
@@ -125,102 +125,28 @@
         <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
             <div class="card allCard chart">
                 <p class="card-heading text-center mt-1">Max vs Actual Demand</p>
-
                 <div id="chartContainer" class="demandChart"></div>
             </div>
         </div>
         <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
             <div class="card chart">
-                <p class="card-heading text-center mt-1">POWER Parameters </p>
-                <div class="row mt-3">
-                    <div class="col-md-3 col-sm-6 mx-auto">
-                        <div class="px-2 ">
-                            <div class="meter-container">
-                                <div class="meter">
-                                    <div id="KWYguage"></div>
-                                </div>
-                            </div>
-                            <div class="meter-lables-container">
-                                <div class="meter-lables">
-                                    <p>Min</p>
-                                    <p>412.7</p>
-                                </div>
-                                <div class="meter-lables">
-                                    <p>Max</p>
-                                    <p>412.7</p>
-                                </div>
-                                <div class="meter-lables">
-                                    <p>Avg</p>
-                                    <p>412.7</p>
-                                </div>
-                            </div>
-                        </div>
+                <p class="card-heading text-center mt-1">Power Parameters</p>
+                <div class="row margin">
+                    <div class="col-12 col-md-3">
+                        <div id="KVAYguage"></div>
+                        <h5 class="card-heading text-center">KVA</h5>
                     </div>
-                    <div class="col-md-3 col-sm-6 mx-auto">
-                        <div class="px-2">
-                            <div class="meter-container">
-                                <div class="meter">
-                                    <div id="KVRYguage"></div>
-                                </div>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Min</p>
-                                <p>412.7</p>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Max</p>
-                                <p>412.7</p>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Avg</p>
-                                <p>412.7</p>
-                            </div>
-
-                        </div>
+                    <div class="col-12 col-md-3">
+                        <div id="KWYguage"></div>
+                        <h5 class="card-heading text-center">KW</h5>
                     </div>
-                    <div class="col-md-3 col-sm-6 mx-auto">
-                        <div class="px-2">
-                            <div class="meter-container">
-                                <div class="meter">
-                                    <div id="KVAYguage"></div>
-                                </div>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Min</p>
-                                <p>412.7</p>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Max</p>
-                                <p>412.7</p>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Avg</p>
-                                <p>412.7</p>
-                            </div>
-                        </div>
+                    <div class="col-12 col-md-3">
+                        <div id="KVRYguage"></div>
+                        <h5 class="card-heading text-center">KVAR</h5>
                     </div>
-                    <div class="col-md-3 col-sm-6 mx-auto">
-                        <div class="px-2">
-                            <div class="meter-container">
-                                <div class="meter">
-                                    <div id="PFYguage"></div>
-                                </div>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Min</p>
-                                <p>412.7</p>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Max</p>
-                                <p>412.7</p>
-                            </div>
-                            <div class="meter-lables">
-                                <p>Avg</p>
-                                <p>412.7</p>
-                            </div>
-                        </div>
+                    <div class="col-12 col-md-3">
+                        <div id="PFYguage"></div>
+                        <h5 class="card-heading text-center">PF</h5>
                     </div>
                 </div>
             </div>
@@ -235,15 +161,15 @@
                         <div class="p-2 mx-auto mt-3" style="text-align: center;">
                             <mat-form-field class="w-100" appearance="outline">
                                 <mat-label>Active(KWH)</mat-label>
-                                <input matInput>
+                                <input matInput [value]="activeKWH" readonly>
                             </mat-form-field>
                             <mat-form-field class="w-100" appearance="outline">
                                 <mat-label>Apprent(KVAH)</mat-label>
-                                <input matInput>
+                                <input matInput [value]="KVAH" readonly>
                             </mat-form-field>
                             <mat-form-field class="w-100" appearance="outline">
                                 <mat-label>Reactive(KVARH)</mat-label>
-                                <input matInput>
+                                <input matInput [value]="KVARH" readonly>
                             </mat-form-field>
                         </div>
 
@@ -253,15 +179,15 @@
                         <div class="p-2 mx-auto mt-3" style="text-align: center;">
                             <mat-form-field class="w-100" appearance="outline">
                                 <mat-label>Today(KWH)</mat-label>
-                                <input matInput>
+                                <input matInput [value]="todayKWH" readonly>
                             </mat-form-field>
                             <mat-form-field class="w-100" appearance="outline">
                                 <mat-label>Yesterday(KWH)</mat-label>
-                                <input matInput>
+                                <input matInput [value]="yesterdayKWH" readonly>
                             </mat-form-field>
                             <mat-form-field class="w-100" appearance="outline">
                                 <mat-label>This Month(KWH)</mat-label>
-                                <input matInput>
+                                <input matInput [value]="monthKWH" readonly>
                             </mat-form-field>
                         </div>
                     </div>
@@ -270,7 +196,13 @@
         </div>
         <div class="col-12 col-lg-6 col-xl-6 col-md-12 mt-2">
             <div class="card chart2">
-                <p class="card-heading mt-1 text-center">Alerts & Events</p>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <p class="card-heading" style="margin-left: 10px;">Alerts & Events</p>
+                    
+                    <button color="primary" class="filter_button" (click)="openAlertDialog()" mat-mini-fab style="z-index: 2; margin-top: 2px; margin-right: 2px;">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
                 <div class="mx-2 mb-3 mt-2 mat-elevation-z2" style="overflow-y: scroll;">
                     <mat-accordion>
                         <mat-expansion-panel *ngFor="let alert of alertData" class="mt-1" style="color: whitesmoke;background-color: #8b6792;">
@@ -315,7 +247,7 @@
             </div>
         </div>
     </div>
-    <div class="card mt-2 mb-2">
+    <div class="card mt-2 mb-2" *ngIf="whatToDo=='feeder'">
         <p class="card-heading text-center mt-1">Instantaneous Feeder data</p>
         <div class="d-flex flex-wrap">
             <div class="p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
@@ -324,39 +256,39 @@
                 </div>
                 <div class="progress-lables">
                     <p>VLL-R</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.vll_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vll_r}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>VLL-Y</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.vll_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vll_y}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>VLL-B</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.vll_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vll_b}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AVG-VLL</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.avg_vll}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_vll}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MIN</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.min_voltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.min_voltage}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MAX</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.max_voltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.max_voltage}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S AVG</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.avg_voltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_voltage}}" class="mb-2"></mat-progress-bar>
             </div>
             <div class="p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                 <div>
@@ -364,39 +296,39 @@
                 </div>
                 <div class="progress-lables">
                     <p>VLN-R</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.vln_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vln_r}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>VLN-Y</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.vln_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vln_y}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>VLN-B</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.vln_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vln_b}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AVG-VLN</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.avg_vll}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_vll}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MIN</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.min_phvoltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.min_phvoltage}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MAX</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.max_phvoltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.max_phvoltage}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S AVG</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.avg_phvoltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_phvoltage}}" class="mb-2"></mat-progress-bar>
             </div>
             <div class="p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                 <div>
@@ -404,39 +336,39 @@
                 </div>
                 <div class="progress-lables">
                     <p>AMPS-R</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.amps_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.amps_r}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AMPS-Y</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.amps_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.amps_y}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AMPS-B</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.amps_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.amps_b}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AVG-AMPS</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.avg_amps}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_amps}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MIN</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.min_current}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.min_current}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MAX</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.max_current}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.max_current}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S AVG</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.avg_current}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_current}}" class="mb-2"></mat-progress-bar>
             </div>
             <div class="p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                 <div>
@@ -444,39 +376,39 @@
                 </div>
                 <div class="progress-lables">
                     <p>FREQUENCY</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.frequency}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="80" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.frequency}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>V-THR-R</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.v_thr_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="20" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.v_thr_r}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>V-THR-Y</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.v_thr_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="30" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.v_thr_y}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>V-THR-B</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.v_thr_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="25" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.v_thr_b}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>I-THR-R</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.i_thr_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="10" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.i_thr_r}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>I-THR-Y</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.i_thr_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="15" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.i_thr_y}}" class="mb-2"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>I-THR-B</p>
-                    <p>412.7</p>
+                    <p>{{instantData?.i_thr_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="40" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.i_thr_b}}" class="mb-2"></mat-progress-bar>
             </div>
         </div>
     </div>

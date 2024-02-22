@@ -115,6 +115,7 @@ export class OverviewComponent  implements OnInit {
     .subscribe(([deviceID, interval]) => {
       this.deviceUID = deviceID ?? '';
       this.interval = interval ?? '';
+      this.unsubscribeFromTopics();
       this.functionsToCall();      
     });
   }
@@ -486,7 +487,7 @@ export class OverviewComponent  implements OnInit {
       startAngle: -90,
       endAngle: 89.9,
       center: ['50%', '75%'],
-      size: '110%',
+      size: '90%',
       background: [{
         backgroundColor: 'white'
       }]
@@ -580,7 +581,7 @@ export class OverviewComponent  implements OnInit {
       startAngle: -90,
       endAngle: 89.9,
       center: ['50%', '75%'],
-      size: '110%',
+      size: '90%',
       background: [{
         backgroundColor: 'white'
       }]
@@ -674,7 +675,7 @@ export class OverviewComponent  implements OnInit {
       startAngle: -90,
       endAngle: 89.9,
       center: ['50%', '75%'],
-      size: '110%',
+      size: '90%',
       background: [{
         backgroundColor: 'white'
       }]
@@ -768,7 +769,7 @@ export class OverviewComponent  implements OnInit {
       startAngle: -90,
       endAngle: 89.9,
       center: ['50%', '75%'],
-      size: '110%',
+      size: '90%',
       background: [{
         backgroundColor: 'white'
       }]
@@ -862,7 +863,7 @@ export class OverviewComponent  implements OnInit {
       startAngle: -90,
       endAngle: 89.9,
       center: ['50%', '75%'],
-      size: '110%',
+      size: '90%',
       background: [{
         backgroundColor: 'white'
       }]
@@ -956,7 +957,7 @@ export class OverviewComponent  implements OnInit {
       startAngle: -90,
       endAngle: 89.9,
       center: ['50%', '75%'],
-      size: '110%',
+      size: '90%',
       background: [{
         backgroundColor: 'white'
       }]
