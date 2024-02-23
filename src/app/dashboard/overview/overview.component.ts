@@ -171,12 +171,14 @@ export class OverviewComponent  implements OnInit {
       this.DashDataService.barDetails(this.deviceUID, this.interval).subscribe(
         (bardata) => {
           const new_data = bardata.data;
+          const offsetMinutes = 5 * 60 + 30;
+
           this.kvahArray = new_data.map((entry: any) => [
-            new Date(entry.bucket_date).getTime(),
+            new Date(entry.bucket_date).getTime() + offsetMinutes * 60 * 1000,
             parseFloat(entry.kvah_difference)
           ]);
           this.kwhArray = new_data.map((entry: any) => [
-            new Date(entry.bucket_date).getTime(),
+            new Date(entry.bucket_date).getTime() + offsetMinutes * 60 * 1000,
             parseFloat(entry.kwh_difference)
           ]);          
 
