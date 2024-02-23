@@ -468,7 +468,7 @@ export class FeederComponent {
     if (feederId) {
       this.service.feederGetKWHByInterval(feederId,interval).subscribe(
         (data: any) => {
-          this.activeKWH = data.total_kwh
+          this.activeKWH = data.total_kwh??'0'
         },
         (error) => {
           this.snackBar.open('Error while fetching Data!', 'Dismiss', {
@@ -483,7 +483,7 @@ export class FeederComponent {
     if (feederId) {
       this.service.feederGetKWHByDate(feederId,start,end).subscribe(
         (data: any) => {
-          this.activeKWH = data.total_kwh
+          this.activeKWH = data.KwhResults[0].total_kwh??'0';
         },
         (error) => {
           this.snackBar.open('Error while fetching Data!', 'Dismiss', {
@@ -498,7 +498,7 @@ export class FeederComponent {
     if (feederId) {
       this.service.feederGetKVAHByInterval(feederId,interval).subscribe(
         (data: any) => {
-          this.KVAH = data.total_kvah;
+          this.KVAH = data.total_kvah??'0';
         },
         (error) => {
           this.snackBar.open('Error while fetching Data!', 'Dismiss', {
@@ -513,7 +513,7 @@ export class FeederComponent {
     if (feederId) {
       this.service.feederGetKVAHByDate(feederId,start,end).subscribe(
         (data: any) => {
-          this.KVAH = data.total_kvah;
+          this.KVAH = data.KvahResults[0].total_kvah??'0';
         },
         (error) => {
           this.snackBar.open('Error while fetching Data!', 'Dismiss', {
@@ -528,7 +528,7 @@ export class FeederComponent {
     if (feederId) {
       this.service.feederGetKVARHByInterval(feederId,interval).subscribe(
         (data: any) => {
-          this.KVARH = data.total_kvarh;
+          this.KVARH = data.total_kvarh??'0';
         },
         (error) => {
           this.snackBar.open('Error while fetching Data!', 'Dismiss', {
@@ -543,7 +543,7 @@ export class FeederComponent {
     if (feederId) {
       this.service.feederGetKVARHByDate(feederId,start,end).subscribe(
         (data: any) => {
-          this.KVARH = data.total_kvarh;
+          this.KVARH = data.KvarhResults[0].total_kvarh??'0';
         },
         (error) => {
           this.snackBar.open('Error while fetching Data!', 'Dismiss', {
@@ -558,7 +558,7 @@ export class FeederComponent {
     if (feederId) {
       this.service.getTodayKWHForFeeders(feederId).subscribe(
         (data: any) => {
-          this.todayKWH = data.today_kwh;
+          this.todayKWH = data.today_kwh??'0';
         },
         (error) => {
           this.snackBar.open('Error while fetching Data!', 'Dismiss', {
@@ -573,7 +573,7 @@ export class FeederComponent {
     if (feederId) {
       this.service.getYesterdayKWHForFeeders(feederId).subscribe(
         (data: any) => {
-          this.yesterdayKWH = data.yesterday_kwh;
+          this.yesterdayKWH = data.yesterday_kwh??'0';
         },
         (error) => {
           this.snackBar.open('Error while fetching Data!', 'Dismiss', {
@@ -588,7 +588,7 @@ export class FeederComponent {
     if (feederId) {
       this.service.getThisMonthKWHForFeeders(feederId).subscribe(
         (data: any) => {
-          this.monthKWH = data.this_month_kwh;
+          this.monthKWH = data.this_month_kwh??'0';
         },
         (error) => {
           this.snackBar.open('Error while fetching Data!', 'Dismiss', {
