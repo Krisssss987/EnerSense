@@ -39,7 +39,8 @@ export class DashboardService {
     return sessionStorage.getItem('interval');
   }
 
-  private readonly API_URL = 'http://localhost:3000';
+  // private readonly API_URL = 'http://localhost:3000';
+  private readonly API_URL = 'http://ec2-3-110-199-50.ap-south-1.compute.amazonaws.com:3000';
 
   deviceDetails(CompanyId: string):Observable<any> {
     return this.http.get(`${this.API_URL}/getFeederData/${CompanyId}`);
@@ -122,14 +123,14 @@ export class DashboardService {
   }
 
 
- // http://localhost:3000/feeder/SenseLive?TimeInterval=15min&Shift=ShiftA
+ // ${this.API_URL}/feeder/SenseLive?TimeInterval=15min&Shift=ShiftA
 
 // getConsuptiondata(interval:string,shift:string){
 //   return this.http.get(`${this.API_URL}/feeder/SenseLive?TimeInterval=${interval}&Shift=${shift}`)
 // }
 
 getConsuptiondata(interval:string,shift:string){
-  return this.http.get(`http://localhost:3000/feeder/SenseLive?TimeInterval=${interval}&Shift=${shift}`)
+  return this.http.get(`${this.API_URL}/feeder/SenseLive?TimeInterval=${interval}&Shift=${shift}`)
 }
 
 
@@ -146,7 +147,7 @@ getreport(data:any): Observable<any> {
 }
 
 getharmonicdata(interval:string): Observable<any>{
-  return this.http.get(`http://localhost:3000/feederharmonic/SenseLive?TimeInterval=${interval}`);
+  return this.http.get(`${this.API_URL}/feederharmonic/SenseLive?TimeInterval=${interval}`);
 }
 
 getLowPF() :Observable <any>{
