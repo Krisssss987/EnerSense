@@ -319,10 +319,6 @@ export class OverviewComponent  implements OnInit {
       data: [this.kvr]
     });
 
-    kvrchart?.yAxis[0].update({
-      max: this.kvr < 200 ? 200 : undefined
-    });
-
     const pfchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'PFguage');
 
     pfchart?.series[0].update({ 
@@ -683,8 +679,8 @@ export class OverviewComponent  implements OnInit {
       }]
     },
     yAxis: {
-      min: 0,
-      max:this.kvr < 200 ? 200 : undefined,
+      min:-200,
+      max:200,
       tickPixelInterval: 72,
       tickPosition: 'inside',
       tickColor: 'white',
@@ -699,7 +695,7 @@ export class OverviewComponent  implements OnInit {
       },
       lineWidth: 0,
       plotBands: [{
-        from: 0,
+        from: -1000,
         to: 120,
         color: '#55BF3B', // green
         thickness: 20

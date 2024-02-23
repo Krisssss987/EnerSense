@@ -651,10 +651,6 @@ export class FeederComponent {
       data: [kvar]
     });
 
-    kvarchart?.yAxis[0].update({
-      max: kvar < 200 ? 200 : undefined
-    });
-
     const pfchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'PFYguage');
 
     pfchart?.series[0].update({ 
@@ -1053,8 +1049,8 @@ export class FeederComponent {
       }]
     },
     yAxis: {
-      min: 0,
-      max: 0 < 200 ? 200 : undefined,
+      min: -200,
+      max: 200,
       tickPixelInterval: 72,
       tickPosition: 'inside',
       tickColor: 'white',
@@ -1069,7 +1065,7 @@ export class FeederComponent {
       },
       lineWidth: 0,
       plotBands: [{
-        from: 0,
+        from: -1000,
         to: 120,
         color: '#55BF3B', // green
         thickness: 20

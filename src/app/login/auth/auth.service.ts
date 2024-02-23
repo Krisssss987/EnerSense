@@ -121,6 +121,7 @@ export class AuthService {
   }
 
   logout(): void {
+    sessionStorage.clear();
     sessionStorage.removeItem('token'); // Clear the token
     this.isLoggedIn(); // Set the logged-in status to false
     this.setUserType(''); // Clear the user type
