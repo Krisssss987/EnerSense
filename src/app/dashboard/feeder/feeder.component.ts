@@ -56,6 +56,13 @@ export class FeederComponent {
     this.getgroupDevices();
   }
 
+  ngOnDestroy() {
+    Highcharts.chart('KVAYguage', this.KVAYguage).destroy();
+    Highcharts.chart('KWYguage', this.KWYguage).destroy();
+    Highcharts.chart('KVRYguage', this.KVRYguage).destroy();
+    Highcharts.chart('PFYguage', this.PFYguage).destroy();
+  }
+
   constructor(
     private authService: AuthService,
     private service: DashboardService,
@@ -620,45 +627,45 @@ export class FeederComponent {
     kvar = parseFloat(data.total_kvar);
     pf = parseFloat(data.avg_pf);
 
-    const kvachart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KVAYguage');
+    const kvaychart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KVAYguage');
 
-    kvachart?.series[0].update({ 
+    kvaychart?.series[0].update({ 
       type: 'gauge',
       data: [kva]
     });
 
-    kvachart?.yAxis[0].update({
+    kvaychart?.yAxis[0].update({
       max: kva < 200 ? 200 : undefined
     });
     
-    kvachart?.redraw();
+    kvaychart?.redraw();
 
-    const kwchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KWYguage');
+    const kwychart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KWYguage');
 
-    kwchart?.series[0].update({ 
+    kwychart?.series[0].update({ 
       type: 'gauge',
       data: [kw]
     });
 
-    kwchart?.yAxis[0].update({
+    kwychart?.yAxis[0].update({
       max: kw < 200 ? 200 : undefined
     });
 
-    const kvarchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KVRYguage');
+    const kvarychart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KVRYguage');
 
-    kvarchart?.series[0].update({ 
+    kvarychart?.series[0].update({ 
       type: 'gauge',
       data: [kvar]
     });
 
-    const pfchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'PFYguage');
+    const pfychart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'PFYguage');
 
-    pfchart?.series[0].update({ 
+    pfychart?.series[0].update({ 
       type: 'gauge',
       data: [pf]
     });
 
-    pfchart?.yAxis[0].update({
+    pfychart?.yAxis[0].update({
       max: pf < 1 ? 1 : undefined
     });
   }
