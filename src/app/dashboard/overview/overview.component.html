@@ -17,52 +17,37 @@
                     <mat-divider></mat-divider>
                     <div class="row text-center">
                         <div class="row mt-2">
-                            <h4 class="col-4 mt-3">KVAH :</h4>
-                            <p class="col-4 numbers">{{kvah}}</p>
-                            <p class="col-4 numbers">&#x20B9;{{kvah*kval_rupees}}</p>
-                        </div>
-                        <div class="row">
-                            <h6 class="col-4 blur-row ">&nbsp;</h6>
-                            <h6 class="col-4 blur-row ">Value</h6>
-                            <h6 class="col-4 blur-row ">Lakh</h6>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-md-4 col-6 incard">
-                                <h5>KWH :&nbsp;</h5>
-                                <p class="numbers">{{kwh_diff}}</p>
+                            <div class="col-6">
+                                <p class="col-12 numbers">{{kvah}}</p>
+                                <h6 class="col-12 blur-row ">KiloVolt Ampere Hour</h6>
                             </div>
-                            <div class="col-md-4 col-6 incard">
-                                <h5>KVARH :&nbsp;</h5>
-                                <div>
-                                    <p class="numbers">{{kvarh_led}}</p>
-                                    <h6 class="col-12 blur-row">(Lead)</h6>
-                                </div>
+                            <div class="col-6">
+                                <p class="col-12 numbers">&#x20B9;{{kvah*kvah_rupees}}</p>
+                                <h6 class="col-12 blur-row ">Lack</h6>
                             </div>
-                            <div class="col-md-4 col-6 incard">
-                                <h5>KVARH :&nbsp;</h5>
-                                <div>
-                                    <p class="numbers">{{kvarh_lag}}</p>
-                                    <h6 class="col-12 blur-row">(Lag)</h6>
-                                </div>
+                            <div class="col-md-4 col-6">
+                                <p class="col-12 numbers">{{max_kva}}</p>
+                                <h6 class="col-12 blur-row ">KiloVolt Ampere (MD)</h6>
                             </div>
-
-                            <div class="col-md-4 col-6 incard">
-                                <h5>PF :&nbsp;</h5>
-                                <p class="numbers" style="margin-bottom: 12px;">{{pf_diff}}</p>
+                            <div class="col-md-4 col-6">
+                                <p class="col-12 numbers">{{kwh_diff}}</p>
+                                <h6 class="col-12 blur-row ">KiloWatt Hour</h6>
                             </div>
-                            <div class="col-md-4 col-6 incard">
-                                <h5>KVA :&nbsp;</h5>
-                                <div>
-                                    <p class="numbers">{{max_kva}}</p>
-                                    <h6 class="col-12 blur-row">(MD)</h6>
-                                </div>
+                            <div class="col-md-4 col-6">
+                                <p class="col-12 numbers">{{max_kw}}</p>
+                                <h6 class="col-12 blur-row ">KiloWatt (MD)</h6>
                             </div>
-                            <div class="col-md-4 col-6 incard">
-                                <h5>KW :&nbsp;</h5>
-                                <div>
-                                    <p class="numbers">{{max_kw}}</p>
-                                    <h6 class="col-12 blur-row">(MD)</h6>
-                                </div>
+                            <div class="col-md-4 col-6">
+                                <p class="col-12 numbers">{{pf_diff}}</p>
+                                <h6 class="col-12 blur-row ">Power Factor</h6>
+                            </div>
+                            <div class="col-md-4 col-6">
+                                <p class="col-12 numbers">{{kvarh_led}}</p>
+                                <h6 class="col-12 blur-row ">KvARH (Lead)</h6>
+                            </div>
+                            <div class="col-md-4 col-6">
+                                <p class="col-12 numbers">{{kvarh_lag}}</p>
+                                <h6 class="col-12 blur-row ">KvARH (Lag)</h6>
                             </div>
                         </div>
                         <div class="row mb-3 mt-1">
@@ -70,7 +55,7 @@
                                 <h3>CO2 emission :&nbsp;</h3>
                                 <p class="co2">{{CO2}}</p>
                             </div>
-                            <button mat-raised-button style="width: 100px;" class="mx-auto" color="primary" (click)="openSummary()">Summary</button>
+                            <button mat-raised-button style="width: 100px; margin-top: -5px;" class="mx-auto" color="primary" (click)="openSummary()">Summary</button>
                         </div>                        
                     </div>
                     <mat-divider></mat-divider>

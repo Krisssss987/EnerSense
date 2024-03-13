@@ -15,6 +15,7 @@ import { UpdateAlertComponent } from './tools-component/update-alert/update-aler
 import { MatPaginator } from '@angular/material/paginator';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-tools',
@@ -28,6 +29,12 @@ export class ToolsComponent {
   userData=new MatTableDataSource<any>(ELEMENT_DATA);
   shiftData=new MatTableDataSource<any>(ELEMENT_DATA);
   alertData=new MatTableDataSource<any>(ELEMENT_DATA);
+  value!: string;
+
+  tabChanged(event: MatTabChangeEvent) {
+    this.value = event.index.toString();
+    sessionStorage.setItem('toolsTabIndex', this.value);
+  }
   
   @ViewChild('userPaginator') userPaginator!: MatPaginator;
   @ViewChild('feederPaginator') feederPaginator!: MatPaginator;
@@ -48,6 +55,12 @@ export class ToolsComponent {
     this.getUsers();
     this.getAlert();
     this.getShift();
+    const storedValue = sessionStorage.getItem('toolsTabIndex');
+      if (storedValue !== null) {
+        this.value = storedValue;
+      } else {
+        this.value = '0';
+    }
   }
   
   userColumns: string[] = ['usericon','name','email','designation','shift','contact','plant','privileges','action'];
@@ -208,8 +221,7 @@ export class ToolsComponent {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '600px';
     dialogConfig.height = 'auto';
-    dialogConfig.maxWidth = '90vw';
-    dialogConfig.data = {userData: element};
+    dialogConfig.maxWidth = '90vw'; 
     const dialogRef = this.dialog.open(UpdateUserComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(userAdded => {
       setTimeout(() => {

@@ -14,13 +14,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-report',
-  templateUrl: './report.component.html',
-  styleUrls: ['./report.component.css'] , 
+  selector: 'app-tod-report',
+  templateUrl: './tod-report.component.html',
+  styleUrls: ['./tod-report.component.css']
 })
-export class ReportComponent {
-
-  CompanyId!:string|null;
+export class TodReportComponent {
+CompanyId!:string|null;
   dataSource2: any;
   displayedColumns: string[] = ['Device UID', 'Date Time'];
   predefinedColumns: string[] = ['Device UID', 'Date Time'];

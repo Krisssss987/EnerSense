@@ -137,8 +137,6 @@ export class AuthService {
       this.http.get(`${this.API_URL}/user`, { headers: { Authorization: `Bearer ${token}` } })
         .subscribe(
           (user: any) => {
-            console.log(user)
-            // Handle the response and set the user type
             const userType = user.getUserDetails.privileges;
             this.setUserType(userType);
 

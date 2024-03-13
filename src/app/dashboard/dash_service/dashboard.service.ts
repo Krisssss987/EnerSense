@@ -39,8 +39,8 @@ export class DashboardService {
     return sessionStorage.getItem('interval');
   }
 
-  // private readonly API_URL = 'http://localhost:3000';
-  private readonly API_URL = 'http://ec2-3-110-199-50.ap-south-1.compute.amazonaws.com:3000';
+  private readonly API_URL = 'http://localhost:3000';
+  // private readonly API_URL = 'http://ec2-3-110-199-50.ap-south-1.compute.amazonaws.com:3000';
 
   deviceDetails(CompanyId: string):Observable<any> {
     return this.http.get(`${this.API_URL}/getFeederData/${CompanyId}`);

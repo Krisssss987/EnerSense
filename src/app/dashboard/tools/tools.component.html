@@ -3,7 +3,7 @@
   <div class="container-fluid mt-2">
     <mat-card>
       <mat-card-content>
-        <mat-tab-group [color]="'primary'">
+        <mat-tab-group [color]="'primary'" [selectedIndex]="value" (selectedTabChange)="tabChanged($event)">
           <mat-tab label="User Profile">
             
             <mat-card-header class="d-flex align-items-center justify-content-between mb-2">

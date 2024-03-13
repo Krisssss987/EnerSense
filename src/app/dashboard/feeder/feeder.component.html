@@ -258,37 +258,37 @@
                     <p>VLL-R</p>
                     <p>{{instantData?.vll_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.vll_r}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vll_r}}" class="mb-2" [color]="getColorArray(instantPercent?.vll_r)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>VLL-Y</p>
                     <p>{{instantData?.vll_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.vll_y}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vll_y}}" class="mb-2" [color]="getColorArray(instantPercent?.vll_y)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>VLL-B</p>
                     <p>{{instantData?.vll_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.vll_b}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vll_b}}" class="mb-2" [color]="getColorArray(instantPercent?.vll_b)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AVG-VLL</p>
                     <p>{{instantData?.avg_vll}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_vll}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_vll}}" class="mb-2" [color]="getColorArray(instantPercent?.avg_vll)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MIN</p>
                     <p>{{instantData?.min_voltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.min_voltage}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.min_voltage}}" class="mb-2" [color]="getColorArray(instantPercent?.min_voltage)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MAX</p>
                     <p>{{instantData?.max_voltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.max_voltage}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.max_voltage}}" class="mb-2" [color]="getColorArray(instantPercent?.max_voltage)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S AVG</p>
                     <p>{{instantData?.avg_voltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_voltage}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_voltage}}" class="mb-2" [color]="getColorArray(instantPercent?.avg_voltage)"></mat-progress-bar>
             </div>
             <div class="p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                 <div>
@@ -298,37 +298,37 @@
                     <p>VLN-R</p>
                     <p>{{instantData?.vln_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.vln_r}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vln_r}}" class="mb-2" [color]="getColorArray(instantPercent?.vln_r)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>VLN-Y</p>
                     <p>{{instantData?.vln_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.vln_y}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vln_y}}" class="mb-2" [color]="getColorArray(instantPercent?.vln_y)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>VLN-B</p>
                     <p>{{instantData?.vln_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.vln_b}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.vln_b}}" class="mb-2" [color]="getColorArray(instantPercent?.vln_b)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AVG-VLN</p>
                     <p>{{instantData?.avg_vll}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_vll}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_vll}}" class="mb-2" [color]="getColorArray(instantPercent?.avg_vll)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MIN</p>
                     <p>{{instantData?.min_phvoltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.min_phvoltage}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.min_phvoltage}}" class="mb-2" [color]="getColorArray(instantPercent?.min_phvoltage)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MAX</p>
                     <p>{{instantData?.max_phvoltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.max_phvoltage}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.max_phvoltage}}" class="mb-2" [color]="getColorArray(instantPercent?.max_phvoltage)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S AVG</p>
                     <p>{{instantData?.avg_phvoltage}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_phvoltage}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_phvoltage}}" class="mb-2" [color]="getColorArray(instantPercent?.avg_phvoltage)"></mat-progress-bar>
             </div>
             <div class="p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                 <div>
@@ -338,37 +338,37 @@
                     <p>AMPS-R</p>
                     <p>{{instantData?.amps_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.amps_r}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.amps_r}}" class="mb-2" [color]="getColorArray(instantPercent?.amps_r)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AMPS-Y</p>
                     <p>{{instantData?.amps_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.amps_y}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.amps_y}}" class="mb-2" [color]="getColorArray(instantPercent?.amps_y)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AMPS-B</p>
                     <p>{{instantData?.amps_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.amps_b}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.amps_b}}" class="mb-2" [color]="getColorArray(instantPercent?.amps_b)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>AVG-AMPS</p>
                     <p>{{instantData?.avg_amps}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_amps}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_amps}}" class="mb-2" [color]="getColorArray(instantPercent?.avg_amps)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MIN</p>
                     <p>{{instantData?.min_current}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.min_current}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.min_current}}" class="mb-2" [color]="getColorArray(instantPercent?.min_current)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S MAX</p>
                     <p>{{instantData?.max_current}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.max_current}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.max_current}}" class="mb-2" [color]="getColorArray(instantPercent?.max_current)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>TODAY'S AVG</p>
                     <p>{{instantData?.avg_current}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_current}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.avg_current}}" class="mb-2" [color]="getColorArray(instantPercent?.avg_current)"></mat-progress-bar>
             </div>
             <div class="p-2 col-lg-3 col-md-6 col-sm-6 col-12 mt-2">
                 <div>
@@ -378,37 +378,37 @@
                     <p>FREQUENCY</p>
                     <p>{{instantData?.frequency}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.frequency}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.frequency}}" class="mb-2" [color]="getColorArray(instantPercent?.frequency)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>V-THR-R</p>
                     <p>{{instantData?.v_thr_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.v_thr_r}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.v_thr_r}}" class="mb-2" [color]="getColorArray(instantPercent?.v_thr_r)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>V-THR-Y</p>
                     <p>{{instantData?.v_thr_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.v_thr_y}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.v_thr_y}}" class="mb-2" [color]="getColorArray(instantPercent?.v_thr_y)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>V-THR-B</p>
                     <p>{{instantData?.v_thr_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.v_thr_b}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.v_thr_b}}" class="mb-2" [color]="getColorArray(instantPercent?.v_thr_b)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>I-THR-R</p>
                     <p>{{instantData?.i_thr_r}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.i_thr_r}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.i_thr_r}}" class="mb-2" [color]="getColorArray(instantPercent?.i_thr_r)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>I-THR-Y</p>
                     <p>{{instantData?.i_thr_y}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.i_thr_y}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.i_thr_y}}" class="mb-2" [color]="getColorArray(instantPercent?.i_thr_y)"></mat-progress-bar>
                 <div class="progress-lables">
                     <p>I-THR-B</p>
                     <p>{{instantData?.i_thr_b}}</p>
                 </div>
-                <mat-progress-bar mode="determinate" value="{{instantPercent?.i_thr_b}}" class="mb-2"></mat-progress-bar>
+                <mat-progress-bar mode="determinate" value="{{instantPercent?.i_thr_b}}" class="mb-2" [color]="getColorArray(instantPercent?.i_thr_b)"></mat-progress-bar>
             </div>
         </div>
     </div>

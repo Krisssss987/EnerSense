@@ -38,8 +38,7 @@
 }
 
 .blur-row{
-    color: rgb(158, 158, 158);
-    padding-bottom: 7px;
+    padding-bottom: 12px;
     margin-top: -20px;
     font-size: small;
 }
@@ -58,7 +57,7 @@
 
 
 #BarChart {
-    height: 404px; /* Set the desired height */
+    height: 406px; /* Set the desired height */
 }
 
 #PieChart{
@@ -72,7 +71,7 @@
 
 @media (max-height:450px) {
   #PieChart, #BarChart {
-    height: 60vh; /* Set the desired height */
+    height: 60vh;
   } 
 }
 
@@ -83,6 +82,9 @@
     .allCard{
         margin-left: 0vh;
         margin-right: 0vh;
+    }
+    .row {
+        --bs-gutter-x: unset;
     }
 }
 
@@ -112,13 +114,17 @@
 #PFguage,
 #Currentguage,
 #Voltageguage {
-    height: 190px; /* Set default width */
+    height: 185px; /* Set default width */
 }
 
 .card-heading2-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.arrow-up, .arrow-down {
+    font-size: 30px;
 }
 
 

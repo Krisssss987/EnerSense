@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/login/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 HighchartsMore(Highcharts);
 
@@ -38,6 +39,7 @@ export class ConsuptionComponent implements OnInit {
   initialShift!: string | null;
   deviceOptions: any[] = [];
   shiftData: any[] = [];
+  subscriptions: Subscription[] = [];
 
   constructor(
     private service: DashboardService,
@@ -47,6 +49,17 @@ export class ConsuptionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserDevices();
+  }
+
+  ngOnDestroy(){
+    this.unsubscribeFromTopics();
+  }
+  
+  unsubscribeFromTopics() {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+    this.subscriptions = [];
   }
 
   showingData(){
@@ -81,51 +94,54 @@ export class ConsuptionComponent implements OnInit {
       const end = sessionStorage.getItem('consumptionEndDate');
 
       if(start && end){
-        this.service.consumptionWithCustomIntervals(device,shift,start,end).subscribe((result) => {
+        const subscription = this.service.consumptionWithCustomIntervals(device,shift,start,end).subscribe((result) => {
           this.data = result.data;
           this.processingData();
         });
+        this.subscriptions.push(subscription)
       }
       else{
         sessionStorage.setItem('consumptionDevice', this.initialDevice!);
         sessionStorage.setItem('consumptionShift', this.initialShift!);
         sessionStorage.setItem('consumptionInterval', 'day');
   
-        this.service.consumptionWithIntervals(this.initialDevice!,'day',this.initialShift!).subscribe((result) => {
+        const subscription = this.service.consumptionWithIntervals(this.initialDevice!,'day',this.initialShift!).subscribe((result) => {
           this.data = result.data;
           this.processingData();
         });
+        this.subscriptions.push(subscription)
       }
     }
     else if(device && device!=null && device!=undefined && interval!=null && interval!=undefined && interval!='custom' && shift!=null && shift!=undefined){
-      this.service.consumptionWithIntervals(device,interval,shift).subscribe((result) => {
+      const subscription = this.service.consumptionWithIntervals(device,interval,shift).subscribe((result) => {
         this.data = result.data;
         this.processingData();
-        console.log(this.data);
       });
+      this.subscriptions.push(subscription)
     }
     else if(device==null || device==undefined || shift==null || shift==undefined){
       sessionStorage.setItem('consumptionDevice', this.initialDevice!);
       sessionStorage.setItem('consumptionShift', this.initialShift!);
       sessionStorage.setItem('consumptionInterval', 'day');
 
-      this.service.consumptionWithIntervals(this.initialDevice!,'day',this.initialShift!).subscribe((result) => {
+      const subscription = this.service.consumptionWithIntervals(this.initialDevice!,'day',this.initialShift!).subscribe((result) => {
         this.data = result.data;
         this.processingData();
       });
+      this.subscriptions.push(subscription)
     }
   }
 
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.service.deviceDetails(this.CompanyId).subscribe(
+      const subscription = this.service.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
           this.initialDevice = this.deviceOptions[0].feederUid;
 
           if (this.CompanyId) {
-            this.service.shiftDetails(this.CompanyId).subscribe(
+            const subscription = this.service.shiftDetails(this.CompanyId).subscribe(
               (shift: any) => {
                 this.shiftData = shift.getDay_Shift;
                 this.initialShift = this.shiftData[0].shiftCode;
@@ -139,6 +155,7 @@ export class ConsuptionComponent implements OnInit {
                 });
               }
             );
+            this.subscriptions.push(subscription)
           }
         },
         (error) => {
@@ -147,6 +164,7 @@ export class ConsuptionComponent implements OnInit {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
@@ -198,11 +216,11 @@ export class ConsuptionComponent implements OnInit {
       sessionStorage.setItem('consumptionStartDate', this.startDate.value!);
       sessionStorage.setItem('consumptionEndDate', this.endDate.value!);
 
-      this.service.consumptionWithCustomIntervals(this.selectedDevice,this.selectedShift, this.startDate.value!, this.endDate.value!).subscribe((result) => {
+      const subscription = this.service.consumptionWithCustomIntervals(this.selectedDevice,this.selectedShift, this.startDate.value!, this.endDate.value!).subscribe((result) => {
         this.data = result.data;
         this.processingData();
       });
-
+      this.subscriptions.push(subscription)
       this.showingData()
     }
     else if(this.selectedDevice && this.selectedShift && this.selectedIntervals && this.selectedIntervals != null && this.selectedIntervals != undefined && this.selectedIntervals!='custom'){
@@ -210,11 +228,11 @@ export class ConsuptionComponent implements OnInit {
       sessionStorage.setItem('consumptionInterval', this.selectedIntervals);
       sessionStorage.setItem('consumptionShift', this.selectedShift);
 
-      this.service.consumptionWithIntervals(this.selectedDevice,this.selectedIntervals,this.selectedShift).subscribe((result) => {
+      const subscription = this.service.consumptionWithIntervals(this.selectedDevice,this.selectedIntervals,this.selectedShift).subscribe((result) => {
         this.data = result.data;
         this.processingData();
       });
-
+      this.subscriptions.push(subscription)
       this.showingData()
     }
     else{

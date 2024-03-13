@@ -6,6 +6,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/login/auth/auth.service';
 import { DatePipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 HighchartsMore(Highcharts);
 
 @Component({
@@ -29,6 +30,7 @@ export class ParamaterisedComponent implements OnInit{
   CompanyId!: string | null;
   initialDevice!: string | null;
   deviceOptions: any[] = [];
+  subscriptions: Subscription[] = [];
   graphdata:any;
 
   constructor(
@@ -39,6 +41,17 @@ export class ParamaterisedComponent implements OnInit{
 
   ngOnInit(): void {
     this.getUserDevices();
+  }
+
+  ngOnDestroy(){
+    this.unsubscribeFromTopics();
+  }
+  
+  unsubscribeFromTopics() {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+    this.subscriptions = [];
   }
 
   showingData(){
@@ -57,7 +70,6 @@ export class ParamaterisedComponent implements OnInit{
       this.startDate = new FormControl(forStart, [Validators.required]);
       this.endDate = new FormControl(forEnd, [Validators.required]);   
     }else{
-      console.log(device,interval)
       this.selectedIntervals=interval!; 
       this.selectedDevice=device!;
       this.selectedParameter=parameter!;
@@ -74,43 +86,47 @@ export class ParamaterisedComponent implements OnInit{
       const end = sessionStorage.getItem('parameterisedEndDate');
 
       if(start && end){
-        this.service.parametersbydate(device,start,end).subscribe((result) => {
+        const subscription = this.service.parametersbydate(device,start,end).subscribe((result) => {
           this.data = result;
           this.processingData(this.data,parameter!);
         });
+        this.subscriptions.push(subscription)
       }
       else{
         sessionStorage.setItem('parameterisedDevice', device);
         sessionStorage.setItem('parameterisedInterval', '12hour');
   
-        this.service.parametersbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
+        const subscription = this.service.parametersbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
           this.data = result;
           this.processingData(this.data,parameter);
         });
+        this.subscriptions.push(subscription)
       }
     }
     else if(device && device!=null && device!=undefined && parameter && parameter!=null && parameter!=undefined && interval!=null && interval!=undefined && interval!='custom'){
-      this.service.parametersbyinterval(device,interval).subscribe((result) => {
+      const subscription = this.service.parametersbyinterval(device,interval).subscribe((result) => {
         this.data = result;
         this.processingData(this.data,parameter);
       });
+      this.subscriptions.push(subscription)
     }
     else{
       sessionStorage.setItem('parameterisedDevice', this.initialDevice!);
       sessionStorage.setItem('parameterisedInterval', '12hour');
       sessionStorage.setItem('parameterisedParameter', 'power');
 
-      this.service.parametersbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
+      const subscription = this.service.parametersbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
         this.data = result;
         this.processingData(this.data,'power');
       });
+      this.subscriptions.push(subscription)
     }
   }
 
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.service.deviceDetails(this.CompanyId).subscribe(
+      const subscription = this.service.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
           this.initialDevice = this.deviceOptions[0].feederUid;
@@ -123,6 +139,7 @@ export class ParamaterisedComponent implements OnInit{
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
@@ -336,10 +353,11 @@ export class ParamaterisedComponent implements OnInit{
       sessionStorage.setItem('parameterisedEndDate', this.endDate.value!);
       sessionStorage.setItem('parameterisedParameter', this.selectedParameter);
 
-      this.service.parametersbydate(this.selectedDevice, this.startDate.value!, this.endDate.value!).subscribe((result) => {
+      const subscription = this.service.parametersbydate(this.selectedDevice, this.startDate.value!, this.endDate.value!).subscribe((result) => {
         this.data = result;
         this.processingData(this.data,this.selectedParameter);
       });
+      this.subscriptions.push(subscription)
 
       this.showingData()
     }
@@ -348,10 +366,11 @@ export class ParamaterisedComponent implements OnInit{
       sessionStorage.setItem('parameterisedInterval', this.selectedIntervals);
       sessionStorage.setItem('parameterisedParameter', this.selectedParameter);
 
-      this.service.parametersbyinterval(this.selectedDevice,this.selectedIntervals).subscribe((result) => {
+      const subscription = this.service.parametersbyinterval(this.selectedDevice,this.selectedIntervals).subscribe((result) => {
         this.data = result;
         this.processingData(this.data,this.selectedParameter);
       });
+      this.subscriptions.push(subscription)
 
       this.showingData()
     }

@@ -6,6 +6,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/login/auth/auth.service';
 import { DatePipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 HighchartsMore(Highcharts);
 
@@ -39,6 +40,7 @@ export class HarmonicComponent implements OnInit {
   CompanyId!: string | null;
   initialDevice!: string | null;
   deviceOptions: any[] = [];
+  subscriptions: Subscription[] = [];
 
   constructor(
     private service: DashboardService,
@@ -48,6 +50,17 @@ export class HarmonicComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserDevices();
+  }
+
+  ngOnDestroy(){
+    this.unsubscribeFromTopics();
+  }
+  
+  unsubscribeFromTopics() {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+    this.subscriptions = [];
   }
 
   showingData(){
@@ -64,7 +77,6 @@ export class HarmonicComponent implements OnInit {
       this.startDate = new FormControl(forStart, [Validators.required]);
       this.endDate = new FormControl(forEnd, [Validators.required]);   
     }else{
-      console.log(device,interval)
       this.selectedIntervals=interval!; 
       this.selectedDevice=device!;
     }
@@ -79,42 +91,46 @@ export class HarmonicComponent implements OnInit {
       const end = sessionStorage.getItem('harmonicsEndDate');
 
       if(start && end){
-        this.service.harmonicsbydate(device,start,end).subscribe((result) => {
+        const subscription =this.service.harmonicsbydate(device,start,end).subscribe((result) => {
           this.data = result;
           this.processingData(this.data);
         });
+        this.subscriptions.push(subscription)
       }
       else{
         sessionStorage.setItem('harmonicsDevice', device);
         sessionStorage.setItem('harmonicsInterval', '12hour');
   
-        this.service.harmonicsbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
+        const subscription =this.service.harmonicsbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
           this.data = result;
           this.processingData(this.data);
         });
+        this.subscriptions.push(subscription)
       }
     }
     else if(device && device!=null && device!=undefined && interval!=null && interval!=undefined && interval!='custom'){
-      this.service.harmonicsbyinterval(device,interval).subscribe((result) => {
+      const subscription = this.service.harmonicsbyinterval(device,interval).subscribe((result) => {
         this.data = result;
         this.processingData(this.data);
       });
+      this.subscriptions.push(subscription)
     }
     else{
       sessionStorage.setItem('harmonicsDevice', this.initialDevice!);
       sessionStorage.setItem('harmonicsInterval', '12hour');
 
-      this.service.harmonicsbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
+      const subscription = this.service.harmonicsbyinterval(this.initialDevice!,'12hour').subscribe((result) => {
         this.data = result;
         this.processingData(this.data);
       });
+      this.subscriptions.push(subscription)
     }
   }
 
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.service.deviceDetails(this.CompanyId).subscribe(
+      const subscription = this.service.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
           this.initialDevice = this.deviceOptions[0].feederUid;
@@ -127,6 +143,7 @@ export class HarmonicComponent implements OnInit {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
@@ -214,10 +231,11 @@ export class HarmonicComponent implements OnInit {
       sessionStorage.setItem('harmonicsStartDate', this.startDate.value!);
       sessionStorage.setItem('harmonicsEndDate', this.endDate.value!);
 
-      this.service.harmonicsbydate(this.selectedDevice, this.startDate.value!, this.endDate.value!).subscribe((result) => {
+      const subscription = this.service.harmonicsbydate(this.selectedDevice, this.startDate.value!, this.endDate.value!).subscribe((result) => {
         this.data = result;
         this.processingData(this.data);
       });
+      this.subscriptions.push(subscription)
 
       this.showingData()
     }
@@ -225,10 +243,11 @@ export class HarmonicComponent implements OnInit {
       sessionStorage.setItem('harmonicsDevice', this.selectedDevice);
       sessionStorage.setItem('harmonicsInterval', this.selectedIntervals);
 
-      this.service.harmonicsbyinterval(this.selectedDevice,this.selectedIntervals).subscribe((result) => {
+      const subscription = this.service.harmonicsbyinterval(this.selectedDevice,this.selectedIntervals).subscribe((result) => {
         this.data = result;
         this.processingData(this.data);
       });
+      this.subscriptions.push(subscription)
 
       this.showingData()
     }

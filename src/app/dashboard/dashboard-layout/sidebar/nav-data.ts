@@ -29,4 +29,9 @@ export const navbarData = [
         icon: 'save_alt',
         label: 'Report'
     },
+    {
+        routeLink: 'tod_report',
+        icon: 'storage',
+        label: 'TOD Report'
+    },
 ];

@@ -1,0 +1,64 @@
+.form-field, .form-field-button {
+    width: 100%;
+    }
+
+.button-group{
+    width: 100%;
+    background-color: #ebe3f8;
+    border: 1px solid #673ab7;
+}
+
+.online {
+	background: linear-gradient(to right, #3c9e55, #00FFFF);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+    font-weight: 550;
+}
+
+.offline {
+  background: linear-gradient(to right, red, #A9A9A9);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+    font-weight: 550;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-height: 70vh;
+}
+
+.custom-theme-table {
+    table-layout: fixed;
+}
+
+.custom-theme-table th {
+    position: sticky;
+    top: 0;
+    background-color: #673ab7;
+    z-index: 2;
+    color: whitesmoke;
+}
+
+th.sticky,
+td.sticky {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: white;
+}
+
+th.sticky:nth-child(1),
+th.sticky:nth-child(2) {
+    min-width: 115px;
+    position: sticky;
+    z-index: 3;
+}
+
+td.sticky:nth-child(1),
+td.sticky:nth-child(2) {
+    min-width: 115px;
+    position: sticky;
+    z-index: 2;
+}

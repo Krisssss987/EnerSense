@@ -50,7 +50,7 @@ export class OverviewComponent  implements OnInit {
   interval!:string;
   pieChartData: PieChartData[] = [];
   kvah:number=0;
-  kval_rupees:number=10;
+  kvah_rupees:number=10;
   kwh:number=0;
   kvarh_led:number=0;
   kvarh_lag:number=0;
@@ -76,7 +76,6 @@ export class OverviewComponent  implements OnInit {
     this.getUserDevices();
     this.startInterval();
     this.piedataRetrieve();
-    this.retrievingValues();
   }
 
   constructor(
@@ -99,6 +98,9 @@ export class OverviewComponent  implements OnInit {
           if(id==null || id=='' ||id==undefined || interval==null){
             this.DashDataService.setDeviceId(this.deviceOptions[0].feederUid);
             this.DashDataService.setInterval('12hour');
+            this.retrievingValues();
+          } else {
+            this.retrievingValues();
           }
         },
         (error) => {
@@ -115,7 +117,6 @@ export class OverviewComponent  implements OnInit {
     .subscribe(([deviceID, interval]) => {
       this.deviceUID = deviceID ?? '';
       this.interval = interval ?? '';
-      this.unsubscribeFromTopics();
       this.functionsToCall();      
     });
   }
@@ -150,9 +151,9 @@ export class OverviewComponent  implements OnInit {
       this.DashDataService.pieDetails(this.CompanyId, this.selectedDuration).subscribe(
         (piedata) => {
           this.pieChartData.length = 0;
-          Array.prototype.push.apply(this.pieChartData, piedata.data.map((entry: { device_uid: any; max: any; }) => ({
+          Array.prototype.push.apply(this.pieChartData, piedata.data.map((entry: { device_uid: any; kwh_difference: any; }) => ({
             name: entry.device_uid,
-            y: parseFloat(entry.max)
+            y: parseFloat(entry.kwh_difference)
           })));
   
           Highcharts.chart('PieChart', this.PieChart);
@@ -168,7 +169,7 @@ export class OverviewComponent  implements OnInit {
 
   barData() {
     if (this.CompanyId) {
-      this.DashDataService.barDetails(this.deviceUID, this.interval).subscribe(
+      const subscription = this.DashDataService.barDetails(this.deviceUID, this.interval).subscribe(
         (bardata) => {
           const new_data = bardata.data;
           const offsetMinutes = 5 * 60 + 30;
@@ -223,22 +224,24 @@ export class OverviewComponent  implements OnInit {
           });
         }
       );
+      
+      this.mqttSubscriptions.push(subscription)
     }
   } 
 
   feederinterval() {
     if (this.CompanyId) {
-      this.DashDataService.feederinterval(this.deviceUID, this.interval).subscribe(
+      const subscription = this.DashDataService.feederinterval(this.deviceUID, this.interval).subscribe(
         (data) => {
           if(data.fetchOverview){
-          this.kvah=data.fetchOverview.kvah_difference;
-          this.kvarh_led=data.fetchOverview.kvarh_leading??0;
-          this.kvarh_lag=data.fetchOverview.kvarh_lagging??0;
-          this.kwh_diff=data.fetchOverview.kwh_difference;
-          this.max_kva=data.fetchOverview.max_kva;
-          this.max_kw=data.fetchOverview.max_kw;
-          this.pf_diff=data.fetchOverview.pf_difference;
-          this.CO2=parseFloat((data.fetchOverview.kwh_difference * 0.82).toFixed(2))
+          this.kvah=data.fetchOverview.kvah_diff_interval_1??0;
+          this.kvarh_led=data.fetchOverview.kvarh_1_lead??0;
+          this.kvarh_lag=data.fetchOverview.kvarh_1_lag??0;
+          this.kwh_diff=data.fetchOverview.kwh_diff_interval_1??0;
+          this.max_kva=data.fetchOverview.kva_max_interval_1??0;
+          this.max_kw=data.fetchOverview.kw_max_interval_1??0;
+          this.pf_diff=data.fetchOverview.pf_interval_1??0;
+          this.CO2=parseFloat((data.fetchOverview.kwh_diff_interval_1 * 0.82).toFixed(0))??0;
           }else{
             this.kvah=0;
             this.kvarh_led=0;
@@ -253,6 +256,7 @@ export class OverviewComponent  implements OnInit {
         (error) => {
         }
       );
+      this.mqttSubscriptions.push(subscription)
     }
   } 
 
@@ -278,6 +282,7 @@ export class OverviewComponent  implements OnInit {
   }
 
   ngOnDestroy() {
+    this.stopInterval();
     this.unsubscribeFromTopics();
     Highcharts.chart('KVAguage', this.KVAguage).destroy();
     Highcharts.chart('KWguage', this.KWguage).destroy();
@@ -285,6 +290,7 @@ export class OverviewComponent  implements OnInit {
     Highcharts.chart('PFguage', this.PFguage).destroy();
     Highcharts.chart('Currentguage', this.Currentguage).destroy();
     Highcharts.chart('Voltageguage', this.Voltageguage).destroy();
+    Highcharts.chart('PieChart', this.PieChart).destroy();
   }
   
   guageChange(){
@@ -318,6 +324,12 @@ export class OverviewComponent  implements OnInit {
       type: 'gauge',
       data: [this.kvr]
     });
+
+    if(this.kvr > 200){
+      kvrchart?.yAxis[0].update({
+        max: this.kvr < 200 ? 200 : undefined
+      })
+    }
 
     const pfchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'PFguage');
 
@@ -356,11 +368,9 @@ export class OverviewComponent  implements OnInit {
 
   subscribeToTopics() {
     const dataTopic = `Energy/Sense/Live/${this.deviceUID}/7`;
-    console.log(dataTopic);
 
     const dataSubscription = this.mqttService.observe(dataTopic).subscribe((dataMessage: IMqttMessage) => {
       const dataPayload = JSON.parse(dataMessage.payload.toString());
-      console.log(dataPayload);
 
       this.kw=parseFloat(dataPayload.kw);
       this.kvr=parseFloat(dataPayload.kvar);
@@ -374,8 +384,6 @@ export class OverviewComponent  implements OnInit {
 
     const kvaSubscription = this.mqttService.observe(kvaTopic).subscribe((dataMessage: IMqttMessage) => {
       const dataPayload = JSON.parse(dataMessage.payload.toString());
-      console.log(dataPayload);
-
       this.kva=parseFloat(dataPayload.kva);
 
     this.guageChange();
@@ -386,8 +394,6 @@ export class OverviewComponent  implements OnInit {
 
     const voltageSubscription = this.mqttService.observe(voltageTopic).subscribe((dataMessage: IMqttMessage) => {
       const dataPayload = JSON.parse(dataMessage.payload.toString());
-      console.log(dataPayload);
-
       this.voltage=parseFloat(dataPayload.V_N);
 
     this.guageChange();
@@ -398,8 +404,6 @@ export class OverviewComponent  implements OnInit {
 
     const currentSubscription = this.mqttService.observe(currentTopic).subscribe((dataMessage: IMqttMessage) => {
       const dataPayload = JSON.parse(dataMessage.payload.toString());
-      console.log(dataPayload);
-
       this.current=parseFloat(dataPayload.I);
 
     this.guageChange();
@@ -409,7 +413,7 @@ export class OverviewComponent  implements OnInit {
 
   lastEntry() {
     if (this.CompanyId) {
-      this.DashDataService.fetchLatestEntry(this.deviceUID).subscribe(
+      const subscription = this.DashDataService.fetchLatestEntry(this.deviceUID).subscribe(
         (data) => {
           const newData = data.data[0];
           
@@ -435,6 +439,7 @@ export class OverviewComponent  implements OnInit {
           });
         }
       );
+      this.mqttSubscriptions.push(subscription)
     }
   }  
 
@@ -457,7 +462,7 @@ export class OverviewComponent  implements OnInit {
     },
     series: [{
       type: 'pie',
-      name: 'KVA',
+      name: 'KWH',
       data: this.pieChartData
     }],
     exporting: {

@@ -5,6 +5,7 @@ import { AuthService } from '../../../login/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardService } from '../../dash_service/dashboard.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-filter',
@@ -18,6 +19,7 @@ export class FilterComponent {
   selectedDeviceInterval: string ='';
   deviceOptions: any[] = [];
   CompanyId!: string | null;
+  subscriptions: Subscription[] = [];
 
   @HostListener('window:resize')
   onWindowResize() {
@@ -36,6 +38,17 @@ export class FilterComponent {
     this.adjustDialogWidth();
     this.getUserDevices();
     this.retrieveValues();
+  }
+
+  ngOnDestroy(){
+    this.unsubscribeFromTopics();
+  }
+  
+  unsubscribeFromTopics() {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+    this.subscriptions = [];
   }
 
   retrieveValues(){
@@ -57,7 +70,7 @@ export class FilterComponent {
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.DashDataService.deviceDetails(this.CompanyId).subscribe(
+      const subscription = this.DashDataService.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
         },
@@ -67,6 +80,7 @@ export class FilterComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 

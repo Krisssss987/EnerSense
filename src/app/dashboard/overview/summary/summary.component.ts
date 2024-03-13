@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from '../../dash_service/dashboard.service';
 import { AuthService } from 'src/app/login/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-summary',
@@ -12,6 +13,7 @@ import { AuthService } from 'src/app/login/auth/auth.service';
 })
 export class SummaryComponent {
   CompanyId: any;
+  subscriptions: Subscription[] = [];
 
   constructor(
     public snackBar: MatSnackBar,
@@ -26,6 +28,17 @@ export class SummaryComponent {
 
   ngOnInit(): void {
     this.summary();
+  }
+
+  ngOnDestroy(){
+    this.unsubscribeFromTopics();
+  }
+  
+  unsubscribeFromTopics() {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+    this.subscriptions = [];
   }
 
   @HostListener('window:resize')
@@ -46,7 +59,7 @@ export class SummaryComponent {
   summary() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.DashDataService.overviewSummary(this.CompanyId).subscribe(
+      const subscription = this.DashDataService.overviewSummary(this.CompanyId).subscribe(
         (device: any) => {
           this.deviceData = new MatTableDataSource(device.data);
         },
@@ -56,9 +69,9 @@ export class SummaryComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
-  }
-  
+  }  
 }
 
 

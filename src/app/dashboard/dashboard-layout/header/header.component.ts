@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/login/auth/auth.service';
 import { DashService } from '../../dash.service';
@@ -11,8 +11,9 @@ import { DashService } from '../../dash.service';
 export class HeaderComponent implements OnInit { 
   currentPageName: string = '';
   isFullScreen = false;
-  elem = document.documentElement;
-  isFullscreen = false;
+  screenWidth = 0;
+  collapse = false;
+
   constructor(public dashService: DashService, public authService:  AuthService, private router: Router) 
   {
     this.router.events.subscribe((event: any) => {
@@ -42,9 +43,11 @@ export class HeaderComponent implements OnInit {
   public toggleMenu() {
     this.dashService.toggleMenu();
   }
+   
   logout(){
     this.authService.logout();
   }
+
   toggleFullScreen() {
     if (!this.isFullScreen) {
       const elem = document.documentElement;
@@ -58,5 +61,43 @@ export class HeaderComponent implements OnInit {
         this.isFullScreen = false;
       }
     }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.screenWidth = window.innerWidth;
+    this.toggleSideNav();
+  }
+
+  toggleSideNav() {
+    this.collapse = this.screenWidth < 518;
+  }
+
+  home(){
+    this.router.navigate(['dashboard/overview']);
+  }
+
+  feeder(){
+    this.router.navigate(['dashboard/feeder']);
+  }
+
+  analytics(){
+    this.router.navigate(['dashboard/analytics']);
+  }
+
+  tools(){
+    this.router.navigate(['dashboard/tools']);
+  }
+
+  report(){
+    this.router.navigate(['dashboard/report']);
+  }
+
+  profile(){
+    this.router.navigate(['dashboard/profile']);
+  }
+
+  todreport(){
+    this.router.navigate(['dashboard/tod_report']);
   }
 }

@@ -3,6 +3,7 @@ import { DashboardService } from '../dash_service/dashboard.service';
 import { AuthService } from 'src/app/login/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -35,6 +36,7 @@ export class ProfileComponent {
   percent_demand = new FormControl({ value: '', disabled: true });
   energy_detail = new FormControl({ value: '', disabled: true });
   energy_value = new FormControl({ value: '', disabled: true });
+  subscriptions: Subscription[] = [];
 
   userType=sessionStorage.getItem('usertype');
   shiftData: any;
@@ -49,6 +51,17 @@ export class ProfileComponent {
   ngOnInit(): void {
     this.getUserDetails();
     this.getShift();
+  }
+
+  ngOnDestroy(){
+    this.unsubscribeFromTopics();
+  }
+  
+  unsubscribeFromTopics() {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+    this.subscriptions = [];
   }
 
   userId!: string | null;
@@ -97,12 +110,11 @@ export class ProfileComponent {
   getUserDetails() {
     this.userId = sessionStorage.getItem('userid');
     if (this.userId) {
-      this.DashDataService.getUserById(this.userId).subscribe(
+      const subscription = this.DashDataService.getUserById(this.userId).subscribe(
         (user: any) => {
           this.userData=user.getUserById[0];
           this.fname=this.userData.firstName;
           this.lname=this.userData.lastName;
-          console.log(this.userData)
           this.companyName = new FormControl({ value: this.userData.companyName, disabled: true },[Validators.required]);
           this.companyEmail = new FormControl({ value: this.userData.companyEmail, disabled: true },[Validators.required]);
           this.companyLocation = new FormControl({ value: this.userData.companyLocation, disabled: true },[Validators.required]);
@@ -130,13 +142,14 @@ export class ProfileComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
   getShift() {
     const CompanyId = this.authService.getCompanyId();
     if (CompanyId) {
-      this.DashDataService.shiftDetails(CompanyId).subscribe(
+      const subscription = this.DashDataService.shiftDetails(CompanyId).subscribe(
         (shift: any) => {
           this.shiftData = shift.getDay_Shift;
         },
@@ -146,6 +159,7 @@ export class ProfileComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
@@ -169,7 +183,6 @@ export class ProfileComponent {
         energyDetail:this.energy_detail.value, 
         energyValue:this.energy_value.value
       }
-      console.log(companyData);
 
       this.DashDataService.updateCompany(companyId!,companyData).subscribe(
         (response) => {

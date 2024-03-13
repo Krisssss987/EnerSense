@@ -59,6 +59,7 @@ import { UpdateShiftComponent } from './tools/tools-component/update-shift/updat
 import { UpdateAlertComponent } from './tools/tools-component/update-alert/update-alert.component';
 import { AddAlertComponent } from './tools/tools-component/add-alert/add-alert.component';
 import { ProfileComponent } from './profile/profile.component';
+import { TodReportComponent } from './tod-report/tod-report.component';
 
 
 
@@ -89,6 +90,7 @@ import { ProfileComponent } from './profile/profile.component';
     UpdateAlertComponent,
     AddAlertComponent,
     ProfileComponent,
+    TodReportComponent,
   ],
   imports: [
     CommonModule,

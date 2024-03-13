@@ -8,6 +8,7 @@ import { DashboardService } from '../dash_service/dashboard.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { AddAlertComponent } from '../tools/tools-component/add-alert/add-alert.component';
+import { Subscription, max } from 'rxjs';
 
 @Component({
   selector: 'app-feeder',
@@ -46,6 +47,7 @@ export class FeederComponent {
   KVARH:string='0';
   initialDevice!:string;
   whatToDo:string='feeder';
+  subscriptions: Subscription[] = [];
 
   ngOnInit(): void {   
     Highcharts.chart('KVAYguage', this.KVAYguage);
@@ -57,10 +59,18 @@ export class FeederComponent {
   }
 
   ngOnDestroy() {
+    this.unsubscribeFromTopics();
     Highcharts.chart('KVAYguage', this.KVAYguage).destroy();
     Highcharts.chart('KWYguage', this.KWYguage).destroy();
     Highcharts.chart('KVRYguage', this.KVRYguage).destroy();
     Highcharts.chart('PFYguage', this.PFYguage).destroy();
+  }
+    
+  unsubscribeFromTopics() {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+    this.subscriptions = [];
   }
 
   constructor(
@@ -69,7 +79,6 @@ export class FeederComponent {
     public snackBar: MatSnackBar,
     public dialog:MatDialog
   ){}
-
   
   openAlertDialog(): void {
     const dialogConfig = new MatDialogConfig();
@@ -241,7 +250,7 @@ export class FeederComponent {
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.service.deviceDetails(this.CompanyId).subscribe(
+      const subscription = this.service.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
           this.initialDevice = this.deviceOptions[0].feederUid;
@@ -254,13 +263,14 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
   getgroupDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.service.groupDetails(this.CompanyId).subscribe(
+      const subscription = this.service.groupDetails(this.CompanyId).subscribe(
         (group: any) => {
           this.groupOptions = group.data;
         },
@@ -270,17 +280,18 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
   currentoperations(device:string) {
     if (device) {
-      this.service.currentoperations(device).subscribe(
+      const subscription = this.service.currentoperations(device).subscribe(
         (newdata: any) => {
           let data = newdata.data[0];
 
           if (data) {
-            this.service.fetchLatestEntry(this.selectedDevice).subscribe(
+            const subscription = this.service.fetchLatestEntry(this.selectedDevice).subscribe(
               (lastdata) => {
                 const newData = lastdata.data[0];
                 const dataPayload = Object.fromEntries(
@@ -294,6 +305,7 @@ export class FeederComponent {
                 });
               }
             );
+            this.subscriptions.push(subscription)
           }
         },
         (error) => {
@@ -302,10 +314,34 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
   dataMan(data:any,latest:any){
+    const big: { [key: string]: number } = {
+      frequency:latest.freq,
+      v_thr_r:latest.thd_v1n,
+      v_thr_y:latest.thd_v2n,
+      v_thr_b:latest.thd_v3n,
+      i_thr_r:latest.thd_i1,
+      i_thr_y:latest.thd_i2,
+      i_thr_b:latest.thd_i3
+    };
+    
+    let maxVal = -Infinity;
+    let maxKey = '';
+    
+    for (const key in big) {
+        if (big.hasOwnProperty(key)) {
+            const value = big[key];
+            if (value > maxVal) {
+                maxVal = value;
+                maxKey = key;
+            }
+        }
+    }
+
     const instDataPercent = {
       max_current:(parseFloat(data.max_current)/parseFloat(data.max_current))*100,
       avg_current:(parseFloat(data.avg_current)/parseFloat(data.max_current))*100,
@@ -331,13 +367,13 @@ export class FeederComponent {
       vll_b:(parseFloat(latest.voltage_31)/parseFloat(data.max_voltage))*100,
       avg_vll:(parseFloat(latest.voltage_l)/parseFloat(data.max_voltage))*100,
 
-      frequency:(parseFloat(latest.freq)/70)*100,
-      v_thr_r:(parseFloat(latest.thd_v1n)/70)*100,
-      v_thr_y:(parseFloat(latest.thd_v2n)/70)*100,
-      v_thr_b:(parseFloat(latest.thd_v3n)/70)*100,
-      i_thr_r:(parseFloat(latest.thd_i1)/70)*100,
-      i_thr_y:(parseFloat(latest.thd_i2)/70)*100,
-      i_thr_b:(parseFloat(latest.thd_i3)/70)*100
+      frequency:(parseFloat(latest.freq)/maxVal)*100,
+      v_thr_r:(parseFloat(latest.thd_v1n)/maxVal)*100,
+      v_thr_y:(parseFloat(latest.thd_v2n)/maxVal)*100,
+      v_thr_b:(parseFloat(latest.thd_v3n)/maxVal)*100,
+      i_thr_r:(parseFloat(latest.thd_i1)/maxVal)*100,
+      i_thr_y:(parseFloat(latest.thd_i2)/maxVal)*100,
+      i_thr_b:(parseFloat(latest.thd_i3)/maxVal)*100
     }
 
     const instData = {
@@ -383,15 +419,25 @@ export class FeederComponent {
       acc[key as keyof typeof instData] = Number.isInteger(value as number) ? value as number : Number(value as number).toFixed(2);
       return acc;
     }, {} as Record<keyof typeof instData, number | string>);
-    
+
 
     this.instantPercent=intDataPercent;
     this.instantData=intData;
   }
 
+  getColorArray(data: number) {
+    if (data < 80) {
+      return 'primary';
+    } else if (data < 90) {
+      return  'accent';
+    } else {
+      return 'warn';
+    }    
+  }
+
   getAlertsByFeederId(feederId:any) {
     if (feederId) {
-      this.service.getAlertsByFeederId(feederId).subscribe(
+      const subscription = this.service.getAlertsByFeederId(feederId).subscribe(
         (data: any) => {
           this.alertData=data.getAlerts;
         },
@@ -401,18 +447,19 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
   
   feederGetDemandBarGraphByInterval(feederId:any,interval:any) {
     if (feederId) {
-      this.service.feederGetDemandBarGraphByInterval(feederId,interval).subscribe(
+      const subscription = this.service.feederGetDemandBarGraphByInterval(feederId,interval).subscribe(
         (data: any) => {
           const deviceData = data.maxKvaResults;
 
           this.CompanyId = this.authService.getCompanyId();
           if (this.CompanyId) {
-            this.service.fetchMaxDemand(this.CompanyId).subscribe(
+            const subscription = this.service.fetchMaxDemand(this.CompanyId).subscribe(
               (max: any) => {
                 const companyMax = max.data.maxdemand;
                 this.dataManBar(deviceData,companyMax);
@@ -423,6 +470,7 @@ export class FeederComponent {
                 });
               }
             );
+            this.subscriptions.push(subscription)
           }
         },
         (error) => {
@@ -431,18 +479,19 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
   
   feederGetDemandBarGraphByDate(feederId:any,start:any,end:any) {
     if (feederId) {
-      this.service.feederGetDemandBarGraphByDate(feederId,start,end).subscribe(
+      const subscription = this.service.feederGetDemandBarGraphByDate(feederId,start,end).subscribe(
         (data: any) => {
           const deviceData = data.maxKvaResults;
 
           this.CompanyId = this.authService.getCompanyId();
           if (this.CompanyId) {
-            this.service.fetchMaxDemand(this.CompanyId).subscribe(
+            const subscription = this.service.fetchMaxDemand(this.CompanyId).subscribe(
               (max: any) => {
                 const companyMax = max.data.maxdemand;
                 this.dataManBar(deviceData,companyMax);
@@ -453,6 +502,7 @@ export class FeederComponent {
                 });
               }
             );
+            this.subscriptions.push(subscription)
           }
         },
         (error) => {
@@ -461,12 +511,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
     
   feederGetKWHByInterval(feederId:any,interval:any) {
     if (feederId) {
-      this.service.feederGetKWHByInterval(feederId,interval).subscribe(
+      const subscription = this.service.feederGetKWHByInterval(feederId,interval).subscribe(
         (data: any) => {
           this.activeKWH = data.total_kwh??'0'
         },
@@ -476,12 +527,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
   
   feederGetKWHByDate(feederId:any,start:any,end:any) {
     if (feederId) {
-      this.service.feederGetKWHByDate(feederId,start,end).subscribe(
+      const subscription = this.service.feederGetKWHByDate(feederId,start,end).subscribe(
         (data: any) => {
           this.activeKWH = data.KwhResults[0].total_kwh??'0';
         },
@@ -491,12 +543,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
    
   feederGetKVAHByInterval(feederId:any,interval:any) {
     if (feederId) {
-      this.service.feederGetKVAHByInterval(feederId,interval).subscribe(
+      const subscription = this.service.feederGetKVAHByInterval(feederId,interval).subscribe(
         (data: any) => {
           this.KVAH = data.total_kvah??'0';
         },
@@ -506,12 +559,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
   
   feederGetKVAHByDate(feederId:any,start:any,end:any) {
     if (feederId) {
-      this.service.feederGetKVAHByDate(feederId,start,end).subscribe(
+      const subscription = this.service.feederGetKVAHByDate(feederId,start,end).subscribe(
         (data: any) => {
           this.KVAH = data.KvahResults[0].total_kvah??'0';
         },
@@ -521,12 +575,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
    
   feederGetKVARHByInterval(feederId:any,interval:any) {
     if (feederId) {
-      this.service.feederGetKVARHByInterval(feederId,interval).subscribe(
+      const subscription = this.service.feederGetKVARHByInterval(feederId,interval).subscribe(
         (data: any) => {
           this.KVARH = data.total_kvarh??'0';
         },
@@ -536,12 +591,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
   
   feederGetKVARHByDate(feederId:any,start:any,end:any) {
     if (feederId) {
-      this.service.feederGetKVARHByDate(feederId,start,end).subscribe(
+      const subscription = this.service.feederGetKVARHByDate(feederId,start,end).subscribe(
         (data: any) => {
           this.KVARH = data.KvarhResults[0].total_kvarh??'0';
         },
@@ -551,12 +607,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
   getTodayKWHForFeeders(feederId:any) {
     if (feederId) {
-      this.service.getTodayKWHForFeeders(feederId).subscribe(
+      const subscription = this.service.getTodayKWHForFeeders(feederId).subscribe(
         (data: any) => {
           this.todayKWH = data.today_kwh??'0';
         },
@@ -566,12 +623,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
   getYesterdayKWHForFeeders(feederId:any) {
     if (feederId) {
-      this.service.getYesterdayKWHForFeeders(feederId).subscribe(
+      const subscription = this.service.getYesterdayKWHForFeeders(feederId).subscribe(
         (data: any) => {
           this.yesterdayKWH = data.yesterday_kwh??'0';
         },
@@ -581,12 +639,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
   getThisMonthKWHForFeeders(feederId:any) {
     if (feederId) {
-      this.service.getThisMonthKWHForFeeders(feederId).subscribe(
+      const subscription = this.service.getThisMonthKWHForFeeders(feederId).subscribe(
         (data: any) => {
           this.monthKWH = data.this_month_kwh??'0';
         },
@@ -596,12 +655,13 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
 
   getPowerParamtersFeeders(feederId:any) {
     if (feederId) {
-      this.service.getPowerParamtersFeeders(feederId).subscribe(
+      const subscription = this.service.getPowerParamtersFeeders(feederId).subscribe(
         (data: any) => {
           const gaugedata = data.sumResults[0];
           this.guageChange(gaugedata);
@@ -612,9 +672,9 @@ export class FeederComponent {
           });
         }
       );
+      this.subscriptions.push(subscription)
     }
   }
-
   
   guageChange(data:any){
     let kva = 0;
@@ -657,6 +717,12 @@ export class FeederComponent {
       type: 'gauge',
       data: [kvar]
     });
+
+    if(kvar>200){
+      kvarychart?.yAxis[0].update({
+        max: kvar < 200 ? 200 : undefined
+      });
+    }
 
     const pfychart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'PFYguage');
 
