@@ -1,10 +1,9 @@
 import { Component, Inject, HostListener } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormControl, Validators } from '@angular/forms';
-import { AuthService } from '../../../login/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardService } from '../../dash_service/dashboard.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { AuthService } from 'src/app/authentication/auth/auth.service';
 
 @Component({
   selector: 'app-filter',

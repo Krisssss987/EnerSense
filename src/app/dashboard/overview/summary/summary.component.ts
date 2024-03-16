@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from '../../dash_service/dashboard.service';
-import { AuthService } from 'src/app/login/auth/auth.service';
+import { AuthService } from 'src/app/authentication/auth/auth.service';
 
 @Component({
   selector: 'app-summary',

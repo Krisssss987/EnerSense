@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
+import { LoginLayoutComponent } from './authentication/login-layout/login-layout.component';
 import { DashboardLayoutComponent } from './dashboard/dashboard-layout/dashboard-layout.component';
-import { AuthGuard } from './login/auth/auth.guard';
-import { LoginGuard } from './login/auth/login.guard';
-import { RoleGuard } from './login/auth/role.guard';
+import { AuthGuard } from './authentication/auth/auth.guard';
+import { LoginGuard } from './authentication/auth/login.guard';
+import { RoleGuard } from './authentication/auth/role.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,7 +14,7 @@ const routes: Routes = [
     component: LoginLayoutComponent,
     canActivate:[LoginGuard],
     children: [
-      { path: '', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
+      { path: '', loadChildren: () => import('./authentication/login.module').then(m => m.LoginModule) },
     ]
   },
   {

@@ -4,7 +4,7 @@ import HighchartsMore from 'highcharts/highcharts-more';
 import { DashboardService } from '../../dash_service/dashboard.service';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from 'src/app/login/auth/auth.service';
+import { AuthService } from 'src/app/authentication/auth/auth.service';
 import { DatePipe } from '@angular/common';
 HighchartsMore(Highcharts);
 

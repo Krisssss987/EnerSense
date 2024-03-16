@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SummaryComponent } from '../overview/summary/summary.component';
 import * as Highcharts from 'highcharts';
 import { FormControl, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/login/auth/auth.service';
+import { AuthService } from 'src/app/authentication/auth/auth.service';
 import { DashboardService } from '../dash_service/dashboard.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';

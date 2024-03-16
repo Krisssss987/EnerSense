@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardService } from 'src/app/dashboard/dash_service/dashboard.service';
-import { AuthService } from 'src/app/login/auth/auth.service';
+import { AuthService } from 'src/app/authentication/auth/auth.service';
 
 @Component({
   selector: 'app-add-feeder',
