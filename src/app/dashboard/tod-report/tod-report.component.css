@@ -39,26 +39,5 @@
     background-color: #673ab7;
     z-index: 2;
     color: whitesmoke;
-}
-
-th.sticky,
-td.sticky {
-    position: sticky;
-    left: 0;
-    z-index: 1;
-    background-color: white;
-}
-
-th.sticky:nth-child(1),
-th.sticky:nth-child(2) {
-    min-width: 115px;
-    position: sticky;
-    z-index: 3;
-}
-
-td.sticky:nth-child(1),
-td.sticky:nth-child(2) {
-    min-width: 115px;
-    position: sticky;
-    z-index: 2;
+    text-align: center;
 }

@@ -6,14 +6,14 @@
         			<mat-card-content>
 		        		<div class="container-fluid">
 					    	<div class="row">
-					    		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4 mt-1">
+					    		<!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4 mt-1">
 					    			<div>Download Report</div>
 					        		<mat-button-toggle-group name="fontStyle" class="button-group" aria-label="Font Style">
 										<mat-button-toggle class="button-group" value="bold" (click)="downloadCSV()">CSV</mat-button-toggle>
 										<mat-button-toggle class="button-group" value="italic" (click)="downloadExcel()">Excel</mat-button-toggle>
 										<mat-button-toggle class="button-group" value="underline" (click)="downloadPDF()">Print</mat-button-toggle>
 									</mat-button-toggle-group>
-					        	</div>
+					        	</div> -->
 
 					        	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
 					        		<div>Apply Filter</div>
@@ -61,17 +61,158 @@
 				<mat-card class="mat-card-outline">
 				  <mat-card-content>
 					<div class="table-container" style="overflow: auto; max-height: 70vh;">
-					  <table mat-table [dataSource]="dataSource" matSort class="custom-theme-table mat-table" *ngIf="dataSource.data.length > 0; else noData">
-			  
-						<ng-container *ngFor="let column of revertedArray; let i = index" [matColumnDef]="column">
-							<th mat-header-cell *matHeaderCellDef mat-sort-header [class.sticky]="i < 2">{{ transformString(column) }}</th>
-							<td mat-cell *matCellDef="let element" [class.sticky]="i < 2">{{ element[column] }}</td>
-						</ng-container>
-			  
-						<tr mat-header-row *matHeaderRowDef="revertedArray"></tr>
-						<tr mat-row *matRowDef="let row; columns: revertedArray"></tr>
-					  </table>
 					  
+						<table mat-table [dataSource]="dataSource" class="custom-theme-table mat-table">
+
+							<ng-container matColumnDef="date">
+							  <th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Date </th>
+							  <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>  
+							<ng-container matColumnDef="new_date">
+							  <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Date</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="ttl_kwh">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> TTL KWH </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_ttl_kwh">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">TTL KWH</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="ttl_kvah">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> TTL KVAH </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_ttl_kvah">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">TTL KVAH</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="a_kvah">
+							  <th mat-header-cell *matHeaderCellDef> KVAH </th>
+							  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+							</ng-container>
+							<ng-container matColumnDef="a_kva">
+							  <th mat-header-cell *matHeaderCellDef> KVA </th>
+							  <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+							</ng-container>
+							<ng-container matColumnDef="a_zone_kwh">
+							  <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> A Zone KWH 22:00pm to 6:00am </th>
+							</ng-container>
+						  
+							<ng-container matColumnDef="a_percent">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> % </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_a_percent">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">%</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="b_kwh_6_to_9">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> B Zone KWH 6:00am to 9:00am </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_b_kwh_6_to_9">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">B Zone KWH 6:00am to 9:00am</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="b_kwh_12_to_18">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> B Zone KWH 12:00pm to 18:00pm </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_b_kwh_12_to_18">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">B Zone KWH 12:00pm to 18:00pm</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="b_kvah">
+								<th mat-header-cell *matHeaderCellDef> KVAH </th>
+								<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+							</ng-container>
+							<ng-container matColumnDef="b_kva">
+								<th mat-header-cell *matHeaderCellDef> KVA </th>
+								<td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+							</ng-container>
+							<ng-container matColumnDef="b_zone_kwh">
+								<th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> Total B Zone KWH </th>
+							</ng-container>
+						
+							<ng-container matColumnDef="c_kvah">
+								<th mat-header-cell *matHeaderCellDef> KVAH </th>
+								<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+							</ng-container>
+							<ng-container matColumnDef="c_kva">
+								<th mat-header-cell *matHeaderCellDef> KVA </th>
+								<td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+							</ng-container>
+							<ng-container matColumnDef="c_zone_kwh">
+								<th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> C Zone KWH 9:00am to 12:00pm </th>
+							</ng-container>
+						
+							<ng-container matColumnDef="d_kvah">
+								<th mat-header-cell *matHeaderCellDef> KVAH </th>
+								<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+							</ng-container>
+							<ng-container matColumnDef="d_kva">
+								<th mat-header-cell *matHeaderCellDef> KVA </th>
+								<td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+							</ng-container>
+							<ng-container matColumnDef="d_zone_kwh">
+								<th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> D Zone KWH 18:00pm to 22:00pm </th>
+							</ng-container>
+						
+							<ng-container matColumnDef="percent">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> % </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_percent">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">%</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="solar_kwh">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Solar PWR Generation in KWH </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_solar_kwh">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Solar PWR Generation in KWH</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="demand_charges">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Demand Charges </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_demand_charges">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Demand Charges</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="energy_charges">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Energy Charges </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_energy_charges">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Energy Charges</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="total_charges">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Total Charges </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_total_charges">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Total Charges</th>
+							</ng-container>
+						
+							<ng-container matColumnDef="unit_rate">
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Unit Rate </th>
+								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							</ng-container>	
+							<ng-container matColumnDef="new_unit_rate">
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Unit Rate</th>
+							</ng-container>
+						  
+							<tr mat-header-row *matHeaderRowDef="['new_date', 'new_ttl_kwh', 'new_ttl_kvah', 'a_zone_kwh', 'new_a_percent', 'new_b_kwh_6_to_9', 'new_b_kwh_12_to_18', 'b_zone_kwh', 'c_zone_kwh', 'd_zone_kwh', 'new_percent', 'new_solar_kwh', 'new_demand_charges', 'new_energy_charges', 'new_total_charges', 'new_unit_rate']"></tr>
+							<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+							<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+						  </table>
+						
 					<ng-template #noData>
 						<div class="no-data-msg">No data found for this time interval.</div>
 					</ng-template>
@@ -79,8 +220,7 @@
 					<mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
 				  </mat-card-content>
 				</mat-card>
-			  </div>
-			  
+			</div>			  
         </div>
     </div>
 </div>
