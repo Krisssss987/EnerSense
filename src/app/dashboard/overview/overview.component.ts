@@ -9,9 +9,9 @@ import { FilterComponent } from './filter/filter.component';
 import { DashboardService } from '../dash_service/dashboard.service';
 import { Subscription, take, interval, combineLatest, zip, distinctUntilChanged } from 'rxjs';
 import { MqttService, IMqttMessage } from 'ngx-mqtt';
-import { AuthService } from 'src/app/login/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { AuthService } from 'src/app/authentication/auth/auth.service';
 
 HighchartsMore(Highcharts);
 HighchartsExporting(Highcharts);

@@ -28,6 +28,7 @@
     "file-saver": "^2.0.5",
     "highcharts": "^11.2.0",
     "highcharts-angular": "^4.0.0",
+    "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.1",
     "mqtt": "^4.3.7",
     "ngx-material-timepicker": "^13.0.3",
