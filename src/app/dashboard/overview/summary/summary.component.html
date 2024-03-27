@@ -1,7 +1,11 @@
 <div class="container-fluid">
     <div class="row edit-head mb-2">
-      <div class="col-lg-12 col-md-12 col-sm-12 pt-1">
-        <div class="edit-title">Summary - Company Feeders</div>
+      <div class="col-lg-12 col-md-12 col-sm-12 pt-1 mb-1 d-flex" style="justify-content: space-between;">
+        <div class="edit-title mt-2">Summary - Company Feeders</div>
+        <div>
+          <button mat-mini-fab color="primary" style="margin-right: 3px;" (click)="downloadExcel()"><mat-icon> vertical_align_bottom</mat-icon></button>
+          <button mat-mini-fab color="warn" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+        </div>
       </div>
     </div>
     

@@ -174,6 +174,15 @@ export class ConsuptionComponent implements OnInit {
     this.imp_kvarh = [];
     this.exp_kvarh = [];
     this.kvarh = [];
+
+    for (let i = 0; i < this.data.length; i++) {
+      const date = new Date(this.data[i].bucket_start_date);
+    
+      date.setHours(date.getHours() + 5);
+      date.setMinutes(date.getMinutes() + 30);
+    
+      this.data[i].bucket_start_date = date.toISOString();
+    }
     
     this.kvah = this.data.map((entry: { bucket_start_date: string | number | Date; kvah: any; }) => {
       const timestamp = new Date(entry.bucket_start_date).getTime();

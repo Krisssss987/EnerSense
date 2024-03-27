@@ -55,13 +55,12 @@
     margin-top: -5px;
 }
 
-
 #BarChart {
-    height: 406px; /* Set the desired height */
+    height: 406px;   
 }
 
 #PieChart{
-    height: 333px; /* Set the desired height */
+    height: 333px;
 }
 
 .allCard{

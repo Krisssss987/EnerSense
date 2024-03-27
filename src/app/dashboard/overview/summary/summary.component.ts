@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from '../../dash_service/dashboard.service';
 import { Subscription } from 'rxjs';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 import { AuthService } from 'src/app/authentication/auth/auth.service';
 
 @Component({
@@ -14,6 +16,7 @@ import { AuthService } from 'src/app/authentication/auth/auth.service';
 export class SummaryComponent {
   CompanyId: any;
   subscriptions: Subscription[] = [];
+  data:any;
 
   constructor(
     public snackBar: MatSnackBar,
@@ -62,6 +65,7 @@ export class SummaryComponent {
       const subscription = this.DashDataService.overviewSummary(this.CompanyId).subscribe(
         (device: any) => {
           this.deviceData = new MatTableDataSource(device.data);
+          this.data = device.data;
         },
         (error) => {
           this.snackBar.open('Error while fetching Devices Summary!', 'Dismiss', {
@@ -72,6 +76,24 @@ export class SummaryComponent {
       this.subscriptions.push(subscription)
     }
   }  
+
+  downloadExcel() {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    this.saveAsExcelFile(excelBuffer, 'feeder_summary.xlsx');
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    FileSaver.saveAs(data, fileName);
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }
 
 
