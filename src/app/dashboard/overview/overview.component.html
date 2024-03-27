@@ -1,6 +1,123 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row mt-1">
+            <div class="col-md-12 col-lg-12 col-sm-12 pt-2 mb-2">
+                <mat-card>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-11 mb-2">
+                                <div class="user-title">Hello, {{firstname}}&nbsp;{{lastname}}</div> 
+                            </div>
+                            <div class="col-1 text-end mb-2">
+                                <button color="primary" class="filter_button" mat-mini-fab (click)="openFilterDailog()" style="z-index: 2;">
+                                    <mat-icon>filter_list</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-lg-5 col-md-12 col-sm-12 mb-2">
+                                <div class="card overview-cards">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="Overview-energy-title">
+                                                    <mat-icon class="icon">bolt</mat-icon>
+                                                    <span class="title">Energy</span>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="Overview-energy-card-title">Kwh</div>
+                                                <div class="Overview-energy-card-value">{{ kwh_diff | number:'1.0-0' }}
+                                                    <span class="unit">kWh</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="Overview-energy-card-title">Kvah</div>
+                                                <div class="Overview-energy-card-value">{{kvah | number:'1.0-0' }}
+                                                    <span class="unit">kVAH</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="Overview-energy-card-title">Kvarh(lag)</div>
+                                                <div class="Overview-energy-card-value">{{kvarh_lag | number:'1.0-0' }}
+                                                    <span class="unit">kVARH</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="Overview-energy-card-title">Kvarh(lead)</div>
+                                                <div class="Overview-energy-card-value">{{kvarh_led | number:'1.0-0' }}
+                                                    <span class="unit">kVARH</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-12 col-sm-12 mb-2">
+                                <div class="card overview-cards">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="Overview-energy-title">
+                                                    <mat-icon class="icon">flash_on</mat-icon>
+                                                    <span class="title">Power</span>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="Overview-energy-card-title">KW</div>
+                                                <div class="Overview-energy-card-value">{{ max_kw | number:'1.0-0' }}
+                                                    <span class="unit">kW</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="Overview-energy-card-title">KVA (mD)</div>
+                                                <div class="Overview-energy-card-value">{{max_kva | number:'1.0-0' }}
+                                                    <span class="unit">kVA</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="Overview-energy-card-title">Power Factor</div>
+                                                <div class="Overview-energy-card-value">{{pf_diff | number:'1.2-2' }}
+                                                    <span class="unit">pf</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="Overview-energy-card-title">CO2 Emission</div>
+                                                <div class="Overview-energy-card-value">{{ (CO2/1000) | number:'1.0-0' }}
+                                                    <span class="unit">tonne</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-12 col-sm-12 mb-2">
+                                <div class="card overview-cards">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="Overview-energy-title">
+                                                    <mat-icon class="icon">attach_money</mat-icon>
+                                                    <span class="title">Cost</span>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="Overview-energy-card-title">Total</div>
+                                                <div class="Overview-energy-card-value">&#x20B9; {{ kvah*kvah_rupees | number:'1.0-0' }}
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="card pb-2 allCard firstcard">
                         <div *ngIf="!isWideScreen" class="d-flex justify-content-between align-items-center mt-1 mb-1">

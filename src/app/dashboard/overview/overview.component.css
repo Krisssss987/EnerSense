@@ -1,5 +1,43 @@
-.card-heading2{
+/*---------Kaushal------*/
+.user-title{
     color: rgb(78, 78, 255);
+    font-size: 20px;
+    font-weight: 550;
+}
+.overview-cards{
+    background-color: transparent;
+    border: 2px solid #673ab7;
+}
+
+.Overview-energy-title{
+    font-size: 1.2rem;
+    font-weight: 550;
+    display: flex; /* Use Flexbox to align items */
+    align-items: center; /* Align items vertically */
+}
+
+.icon {
+    margin-right: 5px; /* Add some margin between the icon and the title */
+}
+
+.Overview-energy-card-title{
+    font-size: 1.2rem;
+    font-weight: 550;
+}
+
+.Overview-energy-card-value{
+    font-size: 1.8rem;
+    font-weight: 550;
+}
+
+.Overview-energy-card-value .unit {
+    font-size: 0.7rem; /* Adjust the font size as needed */
+}
+
+
+/*---------------------*/
+.card-heading2{
+    
     padding-top: 2px;
     margin-left: 12px;
     font-size: 20px;

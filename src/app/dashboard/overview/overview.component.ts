@@ -50,7 +50,7 @@ export class OverviewComponent  implements OnInit {
   interval!:string;
   pieChartData: PieChartData[] = [];
   kvah:number=0;
-  kvah_rupees:number=10;
+  kvah_rupees:number=8.12;
   kwh:number=0;
   kvarh_led:number=0;
   kvarh_lag:number=0;
