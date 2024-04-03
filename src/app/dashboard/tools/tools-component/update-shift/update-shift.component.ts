@@ -23,7 +23,6 @@ export class UpdateShiftComponent implements OnInit,OnDestroy {
   private formSubscription!: Subscription;
 
   ngOnDestroy() {
-    // Unsubscribe from the value changes when the component is destroyed
     this.formSubscription.unsubscribe();
   }
 

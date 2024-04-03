@@ -43,28 +43,6 @@
                             <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field>
                     </div>
-                    <div class="col-12 col-lg-4 col-xl-4 col-md-4" *ngIf="selectedFeed=='group'">
-                        <mat-form-field appearance="outline" class="form-field">
-                          <mat-label>Group Name</mat-label>
-                          <mat-select [(ngModel)]="selectedGroup" required>
-                            <mat-option *ngFor="let group of groupOptions" [value]="group.feederUid">
-                              {{ group.groupName }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                    </div>  
-                    <div class="col-12 col-lg-4 col-xl-4 col-md-4" *ngIf="selectedFeed=='group'">
-                        <mat-form-field appearance="outline" class="form-field">
-                          <mat-label>Select Interval</mat-label>
-                          <mat-select [(ngModel)]="selectedGroupInterval">
-                            <mat-option value="12hour">12 hours</mat-option>
-                            <mat-option value="day">This Day</mat-option>
-                            <mat-option value="week">This Week</mat-option>
-                            <mat-option value="month">This Month</mat-option>
-                            <mat-option value="custom">Custom</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                    </div>
                     <div class="col-12 col-lg-4 col-xl-4 col-md-4" *ngIf="selectedFeed=='group' && selectedGroupInterval=='custom'">
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Enter a date range</mat-label>

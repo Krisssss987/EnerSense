@@ -16,7 +16,6 @@ export class UpdateFeederComponent {
 
   feederName = new FormControl('', [Validators.required]);
   location = new FormControl('', [Validators.required]);
-  threshold = new FormControl('', [Validators.required]);
   feederUid = new FormControl('', [Validators.required]);
 
   @HostListener('window:resize')
@@ -41,7 +40,6 @@ export class UpdateFeederComponent {
   previousData(){
     this.feederName = new FormControl(`${this.feederData.name}`, [Validators.required]);
     this.location = new FormControl(`${this.feederData.location}`, [Validators.required]);
-    this.threshold = new FormControl(`${this.feederData.thresholdValue}`, [Validators.required]);
     this.feederUid = new FormControl(`${this.feederData.feederUid}`, [Validators.required]);
   }
   
@@ -61,7 +59,7 @@ export class UpdateFeederComponent {
   }
 
   onSaveClick(){
-    if( this.feederName.valid && this.location.valid && this.threshold.valid && this.feederUid.valid )
+    if( this.feederName.valid && this.location.valid && this.feederUid.valid )
     {
       const feederId = this.feederData.feederId;
 
@@ -69,7 +67,7 @@ export class UpdateFeederComponent {
         feederUid:this.feederUid.value,
         name:this.feederName.value, 
         location:this.location.value,  
-        thresholdValue:this.threshold.value, 
+        thresholdValue:'', 
       }
 
       this.DashDataService.deviceUpdate(feederId,feederData).subscribe(

@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { strict } from 'assert';
 
 HighchartsMore(Highcharts);
 
@@ -19,7 +20,7 @@ HighchartsMore(Highcharts);
 export class ConsuptionComponent implements OnInit {
   selectedIntervals: string =''; 
   selectedDevice: string ='';
-  selectedShift: string ='';
+  selectedShift: any;
   startDate = new FormControl('', [Validators.required]);
   endDate = new FormControl('', [Validators.required]);
   
@@ -74,11 +75,11 @@ export class ConsuptionComponent implements OnInit {
     if(interval == 'custom'){
       this.selectedIntervals=interval!; 
       this.selectedDevice=device!;
-      this.selectedShift=shift!;
+      this.selectedShift=shift!.split(',');
       this.startDate = new FormControl(forStart, [Validators.required]);
       this.endDate = new FormControl(forEnd, [Validators.required]);   
     }else{
-      this.selectedShift=shift!;
+      this.selectedShift=shift!.split(',');
       this.selectedIntervals=interval!; 
       this.selectedDevice=device!;
     }
@@ -94,7 +95,7 @@ export class ConsuptionComponent implements OnInit {
       const end = sessionStorage.getItem('consumptionEndDate');
 
       if(start && end){
-        const subscription = this.service.consumptionWithCustomIntervals(device,shift,start,end).subscribe((result) => {
+        const subscription = this.service.consumptionWithCustomIntervals(device,start,end,shift).subscribe((result) => {
           this.data = result.data;
           this.processingData();
         });
@@ -184,33 +185,33 @@ export class ConsuptionComponent implements OnInit {
       this.data[i].bucket_start_date = date.toISOString();
     }
     
-    this.kvah = this.data.map((entry: { bucket_start_date: string | number | Date; kvah: any; }) => {
+    this.kvah = this.data.map((entry: { bucket_start_date: string | number | Date; avg_kvah: any; }) => {
       const timestamp = new Date(entry.bucket_start_date).getTime();
-      const kvah = Number(entry.kvah);
+      const kvah = Number(entry.avg_kvah);
       return [timestamp, kvah];
     });
     
-    this.kwh = this.data.map((entry: { bucket_start_date: string | number | Date; kwh: any; }) => {
+    this.kwh = this.data.map((entry: { bucket_start_date: string | number | Date; avg_kwh: any; }) => {
       const timestamp = new Date(entry.bucket_start_date).getTime();
-      const kwh = Number(entry.kwh);
+      const kwh = Number(entry.avg_kwh);
       return [timestamp, kwh];
     });
     
-    this.imp_kvarh = this.data.map((entry: { bucket_start_date: string | number | Date; imp_kvarh: any; }) => {
+    this.imp_kvarh = this.data.map((entry: { bucket_start_date: string | number | Date; avg_imp_kvarh: any; }) => {
       const timestamp = new Date(entry.bucket_start_date).getTime();
-      const imp_kvarh = Number(entry.imp_kvarh);
+      const imp_kvarh = Number(entry.avg_imp_kvarh);
       return [timestamp, imp_kvarh];
     });
     
-    this.exp_kvarh = this.data.map((entry: { bucket_start_date: string | number | Date; exp_kvarh: any; }) => {
+    this.exp_kvarh = this.data.map((entry: { bucket_start_date: string | number | Date; avg_exp_kvarh: any; }) => {
       const timestamp = new Date(entry.bucket_start_date).getTime();
-      const exp_kvarh = Number(entry.exp_kvarh);
+      const exp_kvarh = Number(entry.avg_exp_kvarh);
       return [timestamp, exp_kvarh];
     });
     
-    this.kvarh = this.data.map((entry: { bucket_start_date: string | number | Date; kvarh: any; }) => {
+    this.kvarh = this.data.map((entry: { bucket_start_date: string | number | Date; avg_kvarh: any; }) => {
       const timestamp = new Date(entry.bucket_start_date).getTime();
-      const kvarh = Number(entry.kvarh);
+      const kvarh = Number(entry.avg_kvarh);
       return [timestamp, kvarh];
     });     
 
@@ -218,26 +219,27 @@ export class ConsuptionComponent implements OnInit {
   }
 
   fetchdata(): void {
-    if (this.selectedIntervals == 'custom' && this.selectedShift && this.selectedDevice && this.startDate.valid && this.endDate.valid) {
+    const string = this.selectedShift.join(',');
+    if (this.selectedIntervals == 'custom' && string && this.selectedDevice && this.startDate.valid && this.endDate.valid) {
       sessionStorage.setItem('consumptionDevice', this.selectedDevice);
       sessionStorage.setItem('consumptionInterval', this.selectedIntervals);
-      sessionStorage.setItem('consumptionShift', this.selectedShift);
+      sessionStorage.setItem('consumptionShift', this.selectedShift.join(','));
       sessionStorage.setItem('consumptionStartDate', this.startDate.value!);
       sessionStorage.setItem('consumptionEndDate', this.endDate.value!);
 
-      const subscription = this.service.consumptionWithCustomIntervals(this.selectedDevice,this.selectedShift, this.startDate.value!, this.endDate.value!).subscribe((result) => {
+      const subscription = this.service.consumptionWithCustomIntervals(this.selectedDevice, this.startDate.value!, this.endDate.value!,this.selectedShift.join(',')).subscribe((result) => {
         this.data = result.data;
         this.processingData();
       });
       this.subscriptions.push(subscription)
       this.showingData()
     }
-    else if(this.selectedDevice && this.selectedShift && this.selectedIntervals && this.selectedIntervals != null && this.selectedIntervals != undefined && this.selectedIntervals!='custom'){
+    else if(this.selectedDevice && string && this.selectedIntervals && this.selectedIntervals != null && this.selectedIntervals != undefined && this.selectedIntervals!='custom'){
       sessionStorage.setItem('consumptionDevice', this.selectedDevice);
       sessionStorage.setItem('consumptionInterval', this.selectedIntervals);
-      sessionStorage.setItem('consumptionShift', this.selectedShift);
+      sessionStorage.setItem('consumptionShift', this.selectedShift.join(','));
 
-      const subscription = this.service.consumptionWithIntervals(this.selectedDevice,this.selectedIntervals,this.selectedShift).subscribe((result) => {
+      const subscription = this.service.consumptionWithIntervals(this.selectedDevice,this.selectedIntervals,this.selectedShift.join(',')).subscribe((result) => {
         this.data = result.data;
         this.processingData();
       });

@@ -49,7 +49,7 @@
       <div class="row d-flex justify-content-center">SHIFTS</div>
       <mat-form-field>
         <mat-label>Select Shift</mat-label>
-        <mat-select placeholder="Shift" [(ngModel)]="selectedShift" required>
+        <mat-select placeholder="Shift" [(ngModel)]="selectedShift" required multiple>
           <mat-option *ngFor="let shift of shiftData" [value]="shift.shiftCode">
             {{ shift.shiftName }}
           </mat-option>

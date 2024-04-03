@@ -14,7 +14,6 @@ export class AddFeederComponent {
 
   feederName = new FormControl('', [Validators.required]);
   location = new FormControl('', [Validators.required]);
-  threshold = new FormControl('', [Validators.required]);
   feederUid = new FormControl('', [Validators.required]);
 
   @HostListener('window:resize')
@@ -50,7 +49,7 @@ export class AddFeederComponent {
   }
 
   onSaveClick(){
-    if( this.feederName.valid && this.location.valid && this.threshold.valid && this.feederUid.valid )
+    if( this.feederName.valid && this.location.valid&& this.feederUid.valid )
     {
       const CompanyId = this.authService.getCompanyId();
 
@@ -60,7 +59,7 @@ export class AddFeederComponent {
         location:this.location.value, 
         groupName:'', 
         virtualGroupName:'', 
-        thresholdValue:this.threshold.value, 
+        thresholdValue:'', 
         action:'', 
         companyId:CompanyId
       }

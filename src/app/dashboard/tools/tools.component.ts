@@ -64,7 +64,7 @@ export class ToolsComponent {
   }
   
   userColumns: string[] = ['usericon','name','email','designation','shift','contact','plant','privileges','action'];
-  feederColumns: string[] = ['feederuid','name','location','group','groupname','threshold','action'];
+  feederColumns: string[] = ['feederuid','name','location','action'];
   alertColumns: string[] = ['name','feedername','parameter','condition','threshold','repeat','start','end','sms','username','action'];
   shiftColumns: string[] = ['shiftcode','start','end','total','action'];
   userType! : string;
@@ -73,7 +73,7 @@ export class ToolsComponent {
     this.userType = this.authService.getUserType()??'';
     if(this.userType=="Standard"){
       this.userColumns = ['usericon','name','email','designation','shift','contact','plant','privileges'];
-      this.feederColumns = ['feederuid','name','location','group','groupname','threshold'];
+      this.feederColumns = ['feederuid','name','location'];
       this.alertColumns = ['name','feedername','parameter','condition','threshold','repeat','start','end','sms','username'];
       this.shiftColumns = ['shiftcode','start','end','total'];
     }
@@ -222,6 +222,7 @@ export class ToolsComponent {
     dialogConfig.width = '600px';
     dialogConfig.height = 'auto';
     dialogConfig.maxWidth = '90vw'; 
+    dialogConfig.data = {userData: element};
     const dialogRef = this.dialog.open(UpdateUserComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(userAdded => {
       setTimeout(() => {

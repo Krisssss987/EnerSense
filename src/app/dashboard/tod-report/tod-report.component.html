@@ -6,14 +6,10 @@
         			<mat-card-content>
 		        		<div class="container-fluid">
 					    	<div class="row">
-					    		<!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4 mt-1">
+					    		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4 mt-1">
 					    			<div>Download Report</div>
-					        		<mat-button-toggle-group name="fontStyle" class="button-group" aria-label="Font Style">
-										<mat-button-toggle class="button-group" value="bold" (click)="downloadCSV()">CSV</mat-button-toggle>
-										<mat-button-toggle class="button-group" value="italic" (click)="downloadExcel()">Excel</mat-button-toggle>
-										<mat-button-toggle class="button-group" value="underline" (click)="downloadPDF()">Print</mat-button-toggle>
-									</mat-button-toggle-group>
-					        	</div> -->
+  									<button mat-raised-button color="primary" class="mt-2" style="width: 100%;" (click)="downloadExcel()"><mat-icon>save_alt</mat-icon> Download Report</button>
+					        	</div>
 
 					        	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
 					        		<div>Apply Filter</div>
@@ -66,7 +62,7 @@
 
 							<ng-container matColumnDef="date">
 							  <th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Date </th>
-							  <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+							  <td mat-cell *matCellDef="let element"> {{element.date_time}} </td>
 							</ng-container>  
 							<ng-container matColumnDef="new_date">
 							  <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Date</th>
@@ -74,7 +70,7 @@
 						
 							<ng-container matColumnDef="ttl_kwh">
 								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> TTL KWH </th>
-								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+								<td mat-cell *matCellDef="let element"> {{element.total_kwh}} </td>
 							</ng-container>	
 							<ng-container matColumnDef="new_ttl_kwh">
 								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">TTL KWH</th>
@@ -82,7 +78,7 @@
 						
 							<ng-container matColumnDef="ttl_kvah">
 								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> TTL KVAH </th>
-								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+								<td mat-cell *matCellDef="let element"> {{element.total_kvah}} </td>
 							</ng-container>	
 							<ng-container matColumnDef="new_ttl_kvah">
 								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">TTL KVAH</th>
@@ -90,14 +86,14 @@
 						
 							<ng-container matColumnDef="a_kvah">
 							  <th mat-header-cell *matHeaderCellDef> KVAH </th>
-							  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+							  <td mat-cell *matCellDef="let element"> {{element.zone_kvah_a}} </td>
 							</ng-container>
 							<ng-container matColumnDef="a_kva">
 							  <th mat-header-cell *matHeaderCellDef> KVA </th>
-							  <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+							  <td mat-cell *matCellDef="let element"> {{element.zone_kva_a}} </td>
 							</ng-container>
 							<ng-container matColumnDef="a_zone_kwh">
-							  <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> A Zone KWH 22:00pm to 6:00am </th>
+							  <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> A Zone KWH 22:00 to 6:00 </th>
 							</ng-container>
 						  
 							<ng-container matColumnDef="a_percent">
@@ -109,28 +105,28 @@
 							</ng-container>
 						
 							<ng-container matColumnDef="b_kwh_6_to_9">
-								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> B Zone KWH 6:00am to 9:00am </th>
-								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> B Zone KWH 6:00 to 9:00 </th>
+								<td mat-cell *matCellDef="let element"> {{element.zone_kwh_b1}} </td>
 							</ng-container>	
 							<ng-container matColumnDef="new_b_kwh_6_to_9">
-								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">B Zone KWH 6:00am to 9:00am</th>
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">B Zone KWH 6:00 to 9:00</th>
 							</ng-container>
 						
 							<ng-container matColumnDef="b_kwh_12_to_18">
-								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> B Zone KWH 12:00pm to 18:00pm </th>
-								<td mat-cell *matCellDef="let element"> {{element.position}} </td>
+								<th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> B Zone KWH 12:00 to 18:00</th>
+								<td mat-cell *matCellDef="let element"> {{element.zone_kwh_b2}} </td>
 							</ng-container>	
 							<ng-container matColumnDef="new_b_kwh_12_to_18">
-								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">B Zone KWH 12:00pm to 18:00pm</th>
+								<th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">B Zone KWH 12:00 to 18:00</th>
 							</ng-container>
 						
 							<ng-container matColumnDef="b_kvah">
 								<th mat-header-cell *matHeaderCellDef> KVAH </th>
-								<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+								<td mat-cell *matCellDef="let element"> {{element.zone_kvah_b1}} </td>
 							</ng-container>
 							<ng-container matColumnDef="b_kva">
 								<th mat-header-cell *matHeaderCellDef> KVA </th>
-								<td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+								<td mat-cell *matCellDef="let element"> {{element.zone_kva_b1}} </td>
 							</ng-container>
 							<ng-container matColumnDef="b_zone_kwh">
 								<th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> Total B Zone KWH </th>
@@ -138,26 +134,26 @@
 						
 							<ng-container matColumnDef="c_kvah">
 								<th mat-header-cell *matHeaderCellDef> KVAH </th>
-								<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+								<td mat-cell *matCellDef="let element"> {{element.zone_kvah_c}} </td>
 							</ng-container>
 							<ng-container matColumnDef="c_kva">
 								<th mat-header-cell *matHeaderCellDef> KVA </th>
-								<td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+								<td mat-cell *matCellDef="let element"> {{element.zone_kva_c}} </td>
 							</ng-container>
 							<ng-container matColumnDef="c_zone_kwh">
-								<th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> C Zone KWH 9:00am to 12:00pm </th>
+								<th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> C Zone KWH 9:00 to 12:00 </th>
 							</ng-container>
 						
 							<ng-container matColumnDef="d_kvah">
 								<th mat-header-cell *matHeaderCellDef> KVAH </th>
-								<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+								<td mat-cell *matCellDef="let element"> {{element.zone_kvah_d}} </td>
 							</ng-container>
 							<ng-container matColumnDef="d_kva">
 								<th mat-header-cell *matHeaderCellDef> KVA </th>
-								<td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+								<td mat-cell *matCellDef="let element"> {{element.zone_kvah_d}} </td>
 							</ng-container>
 							<ng-container matColumnDef="d_zone_kwh">
-								<th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> D Zone KWH 18:00pm to 22:00pm </th>
+								<th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> D Zone KWH 18:00 to 22:00 </th>
 							</ng-container>
 						
 							<ng-container matColumnDef="percent">

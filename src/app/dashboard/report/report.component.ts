@@ -165,7 +165,7 @@ export class ReportComponent {
                   data.date_time = this.datePipe.transform(data.date_time, 'yyyy-MM-dd HH:mm:ss');
                 });
                 
-    this.dataSource = new MatTableDataSource(actualData);
+                this.dataSource = new MatTableDataSource(actualData);
                 this.data=actualData;
                 this.dataSource.paginator = this.paginator;
               },

@@ -146,6 +146,10 @@ getreport(data:any): Observable<any> {
   return this.http.post(`${this.API_URL}/getReportData`,data)
 }
 
+todReport(data:any): Observable<any> {
+  return this.http.post(`${this.API_URL}/todReport`,data)
+}
+
 getharmonicdata(interval:string): Observable<any>{
   return this.http.get(`${this.API_URL}/feederharmonic/SenseLive?TimeInterval=${interval}`);
 }
@@ -232,9 +236,8 @@ getLowPF() :Observable <any>{
     return this.http.get(`${this.API_URL}/consumptionWithIntervals/${DeviceId}/${interval}/${shift_id}`);
   }
 
-  consumptionWithCustomIntervals(DeviceId: string,shift_id: string,start: string, end:string):Observable<any> {
-    const params = { startdate: start, enddate: end };
-    return this.http.get(`${this.API_URL}/consumptionWithCustomIntervals/${DeviceId}/${shift_id}`, { params });
+  consumptionWithCustomIntervals(DeviceId: string,start: string, end:string,shift_id: string):Observable<any> {
+    return this.http.get(`${this.API_URL}/consumptionWithCustomIntervals/${start}/${end}/${DeviceId}/${shift_id}`);
   }
 
   getUserById(userId: string):Observable<any> {

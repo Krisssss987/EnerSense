@@ -109,43 +109,33 @@ export class RegisterComponent {
         privileges:'Admin'
       }
 
-      const companyRegistration$ = this.authService.registerCompany(companyData).pipe(
-        catchError((error) => {
+      this.authService.registerCompany(companyData).subscribe(
+        (response) => {
+          this.authService.registerUser(adminData).subscribe(
+            (response) => {
+              this.snackBar.open(
+                'Registration Successful! Complete verification via registered Email ID.',
+                'Dismiss',
+                { duration: 2000 }
+              );
+            },
+            (error) => {
+              this.snackBar.open(
+                error.error.message || 'Error in Admin Data',
+                'Dismiss',
+                { duration: 2000 }
+              );
+            }
+          );
+        },
+        (error) => {
           this.snackBar.open(
             error.error.message || 'Error in Company Data',
             'Dismiss',
             { duration: 2000 }
           );
-          return throwError('User registration failed');
-        })
-      );
-      
-      const userRegistration$ = this.authService.registerUser(adminData).pipe(
-        catchError((error) => {
-          this.snackBar.open(
-            error.error.message || 'Error in Admin Data',
-            'Dismiss',
-            { duration: 2000 }
-          );
-          return throwError('User registration failed');
-        })
-      );
-      
-      combineLatest([companyRegistration$, userRegistration$]).subscribe(
-        ([companyResponse, userResponse]) => {
-          this.snackBar.open('Registration Successful! Complete verification via registered Email ID.',
-            'Dismiss',
-            { duration: 2000 }
-          );
-        },
-        (error) => {
-          this.snackBar.open(error.error.message || 'Failed to register Data',
-            'Dismiss',
-            { duration: 2000 }
-          );
         }
       );
-
     }else{
       this.snackBar.open('Please provide all required data.',
         'Dismiss',
