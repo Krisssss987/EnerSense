@@ -76,7 +76,7 @@ export class TodReportComponent {
 
   removeTotalKwh(dataArray: any[]): any[] {
     return dataArray.map(obj => {
-      const { zone_kva_c, zone_kva_d, zone_kvah_c, zone_kvah_d, ...rest } = obj;
+      const { zone_kva_c, zone_kva_d, zone_kwh_d, zone_kvah_c, zone_kvah_d, ...rest } = obj;
       return rest;
     });
   } 
@@ -240,7 +240,7 @@ export class TodReportComponent {
     const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const dataBlob: Blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
-    FileSaver.saveAs(dataBlob, 'output.xlsx');
+    FileSaver.saveAs(dataBlob, 'tod_report.xlsx');
   }
 
   updateStartDate(event: MatDatepickerInputEvent<any, any>): void {
