@@ -37,6 +37,10 @@
     margin-top: 3px;
 }
 
+.firstcard{
+    min-height: 27vh;
+}
+
 .blur-row{
     padding-bottom: 12px;
     margin-top: -20px;
@@ -45,7 +49,7 @@
 
 .incard{
     display: flex;
-    margin-top: -5px;
+    margin-top: -10px;
     align-items: center;
     justify-content: center;
 }
@@ -56,16 +60,15 @@
 }
 
 #BarChart {
-    height: 406px;   
+    height: 31.5vh;   
 }
 
 #PieChart{
-    height: 333px;
+    height: 26.5vh;
 }
 
-.allCard{
-    margin-left: -0.6vh;
-    margin-right: -0.6vh;
+.mid{
+    min-height: 36vh;
 }
 
 @media (max-height:450px) {
@@ -75,36 +78,15 @@
 }
 
 @media (max-width:998px) {
-    .firstcard{
-        margin-bottom: 1vh;
-    }
-    .allCard{
-        margin-left: 0vh;
-        margin-right: 0vh;
-    }
     .row {
         --bs-gutter-x: unset;
     }
 }
 
-@media (max-width:800px) {
-    .numbers{
-        font-size: 22px;
-    }
-
-    h5{
-        font-size: 10px;
-    }
-}
-
-@media (min-width: 998px) and (max-width:1520px) {
-    .numbers{
-        font-size: 25px;
-    }
-
-    h5{
-        font-size: 10px;
-    }
+.flex{
+    display: flex; 
+    justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 #KVAguage,
@@ -113,15 +95,24 @@
 #PFguage,
 #Currentguage,
 #Voltageguage {
-    height: 185px; /* Set default width */
-}
-
-.card-heading2-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin-top: -30px;
+    height: 18.7vh;
+    margin-bottom: 2px;
 }
 
 .arrow-up, .arrow-down {
     font-size: 30px;
+}
+
+.row {
+    --bs-gutter-x: 0.5rem;
+}
+
+.guagecard{
+    min-height: 23vh;
+}
+
+.goal{
+    padding-left: 15px;
+    padding-right: 15px;
 }

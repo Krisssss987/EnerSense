@@ -59,6 +59,15 @@ export class OverviewComponent  implements OnInit {
   max_kva:number=0;
   max_kw:number=0;
   pf_diff:number=0;
+  kvah2:number=0;
+  kvah_rupees2:number=8.12;
+  kwh2:number=0;
+  kvarh_led2:number=0;
+  kvarh_lag2:number=0;
+  kwh_diff2:number=0;
+  max_kva2:number=0;
+  max_kw2:number=0;
+  pf_diff2:number=0;
   deviceOptions:any;
   intervalSubscription: Subscription | undefined;
   kvahArray: any[] = [];
@@ -241,6 +250,13 @@ export class OverviewComponent  implements OnInit {
           this.max_kva=data.fetchOverview.kva_max_interval_1??0;
           this.max_kw=data.fetchOverview.kw_max_interval_1??0;
           this.pf_diff=data.fetchOverview.pf_interval_1??0;
+          this.kvah2=data.fetchOverview.kvah_diff_interval_2??0;
+          this.kvarh_led2=data.fetchOverview.kvarh_2_lead??0;
+          this.kvarh_lag2=data.fetchOverview.kvarh_2_lag??0;
+          this.kwh_diff2=data.fetchOverview.kwh_diff_interval_2??0;
+          this.max_kva2=data.fetchOverview.kva_max_interval_2??0;
+          this.max_kw2=data.fetchOverview.kw_max_interval_2??0;
+          this.pf_diff2=data.fetchOverview.pf_interval_2??0;
           this.CO2=parseFloat((data.fetchOverview.kwh_diff_interval_1 * 0.82).toFixed(0))??0;
           }else{
             this.kvah=0;

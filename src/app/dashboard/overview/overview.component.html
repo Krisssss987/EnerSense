@@ -1,117 +1,109 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row mt-1">
-            <div class="col-12 col-md-12 col-lg-6">
-                <div class="card pb-2 allCard firstcard">
-                        <div *ngIf="!isWideScreen" class="d-flex justify-content-between align-items-center mt-1 mb-1">
-                            <p class="card-heading2">Hello, {{firstname}}&nbsp;{{lastname}}</p>
-                            
-                            <button color="primary" class="filter_button" mat-mini-fab (click)="openFilterDailog()" style="z-index: 2;">
-                                <mat-icon>filter_list</mat-icon>
-                            </button>
-                        </div>
+            <div class="col-12">
+                <div class="card pb-2 firstcard">
+                    <div class="d-flex justify-content-between align-items-center mt-1 mb-1">
+                        <p class="card-heading2">Hello, {{firstname}}&nbsp;{{lastname}}</p>
                         
-                        <div *ngIf="isWideScreen" class="mt-1 mb-1">
-                            <p class="card-heading2">Hello, {{firstname}}&nbsp;{{lastname}}</p>
-                        </div>                        
+                        <button color="primary" class="filter_button" mat-mini-fab (click)="openFilterDailog()" style="z-index: 2;">
+                            <mat-icon>filter_list</mat-icon>
+                        </button>
+                    </div>                       
                     <mat-divider></mat-divider>
-                    <div class="row text-center">
-                        <div class="row mt-2">
-                            <div class="col-6">
-                                <p class="col-12 numbers">{{kvah}}</p>
-                                <h6 class="col-12 blur-row ">KiloVolt Ampere Hour</h6>
+                    <div class="row text-center" style="display: flex; align-content: space-between;">
+                        <div class="flex mt-3">
+                            <div class="d-flex goal">
+                                <div class="d-flex">
+                                    <span class="arrow-up" *ngIf="kvah > kvah2" style="color: red;">&#9650;</span>
+                                    <span class="arrow-down" *ngIf="kvah < kvah2" style="color: green;">&#9660;</span>
+                                    <div>
+                                        <p class="col-12 numbers">{{kvah | number:'1.0-0'}}</p>
+                                        <h6 class="col-12 blur-row ">KvAH</h6>
+                                    </div>
+                                </div>
+                                <p style="font-size: 68px; margin-top: -23px;">&nbsp;&#47;&nbsp;</p>
+                                <div>
+                                    <p class="col-12 numbers">&#x20B9;{{kvah*kvah_rupees | number:'1.0-0'}}</p>
+                                    <h6 class="col-12 blur-row ">Lakh</h6>
+                                </div>                                
                             </div>
-                            <div class="col-6">
-                                <p class="col-12 numbers">&#x20B9;{{kvah*kvah_rupees}}</p>
-                                <h6 class="col-12 blur-row ">Lack</h6>
+                            <div class="d-flex goal">
+                                <span class="arrow-up" *ngIf="max_kva > max_kva2" style="color: red;">&#9650;</span>
+                                <span class="arrow-down" *ngIf="max_kva < max_kva2" style="color: green;">&#9660;</span>
+                                <div>
+                                    <p class="col-12 numbers">{{max_kva | number:'1.0-0'}}</p>
+                                    <h6 class="col-12 blur-row ">KvA (MD)</h6>
+                                </div>
+                            </div>                            
+                            <div class="d-flex goal">
+                                <span class="arrow-up" *ngIf="kwh_diff > kwh_diff2" style="color: red;">&#9650;</span>
+                                <span class="arrow-down" *ngIf="kwh_diff < kwh_diff2" style="color: green;">&#9660;</span>
+                                <div>
+                                    <p class="col-12 numbers">{{kwh_diff | number:'1.0-0'}}</p>
+                                    <h6 class="col-12 blur-row ">KWH</h6>
+                                </div>
                             </div>
-                            <div class="col-md-4 col-6">
-                                <p class="col-12 numbers">{{max_kva}}</p>
-                                <h6 class="col-12 blur-row ">KiloVolt Ampere (MD)</h6>
+                            <div class="d-flex goal">
+                                <span class="arrow-up" *ngIf="max_kw > max_kw2" style="color: red;">&#9650;</span>
+                                <span class="arrow-down" *ngIf="max_kw < max_kw2" style="color: green;">&#9660;</span>
+                                <div>
+                                    <p class="col-12 numbers">{{max_kw | number:'1.0-0'}}</p>
+                                    <h6 class="col-12 blur-row ">KW (MD)</h6>
+                                </div>
                             </div>
-                            <div class="col-md-4 col-6">
-                                <p class="col-12 numbers">{{kwh_diff}}</p>
-                                <h6 class="col-12 blur-row ">KiloWatt Hour</h6>
+                            <div class="d-flex goal">
+                                <span class="arrow-up" *ngIf="pf_diff > pf_diff2" style="color: red;">&#9650;</span>
+                                <span class="arrow-down" *ngIf="pf_diff < pf_diff2" style="color: green;">&#9660;</span>
+                                <div>
+                                    <p class="col-12 numbers">{{pf_diff | number:'1.2-2'}}</p>
+                                    <h6 class="col-12 blur-row ">PF</h6>
+                                </div>
                             </div>
-                            <div class="col-md-4 col-6">
-                                <p class="col-12 numbers">{{max_kw}}</p>
-                                <h6 class="col-12 blur-row ">KiloWatt (MD)</h6>
+                            <div class="d-flex goal">
+                                <span class="arrow-up" *ngIf="kvarh_led > kvarh_led2" style="color: red;">&#9650;</span>
+                                <span class="arrow-down" *ngIf="kvarh_led < kvarh_led2" style="color: green;">&#9660;</span>
+                                <div>
+                                    <p class="col-12 numbers">{{kvarh_led | number:'1.0-0'}}</p>
+                                    <h6 class="col-12 blur-row ">KvARH (Lead)</h6>
+                                </div>
                             </div>
-                            <div class="col-md-4 col-6">
-                                <p class="col-12 numbers">{{pf_diff}}</p>
-                                <h6 class="col-12 blur-row ">Power Factor</h6>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <p class="col-12 numbers">{{kvarh_led}}</p>
-                                <h6 class="col-12 blur-row ">KvARH (Lead)</h6>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <p class="col-12 numbers">{{kvarh_lag}}</p>
-                                <h6 class="col-12 blur-row ">KvARH (Lag)</h6>
+                            <div class="d-flex goal">
+                                <span class="arrow-up" *ngIf="kvarh_lag > kvarh_lag2" style="color: red;">&#9650;</span>
+                                <span class="arrow-down" *ngIf="kvarh_lag < kvarh_lag2" style="color: green;">&#9660;</span>
+                                <div>
+                                    <p class="col-12 numbers">{{kvarh_lag | number:'1.0-0'}}</p>
+                                    <h6 class="col-12 blur-row ">KvARH (Lag)</h6>
+                                </div>
                             </div>
                         </div>
-                        <div class="row mb-3 mt-1">
+                        <div class="row mb-1" style="margin-top: -10px;">
                             <div class="col-12 incard">
                                 <h3>CO2 emission :&nbsp;</h3>
-                                <p class="co2">{{CO2}}</p>
+                                <p class="co2">{{CO2 | number:'1.0-0'}}</p>
                             </div>
-                            <button mat-raised-button style="width: 100px; margin-top: -5px;" class="mx-auto" color="primary" (click)="openSummary()">Summary</button>
+                            <button mat-raised-button style="width: 100px;" class="mx-auto" color="primary" (click)="openSummary()">Summary</button>
                         </div>                        
-                    </div>
-                    <mat-divider></mat-divider>
-                    <h5 class="card-heading3 text-center mt-2" style="padding-bottom: -20px;">Instantaneous Device Data</h5>
-                    <div class="row">
-                        <div class="col-6 col-md-4">
-                            <div id="KVAguage"></div>
-                            <h5 class="card-heading text-center">KVA</h5>
-                        </div>
-                        <div class="col-6 col-md-4">
-                            <div id="KWguage"></div>
-                            <h5 class="card-heading text-center">KW</h5>
-                        </div>
-                        <div class="col-6 col-md-4">
-                            <div id="KVRguage"></div>
-                            <h5 class="card-heading text-center">KVAR</h5>
-                        </div>
-                        <div class="col-6 col-md-4">
-                            <div id="PFguage"></div>
-                            <h5 class="card-heading text-center">PF</h5>
-                        </div>
-                        <div class="col-6 col-md-4">
-                            <div id="Currentguage"></div>
-                            <h5 class="card-heading text-center">Current</h5>
-                        </div>
-                        <div class="col-6 col-md-4 ">
-                            <div id="Voltageguage"></div>
-                            <h5 class="card-heading text-center">Voltage N</h5>
-                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="col-12 col-md-12 col-lg-6">
+            <div class="col-12">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="card allCard">
-                            <div *ngIf="isWideScreen" class="d-flex justify-content-between align-items-center" style="margin-top: 1px;">
-                                <h5 class="card-heading4 mt-2">Consumption Pattern</h5>
-                                
-                                <button color="primary" class="filter_button" mat-mini-fab (click)="openFilterDailog()" style="z-index: 2;">
-                                    <mat-icon>filter_list</mat-icon>
-                                </button>
-                            </div>
-                            <div *ngIf="!isWideScreen">
+                    <div class="col-12 col-lg-6 mt-2">
+                        <div class="card mid" style="display: flex; align-content: space-between;">
+                            <div>
                                 <h5 class="card-heading3 text-center mt-2">Consumption Pattern</h5>
                             </div>
                             <div id="BarChart"></div>
                         </div>
                     </div>
-                    <div class="col-12 mt-2">
-                        <div class="card allCard pb-2">
+                    <div class="col-12 col-lg-6 mt-2">
+                        <div class="card mid" style="display: flex; align-content: space-between;">
                             <h5 class="card-heading3 text-center mt-2">Consumption Overview</h5>
                             <div id="PieChart"></div>
 
-                            <mat-button-toggle-group name="fontStyle" aria-label="Font Style" style="height: 40px" class="mx-auto" [(value)]="selectedDuration" (change)="onDurationChange($event)">
+                            <mat-button-toggle-group name="fontStyle" aria-label="Font Style" style="height: 40px" class="mx-auto mb-1" [(value)]="selectedDuration" (change)="onDurationChange($event)">
                                 <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="1hour">1 Hr</mat-button-toggle>
                                 <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="12hour">12 Hr</mat-button-toggle>
                                 <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="day">Day</mat-button-toggle>
@@ -123,9 +115,40 @@
                                 <mat-button-toggle *ngIf="isMobileScreen" class="button" value="week">This Week</mat-button-toggle>
                                 <mat-button-toggle *ngIf="isMobileScreen" class="button" value="month">This Month</mat-button-toggle>
                             </mat-button-toggle-group>
-
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="col-12 mt-2">
+                <div class="card guagecard" style="display: flex; align-content: space-between;">
+                    <h5 class="card-heading3 text-center mt-2" style="padding-bottom: -20px; z-index: 2;">Instantaneous Device Data</h5>
+                    <div class="row mb-2">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                            <div id="KVAguage"></div>
+                            <h5 class="card-heading text-center">KVA</h5>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                            <div id="KWguage"></div>
+                            <h5 class="card-heading text-center">KW</h5>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                            <div id="KVRguage"></div>
+                            <h5 class="card-heading text-center">KVAR</h5>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                            <div id="PFguage"></div>
+                            <h5 class="card-heading text-center">PF</h5>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                            <div id="Currentguage"></div>
+                            <h5 class="card-heading text-center">Current</h5>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                            <div id="Voltageguage"></div>
+                            <h5 class="card-heading text-center">Voltage N</h5>
+                        </div>
+                    </div>                    
                 </div>
             </div>
         </div>
