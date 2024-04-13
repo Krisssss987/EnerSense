@@ -1,4 +1,4 @@
-import { Component, Inject, HostListener } from '@angular/core';
+import { Component, Inject, HostListener ,Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardService } from '../../dash_service/dashboard.service';
@@ -12,6 +12,8 @@ import { AuthService } from 'src/app/authentication/auth/auth.service';
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent {
+
+  @Output() DeviceData = new EventEmitter<{deviceName:string; interval:string}>();
 
   CompanyEmail!: string | null;
   selectedDevice!: string;
@@ -88,8 +90,14 @@ export class FilterComponent {
   }
 
   onSaveClick(): void {
-    this.DashDataService.setDeviceId(this.selectedDevice);
-    this.DashDataService.setInterval(this.selectedDeviceInterval);
-    this.dialogRef.close();
+    sessionStorage.setItem('deviceID',this.selectedDevice);
+    sessionStorage.setItem('interval',this.selectedDeviceInterval);
+
+    this.DeviceData.emit({
+      deviceName:this.selectedDevice,
+      interval:this.selectedDeviceInterval
+    })
+
+    this.dialogRef.close();    
   }
 }

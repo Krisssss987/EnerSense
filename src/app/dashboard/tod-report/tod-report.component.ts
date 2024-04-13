@@ -168,9 +168,7 @@ export class TodReportComponent {
     const newArray = this.removeTotalKwh(this.data);
 
     const nullArray = {};
-    newArray.push(nullArray);
-
-    console.log(newArray);
+    newArray.push(nullArray)
 
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(newArray);
 

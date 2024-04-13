@@ -1,7 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SummaryComponent } from './summary/summary.component';
-
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import HighchartsExporting from 'highcharts/modules/exporting';
@@ -102,14 +101,18 @@ export class OverviewComponent  implements OnInit {
       this.DashDataService.deviceDetails(this.CompanyId).subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
-          let id=sessionStorage.getItem('deviceID');
-          let interval=sessionStorage.getItem('interval');
+          const id=sessionStorage.getItem('deviceID');
+          const interval=sessionStorage.getItem('interval');
           if(id==null || id=='' ||id==undefined || interval==null){
-            this.DashDataService.setDeviceId(this.deviceOptions[0].feederUid);
-            this.DashDataService.setInterval('12hour');
-            this.retrievingValues();
+            sessionStorage.setItem('deviceID',this.deviceOptions[0].feederUid);
+            sessionStorage.setItem('interval','12hour');
+            this.deviceUID = this.deviceOptions[0].feederUid;
+            this.interval = '12hour';
+            this.functionsToCall();
           } else {
-            this.retrievingValues();
+            this.deviceUID = id;
+            this.interval = interval;
+            this.functionsToCall();
           }
         },
         (error) => {
@@ -119,15 +122,6 @@ export class OverviewComponent  implements OnInit {
         }
       );
     }
-  }
-
-  retrievingValues(){
-    zip(this.DashDataService.deviceID$, this.DashDataService.interval$)
-    .subscribe(([deviceID, interval]) => {
-      this.deviceUID = deviceID ?? '';
-      this.interval = interval ?? '';
-      this.functionsToCall();      
-    });
   }
 
   functionsToCall(){
@@ -184,11 +178,11 @@ export class OverviewComponent  implements OnInit {
           const offsetMinutes = 5 * 60 + 30;
 
           this.kvahArray = new_data.map((entry: any) => [
-            new Date(entry.bucket_date).getTime() + offsetMinutes * 60 * 1000,
+            new Date(entry.bucket_date).getTime(),
             parseFloat(entry.kvah_difference)
           ]);
           this.kwhArray = new_data.map((entry: any) => [
-            new Date(entry.bucket_date).getTime() + offsetMinutes * 60 * 1000,
+            new Date(entry.bucket_date).getTime(),
             parseFloat(entry.kwh_difference)
           ]);          
 
@@ -209,6 +203,12 @@ export class OverviewComponent  implements OnInit {
               title: {
                 text: ''
               },
+            },
+            plotOptions: {
+              column: {
+                pointPadding: 0.05,
+                groupPadding: 0.3
+              }
             },
             series: [{
               type: 'column',
@@ -318,7 +318,7 @@ export class OverviewComponent  implements OnInit {
     });
 
     kvachart?.yAxis[0].update({
-      max: this.kva < 200 ? 200 : undefined
+      max: this.kva <= 200 ? 200 : undefined
     });
     
     kvachart?.redraw();
@@ -331,7 +331,7 @@ export class OverviewComponent  implements OnInit {
     });
 
     kwchart?.yAxis[0].update({
-      max: this.kw < 200 ? 200 : undefined
+      max: this.kw <= 200 ? 200 : undefined
     });
 
     const kvrchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'KVRguage');
@@ -343,7 +343,7 @@ export class OverviewComponent  implements OnInit {
 
     if(this.kvr > 200){
       kvrchart?.yAxis[0].update({
-        max: this.kvr < 200 ? 200 : undefined
+        max: this.kvr <= 200 ? 200 : undefined
       })
     }
 
@@ -355,7 +355,7 @@ export class OverviewComponent  implements OnInit {
     });
 
     pfchart?.yAxis[0].update({
-      max: this.pf < 1 ? 1 : undefined
+      max: this.pf <= 1 ? 1 : undefined
     });
 
     const currentchart = Highcharts.charts.find(chart => chart?.container.parentElement?.id === 'Currentguage');
@@ -366,7 +366,7 @@ export class OverviewComponent  implements OnInit {
     });
 
     currentchart?.yAxis[0].update({
-      max: this.current < 200 ? 200 : undefined
+      max: this.current <= 200 ? 200 : undefined
     });
 
 
@@ -378,7 +378,7 @@ export class OverviewComponent  implements OnInit {
     });
 
     voltagechart?.yAxis[0].update({
-      max: this.voltage < 200 ? 200 : undefined
+      max: this.voltage <= 200 ? 200 : undefined
     });
   }
 
@@ -1063,10 +1063,15 @@ export class OverviewComponent  implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '500px';
     dialogConfig.height = 'auto';
-    dialogConfig.maxWidth = '90vw';
+    dialogConfig.maxWidth = '90vw';    
 
     const dialogRef = this.dialog.open(FilterComponent, dialogConfig);
 
+    dialogRef.componentInstance.DeviceData.subscribe((data) => {
+      this.deviceUID = data.deviceName;
+      this.interval = data.interval;
+      this.functionsToCall();
+    });
 
     dialogRef.afterClosed().subscribe(result => {
     });

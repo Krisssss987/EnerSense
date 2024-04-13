@@ -8,35 +8,8 @@ import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
   providedIn: 'root'
 })
 export class DashboardService {
-  
-  private deviceIDSubject: BehaviorSubject<string | null>;
-  public deviceID$: Observable<string | null>;
-  private intervalSubject: BehaviorSubject<string | null>;
-  public interval$: Observable<string | null>;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.deviceIDSubject = new BehaviorSubject<string | null>(this.getDeviceId());
-    this.deviceID$ = this.deviceIDSubject.asObservable();
-    this.intervalSubject = new BehaviorSubject<string | null>(this.getInterval());
-    this.interval$ = this.intervalSubject.asObservable();
-  }
-
-  setDeviceId(deviceID: string) {
-    sessionStorage.setItem('deviceID', deviceID);
-    this.deviceIDSubject.next(deviceID);
-  }
-
-  setInterval(interval: string) {
-    sessionStorage.setItem('interval', interval);
-    this.intervalSubject.next(interval);
-  }
-
-  getDeviceId(): string | null {
-    return sessionStorage.getItem('deviceID');
-  }
-
-  getInterval(): string | null {
-    return sessionStorage.getItem('interval');
   }
 
   private readonly API_URL = 'http://localhost:3000';

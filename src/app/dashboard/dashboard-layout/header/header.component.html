@@ -1,75 +1,62 @@
-  <!-- <div class="right-side">
-      <mat-icon>home</mat-icon>
-      <mat-icon>analytics</mat-icon>
-      <mat-icon matBadge="15" matBadgeColor="warn">notifications</mat-icon>  
-      <mat-icon>settings</mat-icon>
-      <mat-icon>account_circles</mat-icon>
-  </div> -->
+<mat-toolbar class="navbar">
+  <div class="left-side">
+    <a href="home.html">
+      <img src="../../../assets/img/favicon.ico" alt="Logo" class="logo" />
+    </a>
+    <span class="logo-text">SenseLive - EMS</span>
+  </div>
+  <p class="currentpage">{{currentPageName}}</p>
 
-  <mat-toolbar class="navbar">
-    <div class="left-side">
-      <a href="home.html">
-        <img src="../../../assets/img/favicon.ico" alt="Logo" class="logo" />
-      </a>
-      <span class="logo-text">SenseLive - EMS</span>
-    </div>
-    <p class="currentpage">{{currentPageName}}</p>
-   
-  
-  
-    <div class="menu-icon" (click)="dashService.toggleMenu()">
-        <button mat-mini-fab style="color: #673ab7;background-color: #fff;" aria-label="menu">
-          <mat-icon>menu</mat-icon>
+  <div class="menu-icon" (click)="dashService.toggleMenu()">
+      <button mat-mini-fab style="color: #673ab7;background-color: #fff;" aria-label="menu">
+        <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+
+  <div class="right-side" [class.show-menu]="dashService.showMenu">
+    <div class="right-button" *ngIf="!collapse">
+      <button mat-mini-fab class="menu-item" (click)="toggleFullScreen()">
+        <mat-icon matBadgeColor="warn">{{ isFullScreen ? 'transform' : 'aspect_ratio' }}</mat-icon>
       </button>
     </div>
-  
-    <div class="right-side" [class.show-menu]="dashService.showMenu">
-      <div class="right-button" *ngIf="!collapse">
-        <button mat-mini-fab class="menu-item" (click)="toggleFullScreen()">
-          <mat-icon matBadgeColor="warn">{{ isFullScreen ? 'transform' : 'aspect_ratio' }}</mat-icon>
-        </button>
-      </div>
-      <div class="right-button" *ngIf="collapse">
-        <button mat-mini-fab class="menu-item" (click)="home()">
-          <mat-icon matBadgeColor="warn">home</mat-icon>
-        </button>
-      </div>
-      <div class="right-button" *ngIf="collapse">
-        <button mat-mini-fab class="menu-item" (click)="feeder()">
-          <mat-icon matBadgeColor="warn">devices</mat-icon>
-        </button>
-      </div>
-      <div class="right-button" *ngIf="collapse">
-        <button mat-mini-fab class="menu-item" (click)="analytics()">
-          <mat-icon matBadgeColor="warn">cloud</mat-icon>
-        </button>
-      </div>
-      <div class="right-button" *ngIf="collapse">
-        <button mat-mini-fab class="menu-item" (click)="profile()">
-          <mat-icon matBadgeColor="warn">person</mat-icon>
-        </button>
-      </div>
-      <div class="right-button" *ngIf="collapse">
-        <button mat-mini-fab class="menu-item" (click)="tools()">
-          <mat-icon matBadgeColor="warn">people</mat-icon>
-        </button>
-      </div>
-      <div class="right-button" *ngIf="collapse">
-        <button mat-mini-fab class="menu-item" (click)="report()">
-          <mat-icon matBadgeColor="warn">save_alt</mat-icon>
-        </button>
-      </div>
-      <div class="right-button" *ngIf="collapse">
-        <button mat-mini-fab class="menu-item" (click)="todreport()">
-          <mat-icon matBadgeColor="warn">storage</mat-icon>
-        </button>
-      </div>
-      <div class="logout-button">
-      <button mat-mini-fab class="menu-item" color="basic" aria-label="logout" (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon>
-      </button></div>
+    <div class="right-button" *ngIf="collapse">
+      <button mat-mini-fab class="menu-item" (click)="home()">
+        <mat-icon matBadgeColor="warn">home</mat-icon>
+      </button>
     </div>
-  </mat-toolbar>
-  
-  <!-- 
-  <mat-icon>devices_other</mat-icon> -->
+    <div class="right-button" *ngIf="collapse">
+      <button mat-mini-fab class="menu-item" (click)="feeder()">
+        <mat-icon matBadgeColor="warn">devices</mat-icon>
+      </button>
+    </div>
+    <div class="right-button" *ngIf="collapse">
+      <button mat-mini-fab class="menu-item" (click)="analytics()">
+        <mat-icon matBadgeColor="warn">cloud</mat-icon>
+      </button>
+    </div>
+    <div class="right-button" *ngIf="collapse">
+      <button mat-mini-fab class="menu-item" (click)="profile()">
+        <mat-icon matBadgeColor="warn">person</mat-icon>
+      </button>
+    </div>
+    <div class="right-button" *ngIf="collapse">
+      <button mat-mini-fab class="menu-item" (click)="tools()">
+        <mat-icon matBadgeColor="warn">people</mat-icon>
+      </button>
+    </div>
+    <div class="right-button" *ngIf="collapse">
+      <button mat-mini-fab class="menu-item" (click)="report()">
+        <mat-icon matBadgeColor="warn">save_alt</mat-icon>
+      </button>
+    </div>
+    <div class="right-button" *ngIf="collapse">
+      <button mat-mini-fab class="menu-item" (click)="todreport()">
+        <mat-icon matBadgeColor="warn">storage</mat-icon>
+      </button>
+    </div>
+    <div class="logout-button">
+    <button mat-mini-fab class="menu-item" color="basic" aria-label="logout" (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+    </button></div>
+  </div>
+</mat-toolbar>

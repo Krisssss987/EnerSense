@@ -1,7 +1,6 @@
 .edit-head {
   background-color: #673ab7;
-  height: 50px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  height: 55px;
   color: whitesmoke;
   display: flex;
   justify-content: space-between;
@@ -18,7 +17,28 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  background-color: #444343;
+  background-color: #45c8ff;
+  color: black;
+}
+
+.normal{
+  background-color: whitesmoke;
+  color: #673ab7;
+  margin-right: 4px;
+}
+
+.normal:hover{
+  background-color: #673ab7;
+  color: whitesmoke;
+}
+
+.close{
+  background-color: whitesmoke;
+  color: red;
+}
+
+.close:hover{
+  background-color: red;
   color: whitesmoke;
 }
 

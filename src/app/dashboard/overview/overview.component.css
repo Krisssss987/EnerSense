@@ -44,7 +44,7 @@
 .blur-row{
     padding-bottom: 12px;
     margin-top: -20px;
-    font-size: small;
+    font-size: medium;
 }
 
 .incard{
@@ -60,21 +60,28 @@
 }
 
 #BarChart {
-    height: 31.5vh;   
+    height: 31.5vh; 
+    min-height: 250px;
 }
 
 #PieChart{
-    height: 26.5vh;
-}
-
-.mid{
-    min-height: 36vh;
+    height: 31.5vh;
+    min-height: 250px;
 }
 
 @media (max-height:450px) {
   #PieChart, #BarChart {
-    height: 60vh;
+    height: 80vh;
   } 
+
+  #KVAguage,
+  #KWguage,
+  #KVRguage,
+  #PFguage,
+  #Currentguage,
+  #Voltageguage {
+    height: 500px;
+  }
 }
 
 @media (max-width:998px) {
@@ -97,6 +104,7 @@
 #Voltageguage {
     margin-top: -30px;
     height: 18.7vh;
+    min-height: 180px;
     margin-bottom: 2px;
 }
 

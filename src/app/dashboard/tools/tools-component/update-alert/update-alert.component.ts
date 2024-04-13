@@ -103,10 +103,9 @@ export class UpdateAlertComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
       this.alertData = data.alertData;
-      console.log(this.alertData);
-    this.startTime.valueChanges.subscribe(() => {
-      this.updateEndTimeMin();
-    });
+      this.startTime.valueChanges.subscribe(() => {
+        this.updateEndTimeMin();
+      });
   }
 
   previousData(){

@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Senselive - Temperature Monitoring';
+  title = 'Senselive - Energy Monitoring';
 }

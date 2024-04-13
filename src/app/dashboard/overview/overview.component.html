@@ -91,7 +91,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-lg-6 mt-2">
-                        <div class="card mid" style="display: flex; align-content: space-between;">
+                        <div class="card" style="display: flex; align-content: space-between;">
                             <div>
                                 <h5 class="card-heading3 text-center mt-2">Consumption Pattern</h5>
                             </div>
@@ -99,22 +99,24 @@
                         </div>
                     </div>
                     <div class="col-12 col-lg-6 mt-2">
-                        <div class="card mid" style="display: flex; align-content: space-between;">
+                        <div class="card" style="display: flex; align-content: space-between;">
                             <h5 class="card-heading3 text-center mt-2">Consumption Overview</h5>
-                            <div id="PieChart"></div>
+                            <div style="display: flex; align-items: center;">
+                                <div class="marq" style="flex-grow: 1;" id="PieChart"></div>
 
-                            <mat-button-toggle-group name="fontStyle" aria-label="Font Style" style="height: 40px" class="mx-auto mb-1" [(value)]="selectedDuration" (change)="onDurationChange($event)">
-                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="1hour">1 Hr</mat-button-toggle>
-                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="12hour">12 Hr</mat-button-toggle>
-                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="day">Day</mat-button-toggle>
-                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="week">Week</mat-button-toggle>
-                                <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="month">Month</mat-button-toggle>
-                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="1hour">1 Hour</mat-button-toggle>
-                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="12hour">12 Hour</mat-button-toggle>
-                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="day">This Day</mat-button-toggle>
-                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="week">This Week</mat-button-toggle>
-                                <mat-button-toggle *ngIf="isMobileScreen" class="button" value="month">This Month</mat-button-toggle>
-                            </mat-button-toggle-group>
+                                <mat-button-toggle-group  style="flex-grow: 1;" name="fontStyle" aria-label="Font Style" style="height: auto; display: flex; flex-direction: column; margin-right: 5px;" [(value)]="selectedDuration" (change)="onDurationChange($event)">
+                                    <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="1hour">1 Hr</mat-button-toggle>
+                                    <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="12hour">12 Hr</mat-button-toggle>
+                                    <mat-button-toggle *ngIf="isMobileScreen" class="button" value="1hour">1 Hour</mat-button-toggle>
+                                    <mat-button-toggle *ngIf="isMobileScreen" class="button" value="12hour">12 Hour</mat-button-toggle>
+                                    <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="day">Day</mat-button-toggle>
+                                    <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="week">Week</mat-button-toggle>
+                                    <mat-button-toggle *ngIf="!isMobileScreen" class="button" value="month">Month</mat-button-toggle>
+                                    <mat-button-toggle *ngIf="isMobileScreen" class="button" value="day">This Day</mat-button-toggle>
+                                    <mat-button-toggle *ngIf="isMobileScreen" class="button" value="week">This Week</mat-button-toggle>
+                                    <mat-button-toggle *ngIf="isMobileScreen" class="button" value="month">This Month</mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>                            
                         </div>
                     </div>
                 </div>
