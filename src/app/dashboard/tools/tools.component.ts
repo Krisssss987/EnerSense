@@ -82,7 +82,7 @@ export class ToolsComponent {
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.DashDataService.deviceDetails(this.CompanyId).subscribe(
+      this.DashDataService.deviceDetails(this.CompanyId,'all').subscribe(
         (devices: any) => {
           this.feederData = new MatTableDataSource(devices.getFeederData);
           this.feederData.paginator = this.feederPaginator;

@@ -73,7 +73,7 @@ export class ReportComponent {
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      const subscription = this.DashDataService.deviceDetails(this.CompanyId).subscribe(
+      const subscription = this.DashDataService.deviceDetails(this.CompanyId,'all').subscribe(
         (devices: any) => {
           this.dataSource2 = devices.getFeederData;
           const savedParameters = sessionStorage.getItem('reportParameters');

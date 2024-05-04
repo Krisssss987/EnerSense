@@ -98,7 +98,7 @@ export class OverviewComponent  implements OnInit {
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      this.DashDataService.deviceDetails(this.CompanyId).subscribe(
+      this.DashDataService.deviceDetails(this.CompanyId,'main').subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
           const id=sessionStorage.getItem('deviceID');

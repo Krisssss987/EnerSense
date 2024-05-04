@@ -250,7 +250,7 @@ export class FeederComponent {
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      const subscription = this.service.deviceDetails(this.CompanyId).subscribe(
+      const subscription = this.service.deviceDetails(this.CompanyId,'sub').subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
           this.initialDevice = this.deviceOptions[0].feederUid;

@@ -71,7 +71,7 @@ export class FilterComponent {
   getUserDevices() {
     this.CompanyId = this.authService.getCompanyId();
     if (this.CompanyId) {
-      const subscription = this.DashDataService.deviceDetails(this.CompanyId).subscribe(
+      const subscription = this.DashDataService.deviceDetails(this.CompanyId,'main').subscribe(
         (devices: any) => {
           this.deviceOptions = devices.getFeederData;
         },

@@ -59,7 +59,7 @@ export class AddAlertComponent {
   getFeeder() {
     const CompanyId = this.authService.getCompanyId();
     if (CompanyId) {
-      this.DashDataService.deviceDetails(CompanyId).subscribe(
+      this.DashDataService.deviceDetails(CompanyId,'all').subscribe(
         (feeder: any) => {
           this.feederData = feeder.getFeederData;
         },

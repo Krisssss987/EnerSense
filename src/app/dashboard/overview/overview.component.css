@@ -60,13 +60,13 @@
 }
 
 #BarChart {
-    height: 31.5vh; 
-    min-height: 250px;
+    height: 31vh; 
+    min-height: 240px;
 }
 
 #PieChart{
-    height: 31.5vh;
-    min-height: 250px;
+    height: 31vh;
+    min-height: 240px;
 }
 
 @media (max-height:450px) {
