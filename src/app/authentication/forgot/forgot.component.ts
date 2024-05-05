@@ -17,7 +17,7 @@ export class ForgotComponent {
   ) {}
 
   email = new FormControl('', [Validators.required, Validators.email]);
-  errorMessage = '';
+  errorMessage:string = '';
   loading:boolean = false;
   loadingMessage: string  = "Submit";
   getErrorMessage() {
