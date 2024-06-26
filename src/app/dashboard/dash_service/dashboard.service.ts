@@ -31,9 +31,9 @@ export class DashboardService {
     return this.http.put(`${this.API_URL}/editfeeders/${feederId}`,newData);
   }
 
-  groupDetails(CompanyId: string):Observable<any> {
-    return this.http.get(`${this.API_URL}/getFeederGroup/${CompanyId}`);
-  }
+  // groupDetails(CompanyId: string):Observable<any> {
+  //   return this.http.get(`${this.API_URL}/getFeederGroup/${CompanyId}`);
+  // }
 
   groupAdd(groupDetails: any):Observable<any> {
     return this.http.post(`${this.API_URL}/insertFeederGroup`,groupDetails);

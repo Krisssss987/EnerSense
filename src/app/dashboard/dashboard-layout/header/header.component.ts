@@ -8,14 +8,14 @@ import { DashService } from '../../dash.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit { 
+export class HeaderComponent implements OnInit {
   currentPageName: string = '';
   isFullScreen = false;
   screenWidth = 0;
-  collapse = false;
+  collapse = true;
+  currentTime: Date = new Date();
 
-  constructor(public dashService: DashService, public authService:  AuthService, private router: Router) 
-  {
+  constructor(public dashService: DashService, public authService: AuthService, private router: Router) {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         this.currentPageName = this.getPageNameFromRoute(this.router.url);
@@ -23,9 +23,12 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  currentTime: Date = new Date();
-
   ngOnInit(): void {
+    // Set initial screen width and call toggleSideNav to set collapse state
+    this.screenWidth = window.innerWidth;
+    this.toggleSideNav();
+
+    // Update current time every second
     setInterval(() => {
       this.currentTime = new Date();
     }, 1000);
@@ -43,8 +46,8 @@ export class HeaderComponent implements OnInit {
   public toggleMenu() {
     this.dashService.toggleMenu();
   }
-   
-  logout(){
+
+  logout() {
     this.authService.logout();
   }
 
@@ -73,31 +76,31 @@ export class HeaderComponent implements OnInit {
     this.collapse = this.screenWidth < 518;
   }
 
-  home(){
+  home() {
     this.router.navigate(['dashboard/overview']);
   }
 
-  feeder(){
+  feeder() {
     this.router.navigate(['dashboard/feeder']);
   }
 
-  analytics(){
+  analytics() {
     this.router.navigate(['dashboard/analytics']);
   }
 
-  tools(){
+  tools() {
     this.router.navigate(['dashboard/tools']);
   }
 
-  report(){
+  report() {
     this.router.navigate(['dashboard/report']);
   }
 
-  profile(){
+  profile() {
     this.router.navigate(['dashboard/profile']);
   }
 
-  todreport(){
+  todreport() {
     this.router.navigate(['dashboard/tod_report']);
   }
 }

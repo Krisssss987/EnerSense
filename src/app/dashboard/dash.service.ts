@@ -6,9 +6,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DashService {
-
-  
-
   public showMenu = false;
   public pageLoading = true;
   public dataLoading = true;
@@ -24,7 +21,4 @@ export class DashService {
   public isPageLoading(isLoading: boolean) {
     this.pageLoading = isLoading;
   }
- 
-
-
 }

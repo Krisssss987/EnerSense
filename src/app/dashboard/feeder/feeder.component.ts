@@ -55,7 +55,6 @@ export class FeederComponent {
     Highcharts.chart('KVRYguage', this.KVRYguage);
     Highcharts.chart('PFYguage', this.PFYguage);
     this.getUserDevices();
-    this.getgroupDevices();
   }
 
   ngOnDestroy() {
@@ -267,22 +266,22 @@ export class FeederComponent {
     }
   }
 
-  getgroupDevices() {
-    this.CompanyId = this.authService.getCompanyId();
-    if (this.CompanyId) {
-      const subscription = this.service.groupDetails(this.CompanyId).subscribe(
-        (group: any) => {
-          this.groupOptions = group.data;
-        },
-        (error) => {
-          this.snackBar.open('Error while fetching devices Groups!', 'Dismiss', {
-            duration: 2000
-          });
-        }
-      );
-      this.subscriptions.push(subscription)
-    }
-  }
+  // getgroupDevices() {
+  //   this.CompanyId = this.authService.getCompanyId();
+  //   if (this.CompanyId) {
+  //     const subscription = this.service.groupDetails(this.CompanyId).subscribe(
+  //       (group: any) => {
+  //         this.groupOptions = group.data;
+  //       },
+  //       (error) => {
+  //         this.snackBar.open('Error while fetching devices Groups!', 'Dismiss', {
+  //           duration: 2000
+  //         });
+  //       }
+  //     );
+  //     this.subscriptions.push(subscription)
+  //   }
+  // }
 
   currentoperations(device:string) {
     if (device) {

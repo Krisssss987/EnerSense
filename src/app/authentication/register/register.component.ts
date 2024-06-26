@@ -93,13 +93,9 @@ export class RegisterComponent {
         percentContractDemand:this.percent_demand.value, 
         electricityBill:this.bill.value, 
         energyDetail:this.energy_detail.value, 
-        energyValue:this.energy_value.value
-      }
-
-      const adminData = {
+        energyValue:this.energy_value.value,
         firstName:this.firstName.value, 
         lastName:this.lastName.value, 
-        companyName:this.companyName.value, 
         contactno:this.contact.value, 
         shift:'', 
         personalemail:this.personalEmail.value, 
@@ -111,21 +107,10 @@ export class RegisterComponent {
 
       this.authService.registerCompany(companyData).subscribe(
         (response) => {
-          this.authService.registerUser(adminData).subscribe(
-            (response) => {
-              this.snackBar.open(
-                'Registration Successful! Complete verification via registered Email ID.',
-                'Dismiss',
-                { duration: 2000 }
-              );
-            },
-            (error) => {
-              this.snackBar.open(
-                error.error.message || 'Error in Admin Data',
-                'Dismiss',
-                { duration: 2000 }
-              );
-            }
+          this.snackBar.open(
+            'Registration Successful! Complete verification via registered Email ID.',
+            'Dismiss',
+            { duration: 2000 }
           );
         },
         (error) => {
